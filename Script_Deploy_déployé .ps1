@@ -88,12 +88,120 @@ Function Download-And-Install-App {
 
 # Fonction pour détecter la version d'Office installée
 Function Detect-InstalledOffice {
-    # Ajoutez ici votre logique pour détecter la version installée d'Office
+    $officeVersion = Get-OfficeVersion -ShowAllInstalledProducts
+    if ($officeVersion) {
+        Write-Host "Version d'Office actuellement installée : $($officeVersion.DisplayName)" -ForegroundColor $GreenColor
+        return $officeVersion
+    } else {
+        Write-Host "Aucune version d'Office n'est installée." -ForegroundColor $GreenColor
+        return $null
+    }
 }
 
 # Fonction pour installer Office
 Function Install-Office {
-    # Votre code pour installer Office
+    $ODTDownloadLink = "https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_17126-20132.exe"
+    $ODTPath = "$env:TEMP\ODT"
+    $XMLPath = "$ODTPath\configuration.xml"
+
+    # Téléchargement et extraction de l'Office Deployment Tool
+    Invoke-WebRequest -Uri $ODTDownloadLink -OutFile "$env:TEMP\ODT.exe"
+    Start-Process -FilePath "$env:TEMP\ODT.exe" -ArgumentList "/extract:`"$ODTPath`"" -NoNewWindow -Wait
+
+    Write-Host "Choisissez la version d'Office à installer :"
+    Write-Host "1. Office 2019 Standard"
+    Write-Host "2. Office 2019 Pro Plus"
+    Write-Host "3. Office 2021 Standard"
+    Write-Host "4. Office 2021 Pro Plus"
+    Write-Host "5. Office 365 Business"
+    $officeChoice = Read-Host
+    $officeVersion = ""
+
+    # Mise à jour du fichier XML en fonction de la version choisie
+    Switch ($officeChoice) {
+        1 {
+            $officeVersion = "Office 2019 Standard"
+            $XMLContent = @"
+            <Configuration>
+                <Add OfficeClientEdition="64" Channel="Monthly">
+                    <Product ID="Standard2019Retail">
+                        <Language ID="fr-fr" />
+                    </Product>
+                </Add>
+                <Display Level="None" AcceptEULA="TRUE" />
+                <Property Name="AUTOACTIVATE" Value="1"/>
+            </Configuration>
+"@
+        }
+        2 {
+            $officeVersion = "Office 2019 Pro Plus"
+            $XMLContent = @"
+            <Configuration>
+                <Add OfficeClientEdition="64" Channel="Monthly">
+                    <Product ID="ProPlus2019Retail">
+                        <Language ID="fr-fr" />
+                    </Product>
+                </Add>
+                <Display Level="None" AcceptEULA="TRUE" />
+                <Property Name="AUTOACTIVATE" Value="1"/>
+            </Configuration>
+"@
+        }
+        3 {
+            $officeVersion = "Office 2021 Standard"
+            $XMLContent = @"
+            <Configuration>
+                <Add OfficeClientEdition="64" Channel="Monthly">
+                    <Product ID="Standard2021Retail">
+                        <Language ID="fr-fr" />
+                    </Product>
+                </Add>
+                <Display Level="None" AcceptEULA="TRUE" />
+                <Property Name="AUTOACTIVATE" Value="1"/>
+            </Configuration>
+"@
+        }
+        4 {
+            $officeVersion = "Office 2021 Pro Plus"
+            $XMLContent = @"
+            <Configuration>
+                <Add OfficeClientEdition="64" Channel="Monthly">
+                    <Product ID="ProPlus2021Retail">
+                        <Language ID="fr-fr" />
+                    </Product>
+                </Add>
+                <Display Level="None" AcceptEULA="TRUE" />
+                <Property Name="AUTOACTIVATE" Value="1"/>
+            </Configuration>
+"@
+        }
+        5 {
+            $officeVersion = "Office 365 Business"
+            $XMLContent = @"
+            <Configuration>
+                <Add OfficeClientEdition="64" Channel="Monthly">
+                    <Product ID="O365BusinessRetail">
+                        <Language ID="fr-fr" />
+                    </Product>
+                </Add>
+                <Display Level="None" AcceptEULA="TRUE" />
+                <Property Name="AUTOACTIVATE" Value="1"/>
+            </Configuration>
+"@
+        }
+    }
+    $XMLContent | Out-File -FilePath $XMLPath
+
+    # Détecter et désinstaller la version actuelle d'Office si présente
+    $installedOffice = Detect-InstalledOffice
+    if ($installedOffice) {
+        Write-Host "Désinstallation de la version actuelle d'Office..."
+        Remove-PreviousOfficeInstalls -Force -Quiet
+    }
+
+    # Installation de la nouvelle version d'Office
+    Write-Host "Installation de $officeVersion en cours..." -ForegroundColor $GreenColor
+    Start-Process -FilePath "$ODTPath\setup.exe" -ArgumentList "/configure `"$XMLPath`"" -NoNewWindow -Wait
 }
 
 # Menu principal
