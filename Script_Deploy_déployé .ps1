@@ -240,11 +240,11 @@ Do {
                 Switch ($appChoice) {
                     "1" { Install-Office }
                     "2" {
-                        $downloadLink = "https://download.owncloud.com/desktop/ownCloud/stable/latest/win/ownCloud-latest.msi"
+                        $downloadLink = "https://download.owncloud.com/desktop/ownCloud/stable/5.2.0.12726/win/ownCloud-5.2.0.12726.x64.msi"
                         Download-And-Install-App -downloadLink $downloadLink -appName "ownCloud-latest.msi"
                     }
                     "3" {
-                        $downloadLink = "https://link-to-cybereason-sensor/download"
+                        $downloadLink = "https://o360.odc.fr/s/k7OT8FI8UXYdeYG"
                         Download-And-Install-App -downloadLink $downloadLink -appName "CybereasonSensor.exe"
                     }
                     "4" { break }
