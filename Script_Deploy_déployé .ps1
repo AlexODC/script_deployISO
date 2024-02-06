@@ -187,7 +187,7 @@ Function Install-WindowsUpdates {
         if ($rebootRequired) {
             Write-Host "Redémarrage nécessaire pour terminer l'installation des mises à jour. Veuillez redémarrer votre ordinateur." -ForegroundColor $OrangeText
         } else {
-            Write-Host "Toutes les mises à jour ont été installallées. Un redémarrage pourrait être nécessaire pour appliquer les mises à jour." -ForegroundColor $OrangeText
+            Write-Host "Toutes les mises à jour ont été installées. Un redémarrage pourrait être nécessaire pour appliquer les mises à jour." -ForegroundColor $OrangeText
         }
     } else {
         Write-Host "Aucune mise à jour Windows disponible." -ForegroundColor $GreenColor
