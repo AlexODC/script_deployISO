@@ -222,9 +222,9 @@ Function Update-PC {
 # Menu principal
 Do {
     Write-Host "1. Mettre Ã  jour le PC (Windows et applications Windows Store)"
-    Write-Host "2. Renommer cet ordinateur"
-    Write-Host "3. Installer des applications supplÃ©mentaires"
-    Write-Host "4. Quitter"
+    Write-Host "2. Renommer cet ordinateur et le mettre sur un domaine"
+    Write-Host "4. Installer des applications supplÃ©mentaires"
+    Write-Host "5. Quitter"
 
     Write-Host "Entrez votre choix :" -ForegroundColor $OrangeText -NoNewline
     $selection = Read-Host
@@ -234,11 +234,34 @@ Do {
             Update-PC
         }
         "2" {
-            Write-Host "Entrez le nouveau nom de l'ordinateur :" -ForegroundColor $OrangeText
-            $newName = Read-Host
-            Rename-Computer -newName $newName
-        }
-        "3" {
+            Write-Host "Voulez-vous intégrer le PC à un domaine ? o/n" -ForegroundColor $OrangeText
+            $integrerDomaine = Read-Host
+
+            if ($integrerDomaine -eq 'o' -or $integrerDomaine -eq 'Oui') {
+                Write-Host "Vous avez choisi 'Oui'."
+                # Ajoutez ici le code que vous souhaitez exécuter si l'utilisateur choisit 'Oui'
+                 Write-Host "Entrez le nouveau nom de l'ordinateur :" -ForegroundColor $OrangeText
+                 $newName = Read-Host
+                 Write-Host "Entrez le domaine à rejoindre :" -ForegroundColor $OrangeText
+                 $newDomaine = Read-Host
+                 Write-Host "Entrez le compte à utiliser pour joindre le domaine :" -ForegroundColor $OrangeText
+                 $compteDomaine = Read-Host
+
+                 Add-Computer -ComputerName $newName -DomainName $newDomaine -Credential $compteDomaine -Restart                
+            }
+            elseif ($integrerDomaine -eq 'n' -or $integrerDomaine -eq 'Non') {
+                Write-Host "Vous avez choisi 'Non'."
+                # Ajoutez ici le code que vous souhaitez exécuter si l'utilisateur choisit 'Non'
+                 Write-Host "Entrez le nouveau nom de l'ordinateur :" -ForegroundColor $OrangeText
+                 $newName = Read-Host
+                 Rename-Computer -NewName $newName
+            }
+            else {
+                Write-Host "Choix invalide. Veuillez choisir 'Oui' (o) ou 'Non' (n)."
+            }
+           }
+        
+        "4" {
              Do {
                 Write-Host "1. Installer Office"
                 Write-Host "2. Installer OwnCloud"
