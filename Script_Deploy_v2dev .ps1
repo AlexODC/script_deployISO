@@ -1,15 +1,15 @@
-# DÃ©finition des couleurs
+# Définition des couleurs
 $GreenColor = "Green"
 $RedColor = "Red"
 $OrangeText = "DarkYellow"
 
-# VÃ©rifier si le script est lancÃ© en tant qu'administrateur
+# Vérifier si le script est lancé en tant qu'administrateur
 If (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
     Start-Process powershell.exe "-File `"$PSCommandPath`"" -Verb RunAs
     Exit
 }
 
-# VÃ©rifier et installer le fournisseur NuGet si nÃ©cessaire
+# Vérifier et installer le fournisseur NuGet si nécessaire
 Function Check-And-Install-NuGet {
     if (-not (Get-PackageProvider -ListAvailable -Name NuGet)) {
         Install-PackageProvider -Name NuGet -Force
@@ -31,10 +31,10 @@ Function Download-And-Install-App {
         if (Test-Path $localPath) {
             if ($appName -like "*.msi") {
                 Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$localPath`" /qn" -Wait
-                Write-Host "$appName a été installé avec succès." -ForegroundColor $GreenColor
+                Write-Host "$appName a été installée avec succès." -ForegroundColor $GreenColor
             } else {
                 Start-Process -FilePath $localPath -Args "/S" -Wait
-                Write-Host "$appName a été installé avec succès." -ForegroundColor $GreenColor
+                Write-Host "$appName a été installée avec succès." -ForegroundColor $GreenColor
             }
         } else {
             Write-Host "Erreur : Impossible de trouver le fichier téléchargé." -ForegroundColor $RedColor
@@ -67,7 +67,7 @@ Function Install-Office {
     Invoke-WebRequest -Uri $ODTDownloadLink -OutFile "$env:TEMP\ODT.exe"
     Start-Process -FilePath "$env:TEMP\ODT.exe" -ArgumentList "/extract:`"$ODTPath`"" -NoNewWindow -Wait
 
-    Write-Host "Choisissez la version d'Office à installer :"
+    Write-Host "Choisissez la version d'Office Ã  installer :"
     Write-Host "1. Office 2019 Standard"
     Write-Host "2. Office 2019 Pro Plus"
     Write-Host "3. Office 2021 Standard"
@@ -151,7 +151,7 @@ Function Install-Office {
     }
     $XMLContent | Out-File -FilePath $XMLPath
 
-    # Détecter et désinstaller la version actuelle d'Office si présente
+    # DÃ©tecter et désinstaller la version actuelle d'Office si présente
     $installedOffice = Detect-InstalledOffice
     if ($installedOffice) {
         Write-Host "Désinstallation de la version actuelle d'Office..."
@@ -164,7 +164,7 @@ Function Install-Office {
 }
 
 
-# Fonction pour installer toutes les mises Ã  jour Windows, y compris les facultatives
+# Fonction pour installer toutes les mises à jour Windows, y compris les facultatives
 Function Install-WindowsUpdates {
     Check-And-Install-NuGet
 
@@ -178,40 +178,39 @@ Function Install-WindowsUpdates {
 
     if ($updates.Count -gt 0) {
         foreach ($update in $updates) {
-            Write-Host "Installation de la mise Ã  jour : $($update.Title)" -ForegroundColor $GreenColor
+            Write-Host "Installation de la mise ÃƒÂ  jour : $($update.Title)" -ForegroundColor $GreenColor
             Install-WindowsUpdate -KBArticleID $update.KBArticleID -AutoReboot:$false -Confirm:$false
             if ($update.IsRebootRequired) {
                 $rebootRequired = $true
             }
         }
         if ($rebootRequired) {
-            Write-Host "RedÃ©marrage nÃ©cessaire pour terminer l'installation des mises Ã  jour. Veuillez redÃ©marrer votre ordinateur." -ForegroundColor $OrangeText
+            Write-Host "Redémarrage nécessaire pour terminer l'installation des mises à jour. Veuillez redémarrer votre ordinateur." -ForegroundColor $OrangeText
         } else {
-            Write-Host "Toutes les mises Ã  jour ont Ã©tÃ© installÃ©es. Un redÃ©marrage pourrait Ãªtre nÃ©cessaire." -ForegroundColor $OrangeText
+            Write-Host "Toutes les mises à jour ont été installallées. Un redémarrage pourrait être nécessaire pour appliquer les mises à jour." -ForegroundColor $OrangeText
         }
     } else {
-        Write-Host "Aucune mise Ã  jour Windows disponible." -ForegroundColor $GreenColor
+        Write-Host "Aucune mise à jour Windows disponible." -ForegroundColor $GreenColor
     }
 
     # Retour au menu principal ou fin de la fonction
     return
 }
 
-# Fonction pour mettre Ã  jour les applications du Windows Store
+# Fonction pour mettre à jour les applications du Windows Store
 Function Update-WindowsStoreApps {
     $wingetPath = "$env:LOCALAPPDATA\Microsoft\WindowsApps\winget.exe"
-    #$wingetPath = "C:\Users\ODC\AppData\Local\Microsoft\WindowsApps\winget.exe"
     if (Test-Path $wingetPath) {
         winget upgrade --all --force
-        Write-Host "Les mises Ã  jour des applications Windows Store ont Ã©tÃ© effectuÃ©es." -ForegroundColor $GreenColor
+        Write-Host "Les mises à jour des applications Windows Store ont été effectuées." -ForegroundColor $GreenColor
     } else {
-        Write-Host "Winget n'est pas installÃ©." -ForegroundColor $RedColor
+        Write-Host "Winget n'est pas installé." -ForegroundColor $RedColor
     }
     # Retour au menu principal ou fin de la fonction
     return 
 }
 
-# Fonction pour mettre Ã  jour le PC (Windows et applications Windows Store)
+# Fonction pour mettre à jour le PC (Windows et applications Windows Store)
 Function Update-PC {
     Install-WindowsUpdates
     Update-WindowsStoreApps
@@ -221,10 +220,10 @@ Function Update-PC {
 
 # Menu principal
 Do {
-    Write-Host "1. Mettre Ã  jour le PC (Windows et applications Windows Store)"
-    Write-Host "2. Renommer cet ordinateur"
-    Write-Host "3. Installer des applications supplÃ©mentaires"
-    Write-Host "4. Quitter"
+    Write-Host "1. Mettre à jour le PC (Windows et applications Windows Store)"
+    Write-Host "2. Renommer cet ordinateur et le mettre sur un domaine"
+    Write-Host "4. Installer des applications supplémentaires"
+    Write-Host "5. Quitter"
 
     Write-Host "Entrez votre choix :" -ForegroundColor $OrangeText -NoNewline
     $selection = Read-Host
@@ -234,11 +233,34 @@ Do {
             Update-PC
         }
         "2" {
-            Write-Host "Entrez le nouveau nom de l'ordinateur :" -ForegroundColor $OrangeText
-            $newName = Read-Host
-            Rename-Computer -newName $newName
-        }
-        "3" {
+            Write-Host "Voulez-vous intégrer le PC à un domaine ? o/n" -ForegroundColor $OrangeText
+            $integrerDomaine = Read-Host
+
+            if ($integrerDomaine -eq 'o' -or $integrerDomaine -eq 'Oui') {
+                Write-Host "Vous avez choisi 'Oui'."
+                # Ajoutez ici le code que vous souhaitez exécuter si l'utilisateur choisit 'Oui'
+                 Write-Host "Entrez le nouveau nom de l'ordinateur :" -ForegroundColor $OrangeText
+                 $newName = Read-Host
+                 Write-Host "Entrez le domaine à rejoindre :" -ForegroundColor $OrangeText
+                 $newDomaine = Read-Host
+                 Write-Host "Entrez le compte à utiliser pour joindre le domaine (Exemple: OPALE\Administrateur) :" -ForegroundColor $OrangeText
+                 $compteDomaine = Read-Host
+
+                 Add-Computer -ComputerName $newName -DomainName $newDomaine -Credential $compteDomaine -Restart                
+            }
+            elseif ($integrerDomaine -eq 'n' -or $integrerDomaine -eq 'Non') {
+                Write-Host "Vous avez choisi 'Non'."
+                # Ajoutez ici le code que vous souhaitez exécuter si l'utilisateur choisit 'Non'
+                 Write-Host "Entrez le nouveau nom de l'ordinateur :" -ForegroundColor $OrangeText
+                 $newName = Read-Host
+                 Rename-Computer -NewName $newName
+            }
+            else {
+                Write-Host "Choix invalide. Veuillez choisir 'Oui' (o) ou 'Non' (n)."
+            }
+           }
+        
+        "4" {
              Do {
                 Write-Host "1. Installer Office"
                 Write-Host "2. Installer OwnCloud"
