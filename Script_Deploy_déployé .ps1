@@ -178,7 +178,7 @@ Function Install-WindowsUpdates {
 
     if ($updates.Count -gt 0) {
         foreach ($update in $updates) {
-            Write-Host "Installation de la mise ÃƒÂ  jour : $($update.Title)" -ForegroundColor $GreenColor
+            Write-Host "Installation de la mise à jour : $($update.Title)" -ForegroundColor $GreenColor
             Install-WindowsUpdate -KBArticleID $update.KBArticleID -AutoReboot:$false -Confirm:$false
             if ($update.IsRebootRequired) {
                 $rebootRequired = $true
@@ -201,7 +201,7 @@ Function Install-WindowsUpdates {
 Function Update-WindowsStoreApps {
     $wingetPath = "$env:LOCALAPPDATA\Microsoft\WindowsApps\winget.exe"
     if (Test-Path $wingetPath) {
-        winget upgrade --all --force
+        winget upgrade --all --force winget upgrade --all --force --accept-package-agreements --accept-source-agreements
         Write-Host "Les mises à jour des applications Windows Store ont été effectuées." -ForegroundColor $GreenColor
     } else {
         Write-Host "Winget n'est pas installé." -ForegroundColor $RedColor
