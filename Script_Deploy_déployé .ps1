@@ -27,32 +27,49 @@ Function Install-WindowsUpdates {
     Install-Module -Name PSWindowsUpdate -Force -AllowClobber
 
     $updates = Get-WindowsUpdate -AcceptAll -IgnoreReboot
+    $rebootRequired = $false
+
     if ($updates.Count -gt 0) {
         foreach ($update in $updates) {
             Write-Host "Installation de la mise à jour : $($update.Title)" -ForegroundColor $GreenColor
             Install-WindowsUpdate -KBArticleID $update.KBArticleID -AutoReboot:$false -Confirm:$false
+            if ($update.IsRebootRequired) {
+                $rebootRequired = $true
+            }
         }
-        Write-Host "Toutes les mises à jour ont été installées. Un redémarrage pourrait être nécessaire." -ForegroundColor $OrangeText
+        if ($rebootRequired) {
+            Write-Host "Redémarrage nécessaire pour terminer l'installation des mises à jour. Veuillez redémarrer votre ordinateur." -ForegroundColor $OrangeText
+        } else {
+            Write-Host "Toutes les mises à jour ont été installées. Un redémarrage pourrait être nécessaire." -ForegroundColor $OrangeText
+        }
     } else {
         Write-Host "Aucune mise à jour Windows disponible." -ForegroundColor $GreenColor
     }
+
+    # Retour au menu principal ou fin de la fonction
+    return
 }
 
 # Fonction pour mettre à jour les applications du Windows Store
 Function Update-WindowsStoreApps {
     $wingetPath = "$env:LOCALAPPDATA\Microsoft\WindowsApps\winget.exe"
+    #$wingetPath = "C:\Users\ODC\AppData\Local\Microsoft\WindowsApps\winget.exe"
     if (Test-Path $wingetPath) {
-        winget upgrade --all | Out-Null
+        winget upgrade --all --force
         Write-Host "Les mises à jour des applications Windows Store ont été effectuées." -ForegroundColor $GreenColor
     } else {
         Write-Host "Winget n'est pas installé." -ForegroundColor $RedColor
     }
+    # Retour au menu principal ou fin de la fonction
+    return 
 }
 
 # Fonction pour mettre à jour le PC (Windows et applications Windows Store)
 Function Update-PC {
     Install-WindowsUpdates
     Update-WindowsStoreApps
+    Start-Sleep -Seconds 10
+    cls
 }
 
 # Les autres fonctions restent identiques...
