@@ -246,8 +246,6 @@ Function Update-PC {
     Update-WindowsStoreApps
 }
 
-# Les autres fonctions restent identiques...
-
 # Menu principal
 Do {
     Write-Host "1. Mettre à jour le PC (Windows et applications Windows Store)"
