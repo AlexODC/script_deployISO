@@ -222,8 +222,8 @@ Function Update-PC {
 Do {
     Write-Host "1. Mettre à jour le PC (Windows et applications Windows Store)"
     Write-Host "2. Renommer cet ordinateur et le mettre sur un domaine"
-    Write-Host "4. Installer des applications supplémentaires"
-    Write-Host "5. Quitter"
+    Write-Host "3. Installer des applications supplémentaires"
+    Write-Host "4. Quitter"
 
     Write-Host "Entrez votre choix :" -ForegroundColor $OrangeText -NoNewline
     $selection = Read-Host
@@ -260,7 +260,7 @@ Do {
             }
            }
         
-        "4" {
+        "3" {
              Do {
                 Write-Host "1. Installer Office"
                 Write-Host "2. Installer OwnCloud"
@@ -284,11 +284,11 @@ Do {
                 }
             } While ($appChoice -ne '4')
         }
-        5 {
+        4 {
             Write-Host "Fin du script." -ForegroundColor $GreenColor
             break
         }
     }
     Read-Host -Prompt "Appuyez sur ENTRER pour continuer." | Out-Null
     cls
-} While ($selection -ne "5")
+} While ($selection -ne "4")
