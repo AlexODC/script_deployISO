@@ -67,7 +67,7 @@ Function Install-Office {
     Invoke-WebRequest -Uri $ODTDownloadLink -OutFile "$env:TEMP\ODT.exe"
     Start-Process -FilePath "$env:TEMP\ODT.exe" -ArgumentList "/extract:`"$ODTPath`"" -NoNewWindow -Wait
 
-    Write-Host "Choisissez la version d'Office Ã  installer :"
+    Write-Host "Choisissez la version d'Office à installer :"
     Write-Host "1. Office 2019 Standard"
     Write-Host "2. Office 2019 Pro Plus"
     Write-Host "3. Office 2021 Standard"
