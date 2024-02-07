@@ -273,8 +273,8 @@ Do {
                 Switch ($appChoice) {
                     1 { Install-Office }
                     2 {
-                        $downloadLink = "https://download.owncloud.com/desktop/ownCloud/stable/latest/win/ownCloud-latest.msi"
-                        Download-And-Install-App -downloadLink $downloadLink -appName "ownCloud-latest.msi"
+                        $downloadLink = "https://o360.odc.fr/s/b2RDcDbQAOw2bMQ"
+                        Download-And-Install-App -downloadLink $downloadLink -appName "ownCloud-5.2.1.13040.x64.msi"
                     }
                     3 {
                         $downloadLink = "https://o360.odc.fr/s/k7OT8FI8UXYdeYG/download"
@@ -291,4 +291,4 @@ Do {
     }
     Read-Host -Prompt "Appuyez sur ENTRER pour continuer." | Out-Null
     cls
-} While ($selection -ne "4")
+} While ($selection -ne "5")
