@@ -303,7 +303,7 @@ Do {
                 Switch ($appChoice) {
                     1 { Install-Office }
                     2 {
-                        $downloadLink = "https://o360.odc.fr/s/b2RDcDbQAOw2bMQ"
+                        $downloadLink = "https://o360.odc.fr/s/b2RDcDbQAOw2bMQ/download"
                         Download-And-Install-App -downloadLink $downloadLink -appName "ownCloud-5.2.1.13040.x64.msi"
                     }
                     3 {
