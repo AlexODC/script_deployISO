@@ -232,7 +232,7 @@ Function Update-WindowsStoreApps {
     $wingetPath = "$env:LOCALAPPDATA\Microsoft\WindowsApps\winget.exe"
     if (Test-Path $wingetPath) {
         winget upgrade --all --force winget upgrade --all --force --accept-package-agreements --accept-source-agreements
-        Write-Host "Les mises à jour des applications Windows Store ont été effectuées." -ForegroundColor $GreenColor
+        Write-Host "Les mises à jour des applications ont été effectuées." -ForegroundColor $GreenColor
     } else {
         Write-Host "Winget n'est pas installé." -ForegroundColor $RedColor
     }
@@ -240,7 +240,7 @@ Function Update-WindowsStoreApps {
     return 
 }
 
-# Fonction pour mettre à jour le PC (Windows et applications Windows Store)
+# Fonction pour mettre à jour le PC (Windows et applications)
 Function Update-PC {
     Install-WindowsUpdates
     Update-WindowsStoreApps
@@ -248,7 +248,7 @@ Function Update-PC {
 
 # Menu principal
 Do {
-    Write-Host "1. Mettre à jour le PC (Windows et applications Windows Store)"
+    Write-Host "1. Mettre à jour le PC (Windows et applications)"
     Write-Host "2. Renommer cet ordinateur et le mettre sur un domaine"
     Write-Host "3. Installer des applications supplémentaires"
     Write-Host "4. Quitter"
