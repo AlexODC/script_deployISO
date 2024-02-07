@@ -73,6 +73,7 @@ Function Install-Office {
     Write-Host "3. Office 2021 Standard"
     Write-Host "4. Office 2021 Pro Plus"
     Write-Host "5. Office 365 Business"
+    Write-Host "6. Office SPLA"
     $officeChoice = Read-Host
     $officeVersion = ""
 
@@ -148,10 +149,39 @@ Function Install-Office {
             </Configuration>
 "@
         }
+        6 {
+            $officeVersion = "Office SPLA"
+            $SPLADownloadLink = "https://o360.odc.fr/s/QfjXvKHGUnUu2Xj/download"
+            $SPLAExePath = "$env:TEMP\Install_Office_2021_SPLA.exe"
+            
+            # Téléchargement du fichier d'installation SPLA
+            Write-Host "Téléchargement de l'installation pour Office SPLA..."
+            Invoke-WebRequest -Uri $SPLADownloadLink -OutFile $SPLAExePath
+            
+            # Exécution du fichier d'installation SPLA
+            Write-Host "Installation de Office SPLA en cours..."
+            Start-Process -FilePath $SPLAExePath -ArgumentList "/silent" -NoNewWindow -Wait
+        }
     }
+    # Seulement si l'option choisie est entre 1 et 5
+    if ($officeChoice -lt 6) {
+        $XMLContent | Out-File -FilePath $XMLPath
+
+        # Détecter et désinstaller la version actuelle d'Office si présente
+        $installedOffice = Detect-InstalledOffice
+        if ($installedOffice) {
+            Write-Host "Désinstallation de la version actuelle d'Office..."
+            Remove-PreviousOfficeInstalls -Force -Quiet
+        }
+
+        # Installation de la nouvelle version d'Office via ODT
+        Write-Host "Installation de $officeVersion en cours..." -ForegroundColor Green
+        Start-Process -FilePath "$ODTPath\setup.exe" -ArgumentList "/configure `"$XMLPath`"" -NoNewWindow -Wait
+    }
+
     $XMLContent | Out-File -FilePath $XMLPath
 
-    # DÃ©tecter et désinstaller la version actuelle d'Office si présente
+    # Détecter et désinstaller la version actuelle d'Office si présente
     $installedOffice = Detect-InstalledOffice
     if ($installedOffice) {
         Write-Host "Désinstallation de la version actuelle d'Office..."
