@@ -1,9 +1,74 @@
 Add-Type -AssemblyName PresentationFramework
 
-$app_Dispo = @('1. Installer Office','2. Installer OwnCloud','3. Installer CyberReason')
-$office_dispo = @('1.Office 2019 Standard', '2.Office 2019 Pro Plus', '3.Office 2021 Standard', '4.Office 2021 Pro Plus', '5.Office 365 Business', '6.Office SPLA')
-$office_product_id = @('Standard2019Retail', 'ProPlus2019Retail', 'Standard2021Retail' ,'ProPlus2021Retail' ,'O365BusinessRetail','')
+##################################################################################################
+#Déclaration des paramétres d'installation d'application.
+
+<# 
+Pour ajouter une application à la liste de téléchargement
+    Ajouter dans la liste $app_Dispo le nom de l'application
+    Ajouter dans la liste $app_URL_Downloader l'URL de download
+    Ajouter dans la liste $app_Package le nom de l'executable
+
+    Pour le reste c'est logique :))
+#>
+$app_Dispo = @('1. Installer Office',
+    '2. Installer OwnCloud',
+    '3. Installer CyberReason'
+)
+
+$app_URL_Downloader = @('',
+    'https://o360.odc.fr/s/b2RDcDbQAOw2bMQ/download',
+    'https://o360.odc.fr/s/k7OT8FI8UXYdeYG/download'
+)
+
+$app_Package = @('',
+    'ownCloud-5.2.1.13040.x64.msi',
+    'CybereasonSensor.exe'
+)
+
+##################################################################################################
+<# 
+Pour ajouter une version d'office à la liste des téléchargements 
+    Ajouter dans la liste $office_dispo le nom de la version office, ATTENTION NE PAS TOUCHER AU 6 (Il est dans le code en dur)
+    Ajouter dans la liste $office_product_id l'ID du produit officiel afin que le programme génère le fichier XML en automatique 
+
+    Pour le reste c'est logique :))
+#>
+$office_dispo = @('1.Office 2019 Standard', 
+'2.Office 2019 Pro Plus', 
+'3.Office 2021 Standard', 
+'4.Office 2021 Pro Plus', 
+'5.Office 365 Business', 
+'6.Office SPLA'
+)
+
+$office_product_id = @('Standard2019Retail', 
+'ProPlus2019Retail', 
+'Standard2021Retail',
+'ProPlus2021Retail',
+'O365BusinessRetail',
+''
+)
+
+##################################################################################################
+<# 
+
+#>
+$default_setup_dispo = @('1.Mettre Chrome par défaut', 
+'2.Mettre Chrome dans la barre des tâches', 
+'3.Désactiver le gestionnaire de mot de passe chrome', 
+'4.Mettre Acrobat Reader par défaut', 
+'5.Enlever microsoft store de la barre des tâches', 
+'6.Enlever edge de la barre des tâches', 
+'7.Installer Extension Bitwarden sur chrome', 
+'8.Désactiver les notifications activation de PDF Creator'
+)
+
+##################################################################################################
+
 $add_to_domain = "False"
+
+##################################################################################################
 
 # Définition des couleurs
 $GreenColor = "Green"
@@ -16,23 +81,31 @@ If (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
     Exit
 }
 
+##################################################################################################
+##################################################################################################
+
 #Déclaration de l'interface du menu principal
 [xml]$XML_Menu = @"
 <Window
 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="Modern Script Place" Height="380" Width="430">
+    Title="Modern Script Place" Height="600" Width="430">
     <Grid Margin="0,0,10,-6">
-        <Button Name="btn_maj_pc" Content="Mettre à jour le PC (Windows et applications Windows Store)" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
-        <Button Name="btn_rename_pc" Content="Renommer cet ordinateur et le mettre sur un domaine" HorizontalAlignment="Left" Margin="10,91,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
-        <Button Name="btn_install_software" Content="Installer des applications supplémentaires" HorizontalAlignment="Left" Margin="10,172,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
-        <Button Name="btn_quitter" Content="Quitter" HorizontalAlignment="Left" Margin="10,253,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
-        <Label Content="@Copyright CHOCHOIS Alex et LECOUTRE Antoine les GOAT" HorizontalAlignment="Center" Margin="0,354,0,0" VerticalAlignment="Top"/>
+        <Button Name="btn_maj_pc" Content="Mettre à jour le PC (Windows et applications Windows Store)" HorizontalAlignment="Center" Margin="10,10,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
+        <Button Name="btn_rename_pc" Content="Renommer cet ordinateur et le mettre sur un domaine" HorizontalAlignment="Center" Margin="10,91,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
+        <Button Name="btn_install_software" Content="Installer des applications supplémentaires" HorizontalAlignment="Center" Margin="10,172,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
+        <Button Name="btn_create_user" Content="Gérer les utilisateurs local" HorizontalAlignment="Center" Margin="10,253,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
+        <Button Name="btn_default_setup" Content="Mise des applications par défaut et d'autre truc" HorizontalAlignment="Center" Margin="10,334,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="False"/>
+        <Button Name="btn_quitter" Content="Quitter" HorizontalAlignment="Center" Margin="10,470,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
 
+        <Label Content="@Copyright CHOCHOIS Alex et LECOUTRE Antoine les GOAT" HorizontalAlignment="Center" Margin="0,560,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>
 "@
+
+##################################################################################################
+##################################################################################################
 
 #Déclaration de l'interface de la mise à jour du poste
 [xml]$XML_Maj_Poste = @"
@@ -50,6 +123,9 @@ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 </Window>
 "@
 
+##################################################################################################
+##################################################################################################
+
 #Déclaration de l'interface d'installation des applications
 [xml]$XML_Install_App = @"
 <Window
@@ -65,6 +141,9 @@ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 </Window>
 "@
 
+##################################################################################################
+##################################################################################################
+
 #Déclaration de l'interface d'installation des offices
 [xml]$XML_Install_Office = @"
 <Window
@@ -79,6 +158,9 @@ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     </Grid> 
 </Window>
 "@
+
+##################################################################################################
+##################################################################################################
 
 #Déclaration de l'interface de renommage de poste
 [xml]$XML_Rename_Poste = @"
@@ -104,7 +186,56 @@ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 </Window>
 "@
 
+##################################################################################################
+##################################################################################################
 
+#Déclaration de l'interface d'installation de création utilisateur
+[xml]$XML_Create_User = @"
+<Window
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Ultimate User Manager Place" Height="470" Width="820">
+    <Grid>
+        <Button Name="btn_quitter" Content="Quitter" HorizontalAlignment="Left" Margin="10,348,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
+        <Button Name="btn_create_user" Content="Creer l'utilisateur" HorizontalAlignment="Left" Margin="400,348,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
+        <Label Content="Nom d'utilisateur" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="txt_name_user" HorizontalAlignment="Left" Margin="10,36,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="250"/>
+        <Label Content="Mot de passe (Oui il est en clair et alors ?!)" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="txt_password" HorizontalAlignment="Left" Margin="10,106,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="250"/>
+        <Label Content="Nom d'affichage" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="txt_name_display" HorizontalAlignment="Left" Margin="10,185,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="250"/>
+        <Label Content="Description du compte (Facultatif)" HorizontalAlignment="Left" Margin="10,240,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="txt_description" HorizontalAlignment="Left" Margin="10,266,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="250"/>
+        <ListBox Name="list_User" Margin="400,19,10,220"/>
+        <Button Name="btn_delete_user" Content="Supprimer l'utilisateur" HorizontalAlignment="Left" Margin="400,266,0,0" VerticalAlignment="Top" Height="76" Width="195"/>
+        <Button Name="btn_set_admin_user" Content="Set Admin User (Place)" HorizontalAlignment="Left" Margin="595,266,0,0" VerticalAlignment="Top" Height="76" Width="195"/>
+
+    </Grid>
+</Window>
+"@
+
+##################################################################################################
+##################################################################################################
+
+#Déclaration de l'interface d'installation default setup
+[xml]$XML_Default_Setup = @"
+<Window
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Ultimate Default Setup And Other (Place)" Height="470" Width="820">
+    <Grid>
+        <Button Name="btn_quitter" Content="Quitter" HorizontalAlignment="Left" Margin="10,348,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
+        <ListBox Name="list_Default_Setup" Margin="0,0,266,91"/>
+        <Button Name="btn_appliquer" Content="Appliquer la modification" HorizontalAlignment="Left" Margin="593,189,0,0" VerticalAlignment="Top" Height="76" Width="181"/>
+
+    </Grid>
+</Window>
+"@
+
+##################################################################################################
+##################################################################################################
 ##################################################################################################
 #Setup de l'interface XML_Menu
 $FormXML_Menu = (New-Object System.Xml.XmlNodeReader $XML_Menu)
@@ -126,6 +257,16 @@ $Window_Install_Office = [Windows.Markup.XamlReader]::Load($FormXML_Install_Offi
 $FormXML_Rename_Poste = (New-Object System.Xml.XmlNodeReader $XML_Rename_Poste)
 $Window_Rename_Poste = [Windows.Markup.XamlReader]::Load($FormXML_Rename_Poste)
 
+#Setup de l'interface XML_Create_User
+$FormXML_Create_User = (New-Object System.Xml.XmlNodeReader $XML_Create_User)
+$Window_Create_User = [Windows.Markup.XamlReader]::Load($FormXML_Create_User)
+
+#Setup de l'interface XML_Create_User
+$FormXML_Default_Setup = (New-Object System.Xml.XmlNodeReader $XML_Default_Setup)
+$Window_Default_Setup = [Windows.Markup.XamlReader]::Load($FormXML_Default_Setup)
+
+##################################################################################################
+##################################################################################################
 ##################################################################################################
 
 #Déclaration des actions des boutons du menu
@@ -144,6 +285,14 @@ $Window_Menu.FindName("btn_rename_pc").add_click({
 
 $Window_Menu.FindName("btn_install_software").add_click({ 
     $Window_Install_App.ShowDialog()
+})
+
+$Window_Menu.FindName("btn_create_user").add_click({ 
+    $Window_Create_User.ShowDialog()
+})
+
+$Window_Menu.FindName("btn_default_setup").add_click({ 
+    $Window_Default_Setup.ShowDialog()
 })
 
 
@@ -184,7 +333,7 @@ $Window_Rename_Poste.FindName("btn_go").add_click({
     $newDomaine = $Window_Rename_Poste.FindName("txt_domaine").Text
     $compteDomaine = $Window_Rename_Poste.FindName("txt_user").Text
 
-    if(!$Window_Rename_Poste.FindName("txt_user").IsEnabled){
+    if($Window_Rename_Poste.FindName("txt_user").IsEnabled){
         Add-Computer -ComputerName $newName -DomainName $newDomaine -Credential $compteDomaine
     } else {
         Rename-Computer -NewName $newName
@@ -201,19 +350,10 @@ $Window_Install_App.FindName("btn_quitter").add_click({
 $Window_Install_App.FindName("btn_install").add_click({
     $app_to_install = $Window_Install_App.FindName("List_Application").selectedItems
     $app_splited = $app_to_install.split(".")[0]
-    Switch ($app_splited) {
-        1 { 
-            #Install-Office 
-            $Window_Install_Office.ShowDialog()
-        }
-        2 {
-            $downloadLink = "https://o360.odc.fr/s/b2RDcDbQAOw2bMQ/download"
-            Download-And-Install-App -downloadLink $downloadLink -appName "ownCloud-5.2.1.13040.x64.msi"
-        }
-        3 {
-            $downloadLink = "https://o360.odc.fr/s/k7OT8FI8UXYdeYG/download"
-            Download-And-Install-App -downloadLink $downloadLink -appName "CybereasonSensor.exe"
-        }
+    if ($app_splited = 1 ){
+        $Window_Install_Office.ShowDialog()
+    } else {
+        Download-And-Install-App -downloadLink $app_URL_Downloader[$app_splited-1] -appName $app_Package[$app_splited-1]
     }
 })
 
@@ -261,12 +401,123 @@ $Window_Install_Office.FindName("btn_install").add_click({
 
 ##################################################################################################
 
-# Vérifier et installer le fournisseur NuGet si nécessaire
-Function Check-And-Install-NuGet {
-    if (-not (Get-PackageProvider -ListAvailable -Name NuGet)) {
-        Install-PackageProvider -Name NuGet -Force
-        Import-PackageProvider -Name NuGet -Force
+#Déclaration des actions des boutons du menu Create User
+$Window_Create_User.FindName("btn_quitter").add_click({ 
+    $Window_Create_User.Hide()
+})
+
+$Window_Create_User.FindName("btn_create_user").add_click({
+    $params = @{
+        Name        = $Window_Create_User.FindName("txt_name_user").Text
+        Password    = ConvertTo-SecureString $Window_Create_User.FindName("txt_password").Text -AsPlainText -Force 
+        FullName    = $Window_Create_User.FindName("txt_name_display").Text
+        Description = $Window_Create_User.FindName("txt_description").Text
     }
+    New-LocalUser @params
+    Write-Host "L'utilisateur a bien été créé !" -ForegroundColor $GreenColor
+    
+    $Window_Create_User.FindName("list_User").Items.Clear()
+    foreach ($user in Get-LocalUser) {
+        $Window_Create_User.FindName("list_User").Items.Add($user.Name + ":" + $user.Enabled)
+    }
+})
+
+$Window_Create_User.FindName("btn_delete_user").add_click({ 
+    $delete_user = $Window_Create_User.FindName("list_User").selectedItems
+    $user_delete_splited = $delete_user.split(":")[0]
+    Remove-LocalUser -Name $user_delete_splited
+
+    Write-Host "L'utilisateur $user_splited a été supprimé !" -ForegroundColor $GreenColor
+    
+    $Window_Create_User.FindName("list_User").Items.Clear()
+    foreach ($user in Get-LocalUser) {
+        $Window_Create_User.FindName("list_User").Items.Add($user.Name + ":" + $user.Enabled)
+    }
+})
+
+$Window_Create_User.FindName("btn_set_admin_user").add_click({ 
+
+    $set_admin_user = $Window_Create_User.FindName("list_User").selectedItems
+    $user_splited = $set_admin_user.split(":")[0]
+
+    Add-LocalGroupMember -Group "Administrateurs" -Member $user_splited
+    Write-Host "L'utilisateur $user_splited est administrateur du poste !" -ForegroundColor $GreenColor
+})
+
+
+
+##################################################################################################
+
+#Déclaration des actions des boutons du menu Install app
+$Window_Default_Setup.FindName("btn_quitter").add_click({ 
+    $Window_Default_Setup.Hide()
+})
+
+$Window_Default_Setup.FindName("btn_appliquer").add_click({ 
+    $selected_default_setup = $Window_Default_Setup.FindName("list_Default_Setup").selectedItems
+    $choice_default_setup = $selected_default_setup.split(":")[0]
+
+    Applicate-Default-Setup -choice $choice_default_setup
+})
+
+##################################################################################################
+
+##################################################################################################
+
+##################################################################################################
+
+##################################################################################################
+
+##################################################################################################
+
+Function Applicate-Default-Setup {
+    Param (
+        [String]$choice
+    )
+    Write-Host $choice
+    Switch ($choice)
+    {
+        "1" { 
+            Set-Chrome-Default
+        }
+        "2" { 
+            "bloc de code (instructions)" 
+        }
+        "3" { 
+            "bloc de code (instructions)" 
+        }
+        "4" { 
+            "bloc de code (instructions)" 
+        }
+        "5" { 
+            "bloc de code (instructions)" 
+        }
+        "6" { 
+            "bloc de code (instructions)" 
+        }
+        "7" { 
+            "bloc de code (instructions)" 
+        }
+        "8" { 
+            "bloc de code (instructions)" 
+        }
+        "9" { 
+            "bloc de code (instructions)" 
+        }
+        Default { Write-Host "Aucun choix n'a était sélectionné" }
+    }
+}
+
+
+Function Set-Chrome-Default {
+    # Définir l'ID de l'application Chrome
+    $chromeAppId = "XXXXX"
+
+    # Créer la sous-clé et la valeur
+    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\App Paths\html" -Name "(Default)" -Value $chromeAppId -Type DWORD
+
+    # Redémarrer l'explorateur Windows
+    Restart-Process -Name "explorer"
 }
 
 # Fonction pour télécharger et installer une application depuis un lien public OwnCloud, Cybereason, etc.
@@ -318,90 +569,6 @@ Function Install-Office {
     Invoke-WebRequest -Uri $ODTDownloadLink -OutFile "$env:TEMP\ODT.exe"
     Start-Process -FilePath "$env:TEMP\ODT.exe" -ArgumentList "/extract:`"$ODTPath`"" -NoNewWindow -Wait
 
-    <#
-    Write-Host "Choisissez la version d'Office à installer :"
-    Write-Host "1. Office 2019 Standard"
-    Write-Host "2. Office 2019 Pro Plus"
-    Write-Host "3. Office 2021 Standard"
-    Write-Host "4. Office 2021 Pro Plus"
-    Write-Host "5. Office 365 Business"
-    $officeChoice = Read-Host
-    $officeVersion = ""
-
-    # Mise à jour du fichier XML en fonction de la version choisie
-    Switch ($officeChoice) {
-        1 {
-            $officeVersion = "Office 2019 Standard"
-            $XMLContent = @"
-            <Configuration>
-                <Add OfficeClientEdition="64" Channel="Monthly">
-                    <Product ID="Standard2019Retail">
-                        <Language ID="fr-fr" />
-                    </Product>
-                </Add>
-                <Display Level="None" AcceptEULA="TRUE" />
-                <Property Name="AUTOACTIVATE" Value="1"/>
-            </Configuration>
-"@
-        }
-        2 {
-            $officeVersion = "Office 2019 Pro Plus"
-            $XMLContent = @"
-            <Configuration>
-                <Add OfficeClientEdition="64" Channel="Monthly">
-                    <Product ID="ProPlus2019Retail">
-                        <Language ID="fr-fr" />
-                    </Product>
-                </Add>
-                <Display Level="None" AcceptEULA="TRUE" />
-                <Property Name="AUTOACTIVATE" Value="1"/>
-            </Configuration>
-"@
-        }
-        3 {
-            $officeVersion = "Office 2021 Standard"
-            $XMLContent = @"
-            <Configuration>
-                <Add OfficeClientEdition="64" Channel="Monthly">
-                    <Product ID="Standard2021Retail">
-                        <Language ID="fr-fr" />
-                    </Product>
-                </Add>
-                <Display Level="None" AcceptEULA="TRUE" />
-                <Property Name="AUTOACTIVATE" Value="1"/>
-            </Configuration>
-"@
-        }
-        4 {
-            $officeVersion = "Office 2021 Pro Plus"
-            $XMLContent = @"
-            <Configuration>
-                <Add OfficeClientEdition="64" Channel="Monthly">
-                    <Product ID="ProPlus2021Retail">
-                        <Language ID="fr-fr" />
-                    </Product>
-                </Add>
-                <Display Level="None" AcceptEULA="TRUE" />
-                <Property Name="AUTOACTIVATE" Value="1"/>
-            </Configuration>
-"@
-        }
-        5 {
-            $officeVersion = "Office 365 Business"
-            $XMLContent = @"
-            <Configuration>
-                <Add OfficeClientEdition="64" Channel="Monthly">
-                    <Product ID="O365BusinessRetail">
-                        <Language ID="fr-fr" />
-                    </Product>
-                </Add>
-                <Display Level="None" AcceptEULA="TRUE" />
-                <Property Name="AUTOACTIVATE" Value="1"/>
-            </Configuration>
-"@
-        }
-    }
-    #>
     $XMLContent | Out-File -FilePath $XMLPath
 
     # Détecter et désinstaller la version actuelle d'Office si présente
@@ -445,14 +612,12 @@ Function Install-WindowsUpdates {
     } else {
         Write-Host "Aucune mise à jour Windows disponible." -ForegroundColor $GreenColor
     }
-
-    # Retour au menu principal ou fin de la fonction
     return
 }
 
 # Fonction pour mettre à jour les applications du Windows Store
 Function Update-WindowsStoreApps {
-    Write-Host "Lancement des mises à jours des applications"
+    Write-Host "Lancement des mises à jours des applications" -ForegroundColor $GreenColor
     $wingetPath = "$env:LOCALAPPDATA\Microsoft\WindowsApps\winget.exe"
     if (Test-Path $wingetPath) {
         winget upgrade --all --force --accept-package-agreements --accept-source-agreements
@@ -460,7 +625,6 @@ Function Update-WindowsStoreApps {
     } else {
         Write-Host "Winget n'est pas installé." -ForegroundColor $RedColor
     }
-    # Retour au menu principal ou fin de la fonction
     return 
 }
 
@@ -470,20 +634,23 @@ Function Update-PC {
     Update-WindowsStoreApps
 }
 
-# Les autres fonctions restent identiques...
-
-
 ##################################################################################################
+# Mise en place des listes d'applications et d'office dans l'interface graphique
 foreach ($office in $office_dispo) {
     $Window_Install_Office.FindName("List_Office").Items.Add("$office")
 }
 foreach ($app in $app_Dispo) {
     $Window_Install_App.FindName("List_Application").Items.Add("$app")
 }
+foreach ($user in Get-LocalUser) {
+    $Window_Create_User.FindName("list_User").Items.Add($user.Name + ":" + $user.Enabled)
+}
+foreach ($setup_dispo in $default_setup_dispo) {
+    $Window_Default_Setup.FindName("list_Default_Setup").Items.Add("$setup_dispo")
+}
+
 
 cls
-
-#Affichage de la interface
+Write-Host "Boite de dialogue permettant la visualisation des commandes, ne pas fermer cette fenêtre."
+#Affichage de la interface et début du programme !
 $Window_Menu.ShowDialog()
-
-##################################################################################################
