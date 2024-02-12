@@ -12,7 +12,7 @@ Pour ajouter une application à la liste de téléchargement
     Pour le reste c'est logique :))
 #>
 $app_Dispo = @('1. Installer Office',
-    '2. Installer OwnCloud',
+    '2. Installer OwnCloud (Attention REBOOT Automatique)',
     '3. Installer CyberReason'
 )
 
@@ -61,13 +61,35 @@ $default_setup_dispo = @('1.Mettre Chrome par défaut',
 '5.Enlever microsoft store de la barre des tâches', 
 '6.Enlever edge de la barre des tâches', 
 '7.Installer Extension Bitwarden sur chrome', 
-'8.Désactiver les notifications activation de PDF Creator'
+'8.Désactiver les notifications activation de PDF Creator',
+'9.Mettre outlook dans la barre des tâches',
+'10.Configuration de la boite mail'
 )
 
 ##################################################################################################
 
 $add_to_domain = "False"
+$version_office = 64
 
+$data_manger = @('BK',
+'Mac DO',
+'KFC',
+'Pizza Pai',
+'Picard',
+'Sophie',
+'Papy Henry',
+'Mill Pate',
+'Dominos',
+'Rajah',
+'Sandwich Carrefour',
+'123 Burger',
+'Pronto Pizza',
+'OTacos',
+'Subway',
+'Royal',
+'Panda Wok',
+'Gourmet d Asie'
+)
 ##################################################################################################
 
 # Définition des couleurs
@@ -90,16 +112,19 @@ If (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="Modern Script Place" Height="600" Width="430">
+        Title="Modern Script Place" Height="680" Width="430">
     <Grid Margin="0,0,10,-6">
         <Button Name="btn_maj_pc" Content="Mettre à jour le PC (Windows et applications Windows Store)" HorizontalAlignment="Center" Margin="10,10,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
         <Button Name="btn_rename_pc" Content="Renommer cet ordinateur et le mettre sur un domaine" HorizontalAlignment="Center" Margin="10,91,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
         <Button Name="btn_install_software" Content="Installer des applications supplémentaires" HorizontalAlignment="Center" Margin="10,172,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
         <Button Name="btn_create_user" Content="Gérer les utilisateurs local" HorizontalAlignment="Center" Margin="10,253,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
-        <Button Name="btn_default_setup" Content="Mise des applications par défaut et d'autre truc" HorizontalAlignment="Center" Margin="10,334,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="False"/>
-        <Button Name="btn_quitter" Content="Quitter" HorizontalAlignment="Center" Margin="10,470,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
-
-        <Label Content="@Copyright CHOCHOIS Alex et LECOUTRE Antoine les GOAT" HorizontalAlignment="Center" Margin="0,560,0,0" VerticalAlignment="Top"/>
+        <Button Name="btn_default_setup" Content="Mise des applications par défaut et d'autre truc" HorizontalAlignment="Center" Margin="10,334,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="True"/>
+        <Button Name="btn_quitter" Content="Quitter" HorizontalAlignment="Center" Margin="10,555,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
+        <Button Name="btn_autre_outil" Content="Autre Outil" HorizontalAlignment="Center" Margin="10,415,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="True"/>
+    
+        <Label Name="copyright" Content="@Copyright CHOCHOIS Alex et LECOUTRE Antoine les GOAT" HorizontalAlignment="Center" Margin="0,636,0,0" VerticalAlignment="Top"/>
+        <Button Name="btn_manger" Content="Manger ?" HorizontalAlignment="Center" Margin="10,670,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="True"/>
+    
     </Grid>
 </Window>
 "@
@@ -155,6 +180,9 @@ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         <ListBox Name="List_Office" Margin="0,0,266,111"/>
         <Button Name="btn_quitter" Content="Quitter" HorizontalAlignment="Left" Margin="10,348,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
         <Button Name="btn_install" Content="Installer" HorizontalAlignment="Left" Margin="593,0,0,0" VerticalAlignment="Center" Height="76" Width="181"/>
+        <RadioButton GroupName="rb_32_64bit" Name="rb_32bit" Content="32 bit" HorizontalAlignment="Left" Margin="593,107,0,0" VerticalAlignment="Top"/>
+        <RadioButton GroupName="rb_32_64bit" Name="rb_64bit" Content="64 bit" HorizontalAlignment="Left" Margin="593,127,0,0" VerticalAlignment="Top" IsChecked="True"/>
+
     </Grid> 
 </Window>
 "@
@@ -236,6 +264,87 @@ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 
 ##################################################################################################
 ##################################################################################################
+
+#Déclaration de l'interface du menu autre
+[xml]$XML_Menu_Autre = @"
+<Window
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Title="Modern Script Place (Suite)" Height="680" Width="430">
+    <Grid Margin="0,0,10,-6">
+        <Button Name="btn_default_Printer" Content="Définir Imprimante par defaut" HorizontalAlignment="Center" Margin="10,10,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
+        <Button Name="btn_compact_VHDX" Content="Compact VHDX" HorizontalAlignment="Center" Margin="10,91,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
+        <Button Name="btn_Disable_UAC" Content="Désactiver les UAC" HorizontalAlignment="Center" Margin="10,172,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="true"/>
+        <Button Name="btn_Clear_Log" Content="OK Cindy ! (Clear Log)" HorizontalAlignment="Center" Margin="10,253,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="true"/>
+        <Button Name="btn_4" Content="Coming soon" HorizontalAlignment="Center" Margin="10,334,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="False"/>
+        <Button Name="btn_autre_outil" Content="Autre Outil" HorizontalAlignment="Center" Margin="10,415,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="False"/>
+        <Button Name="btn_quitter" Content="Quitter" HorizontalAlignment="Left" Margin="10,555,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
+    </Grid>
+</Window>
+"@
+
+##################################################################################################
+##################################################################################################
+
+
+#Déclaration de l'interface du menu autre
+[xml]$XML_Default_Printer = @"
+<Window
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+Title="Default Printer Place" Height="470" Width="820">
+    <Grid Margin="0,0,10,-6">
+        <Button Name="btn_recherche_carte_reseau" Content="Recherche Imprimante" HorizontalAlignment="Left" Margin="400,348,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
+        <Button Name="btn_quitter" Content="Quitter" HorizontalAlignment="Left" Margin="10,348,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
+        <ListBox Name="list_carte_reseau" Margin="0,0,266,91" Grid.ColumnSpan="2"/>
+        <Button Name="btn_explosion" Content="Définir par défaut" HorizontalAlignment="Left" Margin="593,189,0,0" VerticalAlignment="Top" Height="76" Width="181"/>
+    </Grid>
+</Window>
+"@
+
+##################################################################################################
+##################################################################################################
+
+
+#Déclaration de l'interface du Compact VHDX
+[xml]$XML_Compact_VHDX = @"
+<Window
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Compact VHDX Place" Height="470" Width="820">
+    <Grid>
+        <Button Name="btn_quitter" Content="Quitter" HorizontalAlignment="Left" Margin="10,348,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
+        <Button Name="btn_compact_vhdx" Content="Lancement du compact VHDX" HorizontalAlignment="Left" Margin="400,348,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
+        <TextBox Name="txt_repertoire_VHDX" HorizontalAlignment="Center" Margin="0,170,0,0" TextWrapping="Wrap" Text="E:\profils_users" VerticalAlignment="Top" Width="500"/>
+
+    </Grid>
+</Window>
+"@
+
+##################################################################################################
+##################################################################################################
+
+
+#Déclaration de l'interface Manger
+[xml]$XML_Manger = @"
+<Window
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Where can i eat place" Height="470" Width="820">
+    <Grid>
+        <Button Name="btn_quitter" Content="Quitter" HorizontalAlignment="Left" Margin="10,348,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
+        <Button Name="btn_manger" Content="Manger !" HorizontalAlignment="Left" Margin="400,348,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
+        <Label Name="lbl_manger" HorizontalAlignment="Center" Margin="0,170,0,0" Content="MANGER !!!!" VerticalAlignment="Top" Width="100"/>
+
+    </Grid>
+</Window>
+"@
+##################################################################################################
+##################################################################################################
 ##################################################################################################
 #Setup de l'interface XML_Menu
 $FormXML_Menu = (New-Object System.Xml.XmlNodeReader $XML_Menu)
@@ -261,9 +370,25 @@ $Window_Rename_Poste = [Windows.Markup.XamlReader]::Load($FormXML_Rename_Poste)
 $FormXML_Create_User = (New-Object System.Xml.XmlNodeReader $XML_Create_User)
 $Window_Create_User = [Windows.Markup.XamlReader]::Load($FormXML_Create_User)
 
-#Setup de l'interface XML_Create_User
+#Setup de l'interface XML_Default_Setup
 $FormXML_Default_Setup = (New-Object System.Xml.XmlNodeReader $XML_Default_Setup)
 $Window_Default_Setup = [Windows.Markup.XamlReader]::Load($FormXML_Default_Setup)
+
+#Setup de l'interface XML_Menu_Autre
+$FormXML_Menu_Autre = (New-Object System.Xml.XmlNodeReader $XML_Menu_Autre)
+$Window_Menu_Autre = [Windows.Markup.XamlReader]::Load($FormXML_Menu_Autre)
+
+#Setup de l'interface XML_Default_Printer
+$FormXML_Default_Printer = (New-Object System.Xml.XmlNodeReader $XML_Default_Printer)
+$Window_Default_Printer = [Windows.Markup.XamlReader]::Load($FormXML_Default_Printer)
+
+#Setup de l'interface XML_Menu_Autre
+$FormXML_Compact_VHDX = (New-Object System.Xml.XmlNodeReader $XML_Compact_VHDX)
+$Window_Compact_VHDX = [Windows.Markup.XamlReader]::Load($FormXML_Compact_VHDX)
+
+#Setup de l'interface XML_Manger
+$FormXML_Manger = (New-Object System.Xml.XmlNodeReader $XML_Manger)
+$Window_Manger = [Windows.Markup.XamlReader]::Load($FormXML_Manger)
 
 ##################################################################################################
 ##################################################################################################
@@ -293,6 +418,15 @@ $Window_Menu.FindName("btn_create_user").add_click({
 
 $Window_Menu.FindName("btn_default_setup").add_click({ 
     $Window_Default_Setup.ShowDialog()
+})
+
+$Window_Menu.FindName("btn_autre_outil").add_click({ 
+    $Window_Menu_Autre.ShowDialog()
+})
+
+
+$Window_Menu.FindName("btn_manger").add_click({ 
+    $Window_Manger.ShowDialog()
 })
 
 
@@ -364,6 +498,15 @@ $Window_Install_Office.FindName("btn_quitter").add_click({
     $Window_Install_Office.Hide()
 })
 
+
+$Window_Install_Office.FindName("rb_32bit").add_click({ 
+    $version_office = 32
+})
+
+$Window_Install_Office.FindName("rb_64bit").add_click({ 
+    $version_office = 64
+})
+
 $Window_Install_Office.FindName("btn_install").add_click({
     Write-Host "Lancement de l'installation d'office"
     $office_to_install = $Window_Install_Office.FindName("List_Office").selectedItems
@@ -373,7 +516,7 @@ $Window_Install_Office.FindName("btn_install").add_click({
     $XMLContent = 
 @"
     <Configuration>
-        <Add OfficeClientEdition="64" Channel="Monthly">
+        <Add OfficeClientEdition="$version_office" Channel="Monthly">
             <Product ID="$office_product_id[$office_splited[0]-1]">
                 <Language ID="fr-fr" />
             </Product>
@@ -462,6 +605,134 @@ $Window_Default_Setup.FindName("btn_appliquer").add_click({
 
 ##################################################################################################
 
+#Déclaration des actions des boutons du menu Autre
+$Window_Menu_Autre.FindName("btn_default_Printer").add_click({ 
+    $Window_Default_Printer.ShowDialog()
+})
+
+$Window_Menu_Autre.FindName("btn_compact_VHDX").add_click({ 
+    $Window_Compact_VHDX.ShowDialog()
+})
+
+$Window_Menu_Autre.FindName("btn_Disable_UAC").add_click({ 
+    Set-ItemProperty -Path REGISTRY::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System -Name ConsentPromptBehaviorAdmin -Value 0
+    Write-Host "Les UAC sont a présent désactiver, merci de redémarrer le poste" -ForegroundColor $GreenColor
+})
+
+$Window_Menu_Autre.FindName("btn_Clear_Log").add_click({ 
+    Ok-Cindy-Clear-Log
+})
+
+
+
+
+$Window_Menu_Autre.FindName("btn_quitter").add_click({ 
+    $Window_Menu_Autre.Hide()
+})
+
+##################################################################################################
+
+#Déclaration des actions des boutons du menu Imprimante par defaut
+$Window_Default_Printer.FindName("btn_recherche_carte_reseau").add_click({ 
+    $Window_Default_Printer.FindName("list_carte_reseau").Items.Clear()
+    $ip_list = foreach ($adapter in Get-Printer) {
+        $Window_Default_Printer.FindName("list_carte_reseau").Items.Add($adapter.Name)
+    }
+})
+
+$Window_Default_Printer.FindName("btn_explosion").add_click({ 
+    $valeur = $Window_Default_Printer.FindName("list_carte_reseau").selectedItems
+    Write-Host $valeur
+    $printer = Get-CimInstance -Class Win32_Printer -Filter "Name='$valeur'"
+    Invoke-CimMethod -InputObject $printer -MethodName SetDefaultPrinter
+    
+    Write-Host "L'imprimante $printer est a présent par défaut !" -ForegroundColor $GreenColor
+})
+
+$Window_Default_Printer.FindName("btn_quitter").add_click({ 
+    $Window_Default_Printer.Hide() 
+}) 
+
+##################################################################################################
+
+#Déclaration des actions des boutons du menu Compact VHDX
+
+$Window_Compact_VHDX.FindName("btn_quitter").add_click({ 
+    $Window_Compact_VHDX.Hide()
+})
+
+$Window_Compact_VHDX.FindName("btn_compact_vhdx").add_click({
+
+    $go_to_VHDX = $Window_Compact_VHDX.FindName("txt_repertoire_VHDX").Text
+
+    if (Test-Path -Path $go_to_VHDX) {
+        Write-Host "Dossier de VHDX trouvé ! " -ForegroundColor $GreenColor
+
+        $vhdxList = Get-ChildItem $PSScriptRoot *.vhdx
+        foreach($vhdx in $vhdxList){
+            $diskpart = "select vdisk file=""$PSScriptRoot\$vhdx""
+            attach vdisk readonly
+            compact vdisk
+            detach vdisk
+            exit
+            "
+                New-Item $PSScriptRoot -Name "vhdx.txt" -ItemType "file" -Value $diskpart -Force
+                diskpart /s $PSScriptRoot\vhdx.txt
+                diskpart /s $PSScriptRoot\vhdx.txt
+                Remove-Item "$PSScriptRoot\vhdx.txt"
+        }
+    } else {
+        Write-Host "Aucun de dossier de VHDX trouvé dans $go_to_VHDX ! " -ForegroundColor $RedColor
+
+    }
+})
+
+
+##################################################################################################
+
+#Déclaration des actions des boutons du menu Compact VHDX
+
+$Window_Manger.FindName("btn_quitter").add_click({ 
+    $Window_Manger.Hide()
+})
+
+$Window_Manger.FindName("btn_manger").add_click({ 
+    $manger = $data_manger | Get-Random
+    $Window_Manger.FindName("lbl_manger").Content = $manger
+})
+
+##################################################################################################
+
+##################################################################################################
+
+##################################################################################################
+
+##################################################################################################
+
+##################################################################################################
+
+##################################################################################################
+
+##################################################################################################
+
+##################################################################################################
+
+##################################################################################################
+
+##################################################################################################
+
+##################################################################################################
+
+##################################################################################################
+
+##################################################################################################
+
+##################################################################################################
+
+##################################################################################################
+
+##################################################################################################
+
 ##################################################################################################
 
 ##################################################################################################
@@ -481,7 +752,7 @@ Function Applicate-Default-Setup {
             Set-Chrome-Default
         }
         "2" { 
-            "bloc de code (instructions)" 
+            Set-Chrome-Task-Bar
         }
         "3" { 
             "bloc de code (instructions)" 
@@ -508,6 +779,38 @@ Function Applicate-Default-Setup {
     }
 }
 
+Function Ok-Cindy-Clear-Log {
+    Set-Executionpolicy RemoteSigned
+    $days=2
+    $IISLogPath="C:\inetpub\logs\LogFiles\"
+    $ExchangeLoggingPath="C:\Program Files\Microsoft\Exchange Server\V15\Logging\"
+    $ETLLoggingPath="C:\Program Files\Microsoft\Exchange Server\V15\Bin\Search\Ceres\Diagnostics\ETLTraces\"
+    $ETLLoggingPath2="C:\Program Files\Microsoft\Exchange Server\V15\Bin\Search\Ceres\Diagnostics\Logs"
+    Function CleanLogfiles($TargetFolder)
+    {
+      write-host -debug -ForegroundColor Yellow -BackgroundColor Cyan $TargetFolder
+
+        if (Test-Path $TargetFolder) {
+            $Now = Get-Date
+            $LastWrite = $Now.AddDays(-$days)
+            #$Files = Get-ChildItem $TargetFolder -Include *.log,*.blg, *.etl -Recurse | Where {$_.LastWriteTime -le "$LastWrite"}
+           $Files = Get-ChildItem "C:\Program Files\Microsoft\Exchange Server\V15\Logging\"  -Recurse | Where-Object {$_.Name -like "*.log" -or $_.Name -like "*.blg" -or $_.Name -like "*.etl"}  | where {$_.lastWriteTime -le "$lastwrite"} | Select-Object FullName  
+            foreach ($File in $Files)
+                {
+                   $FullFileName = $File.FullName  
+                   Write-Host "Suppression de $FullFileName --> OK Cindy !" -ForegroundColor "yellow"; 
+                    Remove-Item $FullFileName -ErrorAction SilentlyContinue | out-null
+                }
+           }
+    Else {
+        Write-Host "Le dossier $TargetFolder n'existe pas Cindy !" -ForegroundColor "red"
+        }
+    }
+    CleanLogfiles($IISLogPath)
+    CleanLogfiles($ExchangeLoggingPath)
+    CleanLogfiles($ETLLoggingPath)
+    CleanLogfiles($ETLLoggingPath2)
+}
 
 Function Set-Chrome-Default {
     # Définir l'ID de l'application Chrome
@@ -518,6 +821,29 @@ Function Set-Chrome-Default {
 
     # Redémarrer l'explorateur Windows
     Restart-Process -Name "explorer"
+}
+
+Function Set-Chrome-Task-Bar {
+    # Créer un objet ShellLink
+    $shellLink = New-Object -ComObject Shell.Application
+
+    # Définir la propriété TargetPath vers le fichier exécutable de Chrome
+    $shellLink.TargetPath = "C:\Program Files\Google\Chrome\chrome.exe"
+
+    # Définir la propriété Arguments pour lancer Chrome en mode maximisé
+    $shellLink.Arguments = "-start-maximized"
+
+    # Définir la propriété WorkingDirectory vers le dossier de Chrome
+    $shellLink.WorkingDirectory = "C:\Program Files\Google\Chrome"
+
+    # Définir la propriété Description
+    $shellLink.Description = "Google Chrome"
+
+    # Enregistrer le raccourci dans le dossier de la barre des tâches
+    $shellLink.SaveLink($env:APPDATA + "\Microsoft\Windows\Start Menu\Programs\Start Menu\Google Chrome.lnk")
+
+    # Épingler le raccourci à la barre des tâches
+    Add-AppxPackage -Path $env:APPDATA + "\Microsoft\Windows\Start Menu\Programs\Start Menu\Google Chrome.lnk" -Register
 }
 
 # Fonction pour télécharger et installer une application depuis un lien public OwnCloud, Cybereason, etc.
@@ -648,7 +974,11 @@ foreach ($user in Get-LocalUser) {
 foreach ($setup_dispo in $default_setup_dispo) {
     $Window_Default_Setup.FindName("list_Default_Setup").Items.Add("$setup_dispo")
 }
+foreach ($adapter in Get-Printer) {
+    $Window_Default_Printer.FindName("list_carte_reseau").Items.Add($adapter.Name)
+}
 
+##################################################################################################
 
 cls
 Write-Host "Boite de dialogue permettant la visualisation des commandes, ne pas fermer cette fenêtre."
