@@ -12,5 +12,5 @@ $response.Content | Out-File -FilePath $output -Encoding UTF8
 Start-Process PowerShell -ArgumentList "-ExecutionPolicy Bypass -File `"$output`""
 
 # Supprimer le fichier téléchargé
-$cheminDuFichier = Join-Path $desktopPath "Download_script_deploy.ps1"
+$cheminDuFichier = Join-Path $desktopPath "Modern_Script_Place.ps1"
 Remove-Item -Path $cheminDuFichier -Force
