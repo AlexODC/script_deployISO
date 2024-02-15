@@ -277,8 +277,8 @@ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         <Button Name="btn_compact_VHDX" Content="Compact VHDX" HorizontalAlignment="Center" Margin="10,91,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
         <Button Name="btn_Disable_UAC" Content="Désactiver les UAC" HorizontalAlignment="Center" Margin="10,172,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="true"/>
         <Button Name="btn_Clear_Log" Content="OK Cindy ! (Clear Log)" HorizontalAlignment="Center" Margin="10,253,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="true"/>
-        <Button Name="btn_4" Content="Coming soon" HorizontalAlignment="Center" Margin="10,334,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="False"/>
-        <Button Name="btn_autre_outil" Content="Autre Outil" HorizontalAlignment="Center" Margin="10,415,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="False"/>
+        <Button Name="btn_Disable_Cybereason" Content="Désactiver Cybereason (Nécessite un redémarrage du poste)" HorizontalAlignment="Center" Margin="10,334,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="true"/>
+        <Button Name="btn_autre_outil" Content="Autre Outil" HorizontalAlignment="Center" Margin="10,415,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="true"/>
         <Button Name="btn_quitter" Content="Quitter" HorizontalAlignment="Left" Margin="10,555,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
     </Grid>
 </Window>
@@ -343,6 +343,29 @@ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     </Grid>
 </Window>
 "@
+
+##################################################################################################
+##################################################################################################
+
+#Déclaration de l'interface du menu autre
+[xml]$XML_Menu_Autre_Autre = @"
+<Window
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Title="Modern Script Place (Suite)" Height="680" Width="430">
+    <Grid Margin="0,0,10,-6">
+        <Button Name="btn_uninstal_sophos" Content="Désinstallation Sophos" HorizontalAlignment="Center" Margin="10,10,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="true"/>
+        <Button Name="btn_2" Content="Coming Soon !" HorizontalAlignment="Center" Margin="10,91,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="false"/>
+        <Button Name="btn_3" Content="Coming Soon !" HorizontalAlignment="Center" Margin="10,172,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="false"/>
+        <Button Name="btn_4" Content="Coming Soon !" HorizontalAlignment="Center" Margin="10,253,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="false"/>
+        <Button Name="btn_5" Content="Coming Soon !" HorizontalAlignment="Center" Margin="10,334,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="false"/>
+        <Button Name="btn_autre_outil" Content="Autre Outil" HorizontalAlignment="Center" Margin="10,415,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="False"/>
+        <Button Name="btn_quitter" Content="Quitter" HorizontalAlignment="Left" Margin="10,555,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
+    </Grid>
+</Window>
+"@
+
 ##################################################################################################
 ##################################################################################################
 ##################################################################################################
@@ -389,6 +412,10 @@ $Window_Compact_VHDX = [Windows.Markup.XamlReader]::Load($FormXML_Compact_VHDX)
 #Setup de l'interface XML_Manger
 $FormXML_Manger = (New-Object System.Xml.XmlNodeReader $XML_Manger)
 $Window_Manger = [Windows.Markup.XamlReader]::Load($FormXML_Manger)
+
+#Setup de l'interface XML_Menu_Autre
+$FormXML_Menu_Autre_Autre = (New-Object System.Xml.XmlNodeReader $XML_Menu_Autre_Autre)
+$Window_Menu_Autre_Autre = [Windows.Markup.XamlReader]::Load($FormXML_Menu_Autre_Autre)
 
 ##################################################################################################
 ##################################################################################################
@@ -484,7 +511,7 @@ $Window_Install_App.FindName("btn_quitter").add_click({
 $Window_Install_App.FindName("btn_install").add_click({
     $app_to_install = $Window_Install_App.FindName("List_Application").selectedItems
     $app_splited = $app_to_install.split(".")[0]
-    if ($app_splited = 1 ){
+    if ($app_splited -eq 1 ){
         $Window_Install_Office.ShowDialog()
     } else {
         Download-And-Install-App -downloadLink $app_URL_Downloader[$app_splited-1] -appName $app_Package[$app_splited-1]
@@ -623,8 +650,49 @@ $Window_Menu_Autre.FindName("btn_Clear_Log").add_click({
     Ok-Cindy-Clear-Log
 })
 
+$Window_Menu_Autre.FindName("btn_Disable_Cybereason").add_click({ 
+    $path = 'HKLM:SOFTWARE\Microsoft\Shared Tools\MSConfig\services'
+    $keys = @('CybereasonActiveProbe',
+        'CybereasonAntiMalware',
+        'CybereasonBlocki',
+        'CybereasonCRS',
+        'CybereasonNnx',
+        'CybereasonProtectedSvc',
+        'CybereasonWscIf'
+    )
 
+    $dateHeure = Get-Date
 
+    $jour = $dateHeure.Day
+    $mois = $dateHeure.Month
+    $annee = $dateHeure.Year
+    $heure = $dateHeure.Hour
+    $minute = $dateHeure.Minute
+    $seconde = $dateHeure.Second
+
+    foreach ($key in $keys) {
+        New-Item -Path "$path\$key" -Force
+        New-ItemProperty -Path "$path\$key" -Name '$key' -PropertyType DWORD -Value 0x2
+        New-ItemProperty -Path "$path\$key" -Name 'DAY' -PropertyType DWORD -Value $jour
+        New-ItemProperty -Path "$path\$key" -Name 'HOUR' -PropertyType DWORD -Value $heure
+        New-ItemProperty -Path "$path\$key" -Name 'MINUTE' -PropertyType DWORD -Value $minute
+        New-ItemProperty -Path "$path\$key" -Name 'MONTH' -PropertyType DWORD -Value $mois
+        New-ItemProperty -Path "$path\$key" -Name 'SECOND' -PropertyType DWORD -Value $seconde
+        New-ItemProperty -Path "$path\$key" -Name 'YEAR' -PropertyType DWORD -Value $annee
+    }
+
+    Set-Service -Name CybereasonActiveProbe -StartupType Disabled
+    Set-Service -Name CybereasonAntiMalware -StartupType Disabled
+    Set-Service -Name CybereasonCRS -StartupType Disabled
+    Set-Service -Name CybereasonBlocki -StartupType Disabled
+    Set-Service -Name CybereasonNnx -StartupType Disabled
+    Set-Service -Name CybereasonProtectedSvc -StartupType Disabled
+    Set-Service -Name CybereasonWscIf -StartupType Disabled
+})
+
+$Window_Menu_Autre.FindName("btn_autre_outil").add_click({ 
+    $Window_Menu_Autre_Autre.ShowDialog()
+})
 
 $Window_Menu_Autre.FindName("btn_quitter").add_click({ 
     $Window_Menu_Autre.Hide()
@@ -690,7 +758,7 @@ $Window_Compact_VHDX.FindName("btn_compact_vhdx").add_click({
 
 ##################################################################################################
 
-#Déclaration des actions des boutons du menu Compact VHDX
+#Déclaration des actions des boutons du menu Manger
 
 $Window_Manger.FindName("btn_quitter").add_click({ 
     $Window_Manger.Hide()
@@ -699,6 +767,26 @@ $Window_Manger.FindName("btn_quitter").add_click({
 $Window_Manger.FindName("btn_manger").add_click({ 
     $manger = $data_manger | Get-Random
     $Window_Manger.FindName("lbl_manger").Content = $manger
+})
+
+##################################################################################################
+
+#Déclaration des actions des boutons du menu Autre autre
+$Window_Menu_Autre_Autre.FindName("btn_quitter").add_click({ 
+    $Window_Menu_Autre_Autre.Hide() 
+}) 
+
+$Window_Menu_Autre_Autre.FindName("btn_uninstal_sophos").add_click({ 
+    $desktopPath = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::Desktop)
+    #"" >> "$desktopPath\Sophos_Uninstaller.bat"
+
+    $SophosUninstallerDownloadLink = "https://o360.odc.fr/s/QfjXvKHGUnUu2Xj/download"
+    $SophosUninstallerExePath = "$desktopPath\Install_Office_2021_SPLA.exe"
+
+    Invoke-WebRequest -Uri $SophosUninstallerDownloadLink -OutFile $SophosUninstallerExePath
+
+    Start-Process -FilePath "$desktopPath\Sophos_Uninstaller.bat" -Verb RunAs -Wait
+    Remove-Item "$desktopPath\Sophos_Uninstaller.bat"
 })
 
 ##################################################################################################
@@ -745,6 +833,7 @@ Function Applicate-Default-Setup {
     Param (
         [String]$choice
     )
+    #Ordinateur\HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts
     Write-Host $choice
     Switch ($choice)
     {
@@ -907,6 +996,14 @@ Function Install-Office {
     # Installation de la nouvelle version d'Office
     Write-Host "Installation de $officeVersion en cours..." -ForegroundColor $GreenColor
     Start-Process -FilePath "$ODTPath\setup.exe" -ArgumentList "/configure `"$XMLPath`"" -NoNewWindow -Wait
+}
+
+# Vérifier et installer le fournisseur NuGet si nécessaire
+Function Check-And-Install-NuGet {
+    if (-not (Get-PackageProvider -ListAvailable -Name NuGet)) {
+        Install-PackageProvider -Name NuGet -Force
+        Import-PackageProvider -Name NuGet -Force
+    }
 }
 
 # Fonction pour installer toutes les mises à jour Windows, y compris les facultatives
