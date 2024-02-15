@@ -949,16 +949,16 @@ Function Download-And-Install-App {
         if (Test-Path $localPath) {
             if ($appName -like "*.msi") {
                 Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$localPath`" /qn" -Wait
-                Write-Host "$appName a été installée avec succÃ¨s." -ForegroundColor $GreenColor
+                Write-Host "$appName a été installée avec succès." -ForegroundColor Green
             } else {
                 Start-Process -FilePath $localPath -Args "/S" -Wait
-                Write-Host "$appName a été installée avec succÃ¨s." -ForegroundColor $GreenColor
+                Write-Host "$appName a été installée avec succès." -ForegroundColor Green
             }
         } else {
-            Write-Host "Erreur : Impossible de trouver le fichier téléchargé." -ForegroundColor $RedColor
+            Write-Host "Erreur : Impossible de trouver le fichier téléchargé." -ForegroundColor Red
         }
     } catch {
-        Write-Host "Erreur lors du téléchargement ou de l'installation : $_" -ForegroundColor $RedColor
+        Write-Host "Erreur lors du téléchargement ou de l'installation : $_" -ForegroundColor Red
     }
     Remove-Item -Path $localPath -Force
 }
@@ -994,7 +994,7 @@ Function Install-Office {
     }
 
     # Installation de la nouvelle version d'Office
-    Write-Host "Installation de $officeVersion en cours..." -ForegroundColor $GreenColor
+    Write-Host "Installation de $officeVersion en cours..." -ForegroundColor Green
     Start-Process -FilePath "$ODTPath\setup.exe" -ArgumentList "/configure `"$XMLPath`"" -NoNewWindow -Wait
 }
 
@@ -1021,34 +1021,52 @@ Function Install-WindowsUpdates {
 
     if ($updates.Count -gt 0) {
         foreach ($update in $updates) {
-            Write-Host "Installation de la mise à jour : $($update.Title)" -ForegroundColor $GreenColor
+            Write-Host "Installation de la mise à jour : $($update.Title)" -ForegroundColor Green
             Install-WindowsUpdate -KBArticleID $update.KBArticleID -AutoReboot:$false -Confirm:$false -IgnoreRebootRequired
             if ($update.IsRebootRequired) {
                 $rebootRequired = $true
             }
         }
         if ($rebootRequired) {
-            Write-Host "Redémarrage nécessaire pour terminer l'installation des mises à jour. Veuillez redémarrer votre ordinateur." -ForegroundColor $OrangeText
+            Write-Host "Redémarrage nécessaire pour terminer l'installation des mises à jour. Veuillez redémarrer votre ordinateur." -ForegroundColor Orange
         } else {
-            Write-Host "Toutes les mises à jour ont été installallées. Un redémarrage pourrait être nécessaire pour appliquer les mises à jour." -ForegroundColor $OrangeText
+            Write-Host "Toutes les mises à jour ont été installallées. Un redémarrage pourrait être nécessaire pour appliquer les mises à jour." -ForegroundColor Orange
         }
     } else {
-        Write-Host "Aucune mise à jour Windows disponible." -ForegroundColor $GreenColor
+        Write-Host "Aucune mise à jour Windows disponible. Windows Update est à jour." -ForegroundColor Green
     }
     return
 }
 
 # Fonction pour mettre à jour les applications du Windows Store
 Function Update-WindowsStoreApps {
-    Write-Host "Lancement des mises à jours des applications" -ForegroundColor $GreenColor
+    Write-Host "Importation du module Winget pour mettre les applications à jour." -ForegroundColor Yellow
     $wingetPath = "$env:LOCALAPPDATA\Microsoft\WindowsApps\winget.exe"
-    if (Test-Path $wingetPath) {
-        winget upgrade --all --force --accept-package-agreements --accept-source-agreements
-        Write-Host "Les mises à jour des applications Windows Store ont été effectuées." -ForegroundColor $GreenColor
-    } else {
-        Write-Host "Winget n'est pas installé." -ForegroundColor $RedColor
+    
+    # Boucle d'attente pour winget
+    $wingetAvailable = $False
+    $maxRetries = 3 # Nombre maximum de tentatives de vérification
+    $retryDelay = 10 # Délai entre les tentatives en secondes
+
+    for ($i = 0; $i -lt $maxRetries -and -not $wingetAvailable; $i++) {
+        if (Test-Path $wingetPath) {
+            $wingetAvailable = $True
+            Write-Host "Winget est installé." -ForegroundColor Green
+        } else {
+            Write-Host "Winget n'est pas encore disponible, nouvelle tentative dans $retryDelay secondes..." -ForegroundColor Yellow
+            Start-Sleep -Seconds $retryDelay
+        }
     }
-    return 
+
+    if (-not $wingetAvailable) {
+        Write-Host "Winget n'est pas installé après plusieurs tentatives. Il est donc impossible de mettre à jour les applications." -ForegroundColor Red
+        return
+    }
+
+    # Exécution de la mise à jour avec winget
+    Write-Host "Lancement des mises à jour des applications" -ForegroundColor Yellow
+    winget upgrade --all --force --accept-package-agreements --accept-source-agreements
+    Write-Host "Les mises à jour des applications Windows Store ont été effectuées." -ForegroundColor Green
 }
 
 # Fonction pour mettre à jour le PC (Windows et applications Windows Store)
