@@ -1040,33 +1040,15 @@ Function Install-WindowsUpdates {
 
 # Fonction pour mettre à jour les applications du Windows Store
 Function Update-WindowsStoreApps {
-    Write-Host "Importation du module Winget pour mettre les applications à jour." -ForegroundColor Yellow
+    Write-Host "Lancement des mises à jours des applications" -ForegroundColor $GreenColor
     $wingetPath = "$env:LOCALAPPDATA\Microsoft\WindowsApps\winget.exe"
-    
-    # Boucle d'attente pour winget
-    $wingetAvailable = $False
-    $maxRetries = 3 # Nombre maximum de tentatives de vérification
-    $retryDelay = 10 # Délai entre les tentatives en secondes
-
-    for ($i = 0; $i -lt $maxRetries -and -not $wingetAvailable; $i++) {
-        if (Test-Path $wingetPath) {
-            $wingetAvailable = $True
-            Write-Host "Winget est installé." -ForegroundColor Green
-        } else {
-            Write-Host "Winget n'est pas encore disponible, nouvelle tentative dans $retryDelay secondes..." -ForegroundColor Yellow
-            Start-Sleep -Seconds $retryDelay
-        }
+    if (Test-Path $wingetPath) {
+        Start-Process -FilePath "winget.exe" -ArgumentList "upgrade --all --force --accept-package-agreements --accept-source-agreements" -Wait
+        Write-Host "Les mises à jour des applications Windows Store ont été effectuées." -ForegroundColor $GreenColor
+    } else {
+        Write-Host "Winget n'est pas installé." -ForegroundColor $RedColor
     }
-
-    if (-not $wingetAvailable) {
-        Write-Host "Winget n'est pas installé après plusieurs tentatives. Il est donc impossible de mettre à jour les applications." -ForegroundColor Red
-        return
-    }
-
-    # Exécution de la mise à jour avec winget
-    Write-Host "Lancement des mises à jour des applications" -ForegroundColor Yellow
-    winget upgrade --all --force --accept-package-agreements --accept-source-agreements
-    Write-Host "Les mises à jour des applications Windows Store ont été effectuées." -ForegroundColor Green
+    return 
 }
 
 # Fonction pour mettre à jour le PC (Windows et applications Windows Store)
