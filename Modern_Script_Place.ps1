@@ -1040,13 +1040,13 @@ Function Install-WindowsUpdates {
 
 # Fonction pour mettre à jour les applications du Windows Store
 Function Update-WindowsStoreApps {
-    Write-Host "Lancement des mises à jours des applications" -ForegroundColor $GreenColor
+    Write-Host "Lancement des mises à jours des applications" -ForegroundColor Green
     $wingetPath = "$env:LOCALAPPDATA\Microsoft\WindowsApps\winget.exe"
     if (Test-Path $wingetPath) {
         Start-Process -FilePath "winget.exe" -ArgumentList "upgrade --all --force --accept-package-agreements --accept-source-agreements" -Wait
-        Write-Host "Les mises à jour des applications Windows Store ont été effectuées." -ForegroundColor $GreenColor
+        Write-Host "Les mises à jour des applications Windows Store ont été effectuées." -ForegroundColor Green
     } else {
-        Write-Host "Winget n'est pas installé." -ForegroundColor $RedColor
+        Write-Host "Winget n'est pas installé." -ForegroundColor Red
     }
     return 
 }
