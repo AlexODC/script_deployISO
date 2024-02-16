@@ -584,7 +584,7 @@ $Window_Create_User.FindName("btn_create_user").add_click({
         Description = $Window_Create_User.FindName("txt_description").Text
     }
     New-LocalUser @params
-    Write-Host "L'utilisateur a bien été créé !" -ForegroundColor $GreenColor
+    Write-Host "L'utilisateur a bien été créé !" -ForegroundColor Green
     
     $Window_Create_User.FindName("list_User").Items.Clear()
     foreach ($user in Get-LocalUser) {
@@ -597,7 +597,7 @@ $Window_Create_User.FindName("btn_delete_user").add_click({
     $user_delete_splited = $delete_user.split(":")[0]
     Remove-LocalUser -Name $user_delete_splited
 
-    Write-Host "L'utilisateur $user_splited a été supprimé !" -ForegroundColor $GreenColor
+    Write-Host "L'utilisateur $user_splited a été supprimé !" -ForegroundColor Green
     
     $Window_Create_User.FindName("list_User").Items.Clear()
     foreach ($user in Get-LocalUser) {
@@ -611,7 +611,7 @@ $Window_Create_User.FindName("btn_set_admin_user").add_click({
     $user_splited = $set_admin_user.split(":")[0]
 
     Add-LocalGroupMember -Group "Administrateurs" -Member $user_splited
-    Write-Host "L'utilisateur $user_splited est administrateur du poste !" -ForegroundColor $GreenColor
+    Write-Host "L'utilisateur $user_splited est administrateur du poste !" -ForegroundColor Green
 })
 
 
@@ -643,7 +643,7 @@ $Window_Menu_Autre.FindName("btn_compact_VHDX").add_click({
 
 $Window_Menu_Autre.FindName("btn_Disable_UAC").add_click({ 
     Set-ItemProperty -Path REGISTRY::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System -Name ConsentPromptBehaviorAdmin -Value 0
-    Write-Host "Les UAC sont a présent désactiver, merci de redémarrer le poste" -ForegroundColor $GreenColor
+    Write-Host "Les UAC sont a présent désactiver, merci de redémarrer le poste" -ForegroundColor Green
 })
 
 $Window_Menu_Autre.FindName("btn_Clear_Log").add_click({ 
@@ -714,7 +714,7 @@ $Window_Default_Printer.FindName("btn_explosion").add_click({
     $printer = Get-CimInstance -Class Win32_Printer -Filter "Name='$valeur'"
     Invoke-CimMethod -InputObject $printer -MethodName SetDefaultPrinter
     
-    Write-Host "L'imprimante $printer est a présent par défaut !" -ForegroundColor $GreenColor
+    Write-Host "L'imprimante $printer est a présent par défaut !" -ForegroundColor Green
 })
 
 $Window_Default_Printer.FindName("btn_quitter").add_click({ 
@@ -734,7 +734,7 @@ $Window_Compact_VHDX.FindName("btn_compact_vhdx").add_click({
     $go_to_VHDX = $Window_Compact_VHDX.FindName("txt_repertoire_VHDX").Text
 
     if (Test-Path -Path $go_to_VHDX) {
-        Write-Host "Dossier de VHDX trouvé ! " -ForegroundColor $GreenColor
+        Write-Host "Dossier de VHDX trouvé ! " -ForegroundColor Green
 
         $vhdxList = Get-ChildItem $PSScriptRoot *.vhdx
         foreach($vhdx in $vhdxList){
@@ -1028,9 +1028,9 @@ Function Install-WindowsUpdates {
             }
         }
         if ($rebootRequired) {
-            Write-Host "Redémarrage nécessaire pour terminer l'installation des mises à jour. Veuillez redémarrer votre ordinateur." -ForegroundColor Orange
+            Write-Host "Redémarrage nécessaire pour terminer l'installation des mises à jour. Veuillez redémarrer votre ordinateur." -ForegroundColor DarkYellow
         } else {
-            Write-Host "Toutes les mises à jour ont été installallées. Un redémarrage pourrait être nécessaire pour appliquer les mises à jour." -ForegroundColor Orange
+            Write-Host "Toutes les mises à jour ont été installallées. Un redémarrage pourrait être nécessaire pour appliquer les mises à jour." -ForegroundColor DarkYellow
         }
     } else {
         Write-Host "Aucune mise à jour Windows disponible. Windows Update est à jour." -ForegroundColor Green
