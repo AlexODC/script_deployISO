@@ -1037,11 +1037,14 @@ Function Install-WindowsUpdates {
     }
     return
 }
-Write-Host "Forçage de la fermeture de Winget."
-Stop-Process -Name "winget" -Force
 
 # Fonction pour mettre à jour les applications du Windows Store
 Function Update-WindowsStoreApps {
+    $wingetProcess = Get-Process winget -ErrorAction SilentlyContinue
+    if ($wingetProcess) {
+        Write-Host "Attente de la fin de l'exécution de Winget pour mettre à jour les applications."
+        $wingetProcess.WaitForExit()
+    }
     Write-Host "Lancement des mises à jours des applications" -ForegroundColor Green
     $wingetPath = "$env:LOCALAPPDATA\Microsoft\WindowsApps\winget.exe"
     if (Test-Path $wingetPath) {
