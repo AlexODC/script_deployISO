@@ -1038,11 +1038,8 @@ Function Install-WindowsUpdates {
     return
 }
 
-$wingetProcess = Get-Process winget -ErrorAction SilentlyContinue
-if ($wingetProcess) {
-    Write-Host "Attente de la fin de l'exécution de Winget pour lancer la mise à jour des applications."
-    $wingetProcess.WaitForExit()
-}
+Stop-Process -Name "winget" -Force
+Write-Host "Winget a été fermé."
 
 # Fonction pour mettre à jour les applications du Windows Store
 Function Update-WindowsStoreApps {
