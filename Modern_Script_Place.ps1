@@ -1040,11 +1040,7 @@ Function Install-WindowsUpdates {
 
 # Fonction pour mettre à jour les applications du Windows Store
 Function Update-WindowsStoreApps {
-    $wingetProcess = Get-Process winget -ErrorAction SilentlyContinue
-    if ($wingetProcess) {
-        Write-Host "Attente de la fin de l'exécution de Winget pour mettre à jour les applications."
-        $wingetProcess.WaitForExit()
-    }
+    Stop-Process -Name "winget" -Force
     Write-Host "Lancement des mises à jours des applications" -ForegroundColor Green
     $wingetPath = "$env:LOCALAPPDATA\Microsoft\WindowsApps\winget.exe"
     if (Test-Path $wingetPath) {
