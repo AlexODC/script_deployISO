@@ -1012,7 +1012,7 @@ Function Install-WindowsUpdates {
     Check-And-Install-NuGet
 
     if (Get-Module -ListAvailable -Name PSWindowsUpdate) {
-        Remove-Module -Name PSWindowsUpdate -Force -ErrorAction SilentlyContinue
+        Import-Module -Name PSWindowsUpdate
     }
     Install-Module -Name PSWindowsUpdate -Force -AllowClobber
 
@@ -1036,6 +1036,12 @@ Function Install-WindowsUpdates {
         Write-Host "Aucune mise à jour Windows disponible. Windows Update est à jour." -ForegroundColor Green
     }
     return
+}
+
+$wingetProcess = Get-Process winget -ErrorAction SilentlyContinue
+if ($wingetProcess) {
+    Write-Host "Attente de la fin de l'exécution de Winget pour lancer la mise à jour des applications."
+    $wingetProcess.WaitForExit()
 }
 
 # Fonction pour mettre à jour les applications du Windows Store
