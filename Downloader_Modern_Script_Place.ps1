@@ -17,5 +17,5 @@ if ($response.Content.Length -gt 0) {
     Remove-Item -Path $cheminDuFichier
 } else {
     # Si le contenu est vide, afficher un message d'erreur ou prendre une autre action
-    Write-Host "Le téléchargement du script a échoué ou le script est vide."
+    Write-Host "Le téléchargement du script a échoué ou le script est vide. Merci de relancer le script de téléchargement afin d'ffectuer une nouvelle tentative de téléchargement."
 }
