@@ -1031,7 +1031,7 @@ Function Install-WindowsUpdates {
             Write-Host "Redémarrage nécessaire pour terminer l'installation des mises à jour. Veuillez redémarrer votre ordinateur." -ForegroundColor DarkYellow
         } else {
             Write-Host "Toutes les mises à jour ont été installallées. Un redémarrage pourrait être nécessaire pour appliquer les mises à jour." -ForegroundColor DarkYellow
-            Start-Sleep -Seconds 10
+            Start-Sleep -Seconds 30
         }
     } else {
         Write-Host "Aucune mise à jour Windows disponible. Windows Update est à jour." -ForegroundColor Green
@@ -1041,7 +1041,7 @@ Function Install-WindowsUpdates {
 
 # Fonction pour mettre à jour les applications du Windows Store
 Function Update-WindowsStoreApps {
-    Start-Sleep -Seconds 10
+    Start-Sleep -Seconds 60
     Write-Host "Lancement des mises à jours des applications" -ForegroundColor Green
     $wingetPath = "$env:LOCALAPPDATA\Microsoft\WindowsApps\winget.exe"
     if (Test-Path $wingetPath) {
