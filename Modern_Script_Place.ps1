@@ -1008,7 +1008,7 @@ Function Check-And-Install-NuGet {
 
 # Fonction pour installer toutes les mises à jour Windows, y compris les facultatives
 Function Install-WindowsUpdates {
-    Write-Host "Lancement des mises à jours Windows"
+    Write-Host "Lancement des mises à jours Windows. Merci d'ignorer le message d'avertisssment (jaune)."
     Check-And-Install-NuGet
 
     if (Get-Module -ListAvailable -Name PSWindowsUpdate) {
