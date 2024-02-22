@@ -1045,7 +1045,12 @@ Function Update-WindowsStoreApps {
     Write-Host "Lancement des mises à jours des applications" -ForegroundColor Green
     $wingetPath = "$env:LOCALAPPDATA\Microsoft\WindowsApps\winget.exe"
     if (Test-Path $wingetPath) {
-        Start-Process -FilePath "winget.exe" -ArgumentList "upgrade --all --force --accept-package-agreements --accept-source-agreements" -Wait
+       # Initialiser winget en vérifiant sa version (pour bait l'erreur)
+        Start-Process -FilePath "winget.exe" -ArgumentList "--version" -NoNewWindow -Wait
+        # Pause pour s'assurer que winget a le temps de s'initialiser
+        Start-Sleep -Seconds 5
+        # Mise à jour des apps
+        Start-Process -FilePath "winget.exe" -ArgumentList "upgrade --all --force --accept-package-agreements --accept-source-agreements" -NoNewWindow -Wait
         Write-Host "Les mises à jour des applications Windows Store ont été effectuées." -ForegroundColor Green
     } else {
         Write-Host "Winget n'est pas installé." -ForegroundColor Red
@@ -1055,9 +1060,8 @@ Function Update-WindowsStoreApps {
 
 # Fonction pour mettre à jour le PC (Windows et applications Windows Store)
 Function Update-PC {
-    # Install-WindowsUpdates
-    Update-WindowsStoreApps
     Install-WindowsUpdates
+    Update-WindowsStoreApps
 }
 
 ##################################################################################################
