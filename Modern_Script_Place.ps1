@@ -1055,8 +1055,9 @@ Function Update-WindowsStoreApps {
 
 # Fonction pour mettre à jour le PC (Windows et applications Windows Store)
 Function Update-PC {
-    Install-WindowsUpdates
+    # Install-WindowsUpdates
     Update-WindowsStoreApps
+    Install-WindowsUpdates
 }
 
 ##################################################################################################
