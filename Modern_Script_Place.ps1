@@ -1046,6 +1046,7 @@ Function Update-WindowsStoreApps {
     $wingetPath = "$env:LOCALAPPDATA\Microsoft\WindowsApps\winget.exe"
     if (Test-Path $wingetPath) {
        # Initialiser winget en vérifiant sa version (pour bait l'erreur)
+        Write-Host "Initialisation de winget, veuillez ignorer l'erreur." -ForegroundColor DarkYellow
         Start-Process -FilePath "winget.exe" -ArgumentList "--version" -NoNewWindow -Wait
         # Pause pour s'assurer que winget a le temps de s'initialiser
         Start-Sleep -Seconds 5
