@@ -847,7 +847,7 @@ Function Applicate-Default-Setup {
             "bloc de code (instructions)" 
         }
         "4" { 
-            "bloc de code (instructions)" 
+            Set-Acrobat-Default 
         }
         "5" { 
             "bloc de code (instructions)" 
@@ -902,14 +902,62 @@ Function Ok-Cindy-Clear-Log {
 }
 
 Function Set-Chrome-Default {
-    # Définir l'ID de l'application Chrome
-    $chromeAppId = "XXXXX"
+# CODE A APPLIQUER SUR LE COMPTE UTILISATEUR. IL FAUT DONC INTEGRER CE CODE DANS UN SCRIPT OU TACHE PLANNIFIEE.
+  # Changeing default browser for Windows 11 only #
+  if ($env:OS -ne 'Windows_NT') { throw 'This script runs on Windows only' }
+  Stop-Process -ErrorAction Ignore -Name SystemSettings
+  Start-Process ms-settings:defaultapps
+  $ps = Get-Process -ErrorAction Stop SystemSettings
+  do {
+    Start-Sleep -Milliseconds 100
+    $ps.Refresh()
+  } while ([int] $ps.MainWindowHandle)
+  Start-Sleep -Milliseconds 200
+  # Entering key strokes mode.
+  $shell = New-Object -ComObject WScript.Shell
+  # Tab to the "Set defaults for applications".
+  foreach ($i in 1..4) { $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100 }
+  # Set Chrome as a defaults browser
+  $shell.SendKeys("chrom"); Start-Sleep -seconds 1
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('%{F4}')
+  Write-Host "Google Chrome a été défini par défaut." -ForegroundColor Green
+  
+}
 
-    # Créer la sous-clé et la valeur
-    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\App Paths\html" -Name "(Default)" -Value $chromeAppId -Type DWORD
-
-    # Redémarrer l'explorateur Windows
-    Restart-Process -Name "explorer"
+Function Set-Acrobat-Default {
+# CODE A APPLIQUER SUR LE COMPTE UTILISATEUR. IL FAUT DONC INTEGRER CE CODE DANS UN SCRIPT OU TACHE PLANNIFIEE.
+# Changeing default browser for Windows 11 only #
+  if ($env:OS -ne 'Windows_NT') { throw 'This script runs on Windows only' }
+  Stop-Process -ErrorAction Ignore -Name SystemSettings
+  Start-Process ms-settings:defaultapps
+  $ps = Get-Process -ErrorAction Stop SystemSettings
+  do {
+    Start-Sleep -Milliseconds 100
+    $ps.Refresh()
+  } while ([int] $ps.MainWindowHandle)
+  Start-Sleep -Milliseconds 200
+  # Entering key strokes mode.
+  $shell = New-Object -ComObject WScript.Shell
+  # Tab to the "Set defaults for applications".
+  foreach ($i in 1..4) { $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100 }
+  # Set Adobe as a defaults browser
+  $shell.SendKeys("adob"); Start-Sleep -seconds 2
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 500
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('%{F4}')
 }
 
 Function Set-Chrome-Task-Bar {
