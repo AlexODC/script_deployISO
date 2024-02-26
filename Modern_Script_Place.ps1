@@ -90,6 +90,110 @@ $data_manger = @('BK',
 'Panda Wok',
 'Gourmet d Asie'
 )
+
+##################################################################################################
+
+# Déclaration du script pour déployer un nouveau user.
+# Code fonctionnel sur Windows 11 uniquement.
+
+Function Set-Chrome-Default {
+  Stop-Process -ErrorAction Ignore -Name SystemSettings
+  Start-Process ms-settings:defaultapps
+  $ps = Get-Process -ErrorAction Stop SystemSettings
+  do {
+    Start-Sleep -Milliseconds 100
+    $ps.Refresh()
+  } while ([int] $ps.MainWindowHandle)
+  Start-Sleep -Milliseconds 200
+  # Entering key strokes mode.
+  $shell = New-Object -ComObject WScript.Shell
+  # Tab to the "Set defaults for applications".
+  foreach ($i in 1..4) { $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100 }
+  # Set Chrome as a defaults browser
+  $shell.SendKeys("chrom"); Start-Sleep -seconds 1
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 300
+  $shell.SendKeys('%{F4}')
+}
+
+Function Set-Acrobat-Default {
+# CODE A APPLIQUER SUR LE COMPTE UTILISATEUR. IL FAUT DONC INTEGRER CE CODE DANS UN SCRIPT OU TACHE PLANNIFIEE.
+  Stop-Process -ErrorAction Ignore -Name SystemSettings
+  Start-Process ms-settings:defaultapps
+  $ps = Get-Process -ErrorAction Stop SystemSettings
+  do {
+    Start-Sleep -Milliseconds 100
+    $ps.Refresh()
+  } while ([int] $ps.MainWindowHandle)
+  Start-Sleep -Milliseconds 200
+  # Entering key strokes mode.
+  $shell = New-Object -ComObject WScript.Shell
+  # Tab to the "Set defaults for applications".
+  foreach ($i in 1..4) { $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100 }
+  # Set Adobe as a defaults browser
+  $shell.SendKeys("adobe acrobat"); Start-Sleep -seconds 2
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 500
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('%{F4}')
+  }
+
+Function Set-Chrome-Taskbar {
+# Mettre chrome dans la barre des tâches
+  $shell = New-Object -ComObject WScript.Shell
+  $shell.SendKeys('^{ESC}') # Ctrl+Esc
+  Start-Sleep -Seconds 1
+  $shell.SendKeys('chrome')
+  Start-Sleep -Seconds 1
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{ESC}')
+  }
+
+  Function Remove-Edge-Taskbar {
+# Supprimer Edge de la barre des tâches
+  $shell = New-Object -ComObject WScript.Shell
+  $shell.SendKeys('^{ESC}') # Ctrl+Esc
+  Start-Sleep -Seconds 1
+  $shell.SendKeys('microsoft edge'); Start-Sleep -milliseconds 700
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{UP}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{ESC}')
+  }
+
+    Function Remove-MicrosoftStore-Taskbar {
+# Supprimer Microsoft Store de la barre des tâches
+  $shell = New-Object -ComObject WScript.Shell
+  $shell.SendKeys('^{ESC}') # Ctrl+Esc
+  Start-Sleep -Seconds 1
+  $shell.SendKeys('microsoft store'); Start-Sleep -milliseconds 700
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{ESC}')
+  }
+
+
 ##################################################################################################
 
 # Définition des couleurs
@@ -103,7 +207,6 @@ If (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
     Exit
 }
 
-##################################################################################################
 ##################################################################################################
 
 #Déclaration de l'interface du menu principal
@@ -830,42 +933,7 @@ $Window_Menu_Autre_Autre.FindName("btn_uninstal_sophos").add_click({
 ##################################################################################################
 
 Function Applicate-Default-Setup {
-    Param (
-        [String]$choice
-    )
-    #Ordinateur\HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts
-    Write-Host $choice
-    Switch ($choice)
-    {
-        "1" { 
-            Set-Chrome-Default
-        }
-        "2" { 
-            Set-Chrome-Task-Bar
-        }
-        "3" { 
-            "bloc de code (instructions)" 
-        }
-        "4" { 
-            Set-Acrobat-Default 
-        }
-        "5" { 
-            "bloc de code (instructions)" 
-        }
-        "6" { 
-            "bloc de code (instructions)" 
-        }
-        "7" { 
-            "bloc de code (instructions)" 
-        }
-        "8" { 
-            "bloc de code (instructions)" 
-        }
-        "9" { 
-            "bloc de code (instructions)" 
-        }
-        Default { Write-Host "Aucun choix n'a était sélectionné" }
-    }
+   Write-Host "Rien pour l'instant"
 }
 
 Function Ok-Cindy-Clear-Log {
@@ -901,87 +969,6 @@ Function Ok-Cindy-Clear-Log {
     CleanLogfiles($ETLLoggingPath2)
 }
 
-Function Set-Chrome-Default {
-# CODE A APPLIQUER SUR LE COMPTE UTILISATEUR. IL FAUT DONC INTEGRER CE CODE DANS UN SCRIPT OU TACHE PLANNIFIEE.
-  # Changeing default browser for Windows 11 only #
-  if ($env:OS -ne 'Windows_NT') { throw 'This script runs on Windows only' }
-  Stop-Process -ErrorAction Ignore -Name SystemSettings
-  Start-Process ms-settings:defaultapps
-  $ps = Get-Process -ErrorAction Stop SystemSettings
-  do {
-    Start-Sleep -Milliseconds 100
-    $ps.Refresh()
-  } while ([int] $ps.MainWindowHandle)
-  Start-Sleep -Milliseconds 200
-  # Entering key strokes mode.
-  $shell = New-Object -ComObject WScript.Shell
-  # Tab to the "Set defaults for applications".
-  foreach ($i in 1..4) { $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100 }
-  # Set Chrome as a defaults browser
-  $shell.SendKeys("chrom"); Start-Sleep -seconds 1
-  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('%{F4}')
-  Write-Host "Google Chrome a été défini par défaut." -ForegroundColor Green
-  
-}
-
-Function Set-Acrobat-Default {
-# CODE A APPLIQUER SUR LE COMPTE UTILISATEUR. IL FAUT DONC INTEGRER CE CODE DANS UN SCRIPT OU TACHE PLANNIFIEE.
-# Changeing default browser for Windows 11 only #
-  if ($env:OS -ne 'Windows_NT') { throw 'This script runs on Windows only' }
-  Stop-Process -ErrorAction Ignore -Name SystemSettings
-  Start-Process ms-settings:defaultapps
-  $ps = Get-Process -ErrorAction Stop SystemSettings
-  do {
-    Start-Sleep -Milliseconds 100
-    $ps.Refresh()
-  } while ([int] $ps.MainWindowHandle)
-  Start-Sleep -Milliseconds 200
-  # Entering key strokes mode.
-  $shell = New-Object -ComObject WScript.Shell
-  # Tab to the "Set defaults for applications".
-  foreach ($i in 1..4) { $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100 }
-  # Set Adobe as a defaults browser
-  $shell.SendKeys("adob"); Start-Sleep -seconds 2
-  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 500
-  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('%{F4}')
-}
-
-Function Set-Chrome-Task-Bar {
-    # Créer un objet ShellLink
-    $shellLink = New-Object -ComObject Shell.Application
-
-    # Définir la propriété TargetPath vers le fichier exécutable de Chrome
-    $shellLink.TargetPath = "C:\Program Files\Google\Chrome\chrome.exe"
-
-    # Définir la propriété Arguments pour lancer Chrome en mode maximisé
-    $shellLink.Arguments = "-start-maximized"
-
-    # Définir la propriété WorkingDirectory vers le dossier de Chrome
-    $shellLink.WorkingDirectory = "C:\Program Files\Google\Chrome"
-
-    # Définir la propriété Description
-    $shellLink.Description = "Google Chrome"
-
-    # Enregistrer le raccourci dans le dossier de la barre des tâches
-    $shellLink.SaveLink($env:APPDATA + "\Microsoft\Windows\Start Menu\Programs\Start Menu\Google Chrome.lnk")
-
-    # Épingler le raccourci à la barre des tâches
-    Add-AppxPackage -Path $env:APPDATA + "\Microsoft\Windows\Start Menu\Programs\Start Menu\Google Chrome.lnk" -Register
-}
 
 # Fonction pour télécharger et installer une application depuis un lien public OwnCloud, Cybereason, etc.
 Function Download-And-Install-App {
