@@ -987,7 +987,7 @@ Function Set-Chrome-Task-Bar {
 Function Download-And-Install-App {
     Param (
         [string]$downloadLink,
-        [string]$appName,
+        [string]$appName
     )
 
     $downloadsPath = [System.Environment]::GetFolderPath('UserProfile') + '\Downloads'
