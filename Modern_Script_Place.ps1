@@ -290,7 +290,6 @@ Function Set-Chrome-Taskbar {
   $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ESC}')
 
   # Delete Luminar
   $shell.SendKeys('^{ESC}') # Ctrl+Esc
@@ -306,7 +305,6 @@ Function Set-Chrome-Taskbar {
   $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ESC}')
 
     # Delete LinkedIn
   $shell.SendKeys('^{ESC}') # Ctrl+Esc
