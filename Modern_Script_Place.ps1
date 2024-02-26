@@ -987,10 +987,22 @@ Function Set-Chrome-Task-Bar {
 Function Download-And-Install-App {
     Param (
         [string]$downloadLink,
-        [string]$appName
+        [string]$appName,
     )
+
     $downloadsPath = [System.Environment]::GetFolderPath('UserProfile') + '\Downloads'
     $localPath = Join-Path -Path $downloadsPath -ChildPath $appName
+    $defaultPCName = "PC-NEW"
+
+   # Vérifie si l'application est Cybereason et si le nom du PC est le nom par défaut
+    if ($appName -eq "Cybereason" -and [System.Environment]::MachineName -eq $defaultPCName) {
+        # Affiche une popup d'interdiction d'installation
+         Add-Type -AssemblyName Microsoft.VisualBasic
+        [Microsoft.VisualBasic.Interaction]::MsgBox("Interdiction d'installer $appName car le PC n'est pas renommé.", 'OkOnly,SystemModal,Critical', "Erreur")
+        Write-Host "Interdiction d'installer $appName car le PC n'est pas renommé." -ForegroundColor Red
+        return # Interrompt l'exécution de la fonction pour Cybereason
+    }
+    
 
     try {
         Invoke-WebRequest -Uri $downloadLink -OutFile $localPath
