@@ -259,6 +259,7 @@ Function Set-Chrome-Taskbar {
   # Delete Gramarly
   Start-Sleep -Seconds 1
   $shell.SendKeys('^{ESC}') # Ctrl+Esc
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
