@@ -213,18 +213,16 @@ Function Set-Chrome-Taskbar {
   $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ESC}')
 
  # Delete Xbox
-  $shell.SendKeys('^{ESC}') # Ctrl+Esc
+ 
   Start-Sleep -Seconds 1
-  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 500
   $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
@@ -234,18 +232,15 @@ Function Set-Chrome-Taskbar {
   $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ESC}')
 
   # Delete Solitaire
-  $shell.SendKeys('^{ESC}') # Ctrl+Esc
   Start-Sleep -Seconds 1
-  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 500
   $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
@@ -260,36 +255,32 @@ Function Set-Chrome-Taskbar {
   Start-Sleep -Seconds 1
 
   # Delete Spotify
-  $shell.SendKeys('^{ESC}') # Ctrl+Esc
   Start-Sleep -Seconds 1
-  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 500
   $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
+
+  # Delete Gramarly
+  Start-Sleep -Seconds 1
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 500
   $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{ESC}')
-
-  # Delete Gramarly
-  $shell.SendKeys('^{ESC}') # Ctrl+Esc
-  Start-Sleep -Seconds 1
-  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
 
   # Delete Luminar
   $shell.SendKeys('^{ESC}') # Ctrl+Esc
@@ -300,11 +291,12 @@ Function Set-Chrome-Taskbar {
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 500
   $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{ESC}')
 
     # Delete LinkedIn
   $shell.SendKeys('^{ESC}') # Ctrl+Esc
