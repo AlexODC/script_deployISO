@@ -101,18 +101,18 @@ Function Set-Chrome-Default {
   Start-Process ms-settings:defaultapps
   $ps = Get-Process -ErrorAction Stop SystemSettings
   do {
-    Start-Sleep -Milliseconds 100
+    Start-Sleep -milliseconds 250
     $ps.Refresh()
   } while ([int] $ps.MainWindowHandle)
   Start-Sleep -Milliseconds 200
   # Entering key strokes mode.
   $shell = New-Object -ComObject WScript.Shell
   # Tab to the "Set defaults for applications".
-  foreach ($i in 1..4) { $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100 }
+  foreach ($i in 1..4) { $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 250 }
   # Set Chrome as a defaults browser
   $shell.SendKeys("chrom"); Start-Sleep -seconds 1
-  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 250
   $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 300
   $shell.SendKeys('%{F4}')
 }
@@ -123,28 +123,28 @@ Function Set-Acrobat-Default {
   Start-Process ms-settings:defaultapps
   $ps = Get-Process -ErrorAction Stop SystemSettings
   do {
-    Start-Sleep -Milliseconds 100
+    Start-Sleep -milliseconds 250
     $ps.Refresh()
   } while ([int] $ps.MainWindowHandle)
   Start-Sleep -Milliseconds 200
   # Entering key strokes mode.
   $shell = New-Object -ComObject WScript.Shell
   # Tab to the "Set defaults for applications".
-  foreach ($i in 1..4) { $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100 }
+  foreach ($i in 1..4) { $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 250 }
   # Set Adobe as a defaults browser
   $shell.SendKeys("adobe acrobat"); Start-Sleep -seconds 2
-  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
   $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 500
-  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 250
   $shell.SendKeys('%{F4}')
   }
 
@@ -155,12 +155,12 @@ Function Set-Chrome-Taskbar {
   Start-Sleep -Seconds 1
   $shell.SendKeys('chrome')
   Start-Sleep -Seconds 1
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 250
   $shell.SendKeys('{ESC}')
   }
 
@@ -170,14 +170,14 @@ Function Set-Chrome-Taskbar {
   $shell.SendKeys('^{ESC}') # Ctrl+Esc
   Start-Sleep -Seconds 1
   $shell.SendKeys('microsoft edge'); Start-Sleep -milliseconds 700
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{UP}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{UP}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 250
   }
 
     Function Remove-MicrosoftStore-Taskbar {
@@ -186,11 +186,11 @@ Function Set-Chrome-Taskbar {
   $shell.SendKeys('^{ESC}') # Ctrl+Esc
   Start-Sleep -Seconds 1
   $shell.SendKeys('microsoft store'); Start-Sleep -milliseconds 700
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 250
   }
 
     Function Uninstall-Default-Apps {
@@ -200,110 +200,110 @@ Function Set-Chrome-Taskbar {
 # Delete Office
   $shell.SendKeys('^{ESC}') # Ctrl+Esc
   Start-Sleep -Seconds 1
-  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 250
   $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 500
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 250
 
  # Delete Xbox
  
   Start-Sleep -Seconds 1
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 250
   $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 500
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 250
 
   # Delete Solitaire
   Start-Sleep -Seconds 1
   $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 500
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 250
 
 
   # Delete Spotify
   Start-Sleep -Seconds 1
   $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 500
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 250
 
   # Delete Gramarly
   Start-Sleep -Seconds 1
-  $shell.SendKeys('^{ESC}'); Start-Sleep -milliseconds 100 # Ctrl+Esc
-  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('^{ESC}'); Start-Sleep -milliseconds 250 # Ctrl+Esc
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 250
   $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 500
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 250
 
   # Delete Luminar
-  $shell.SendKeys('^{ESC}');Start-Sleep -milliseconds 100 # Ctrl+Esc
+  $shell.SendKeys('^{ESC}');Start-Sleep -milliseconds 250 # Ctrl+Esc
   Start-Sleep -Seconds 1
-  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 250
   $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 500
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 250
 
     # Delete LinkedIn
-  $shell.SendKeys('^{ESC}'); Start-Sleep -milliseconds 100 # Ctrl+Esc
-  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('^{ESC}'); Start-Sleep -milliseconds 250 # Ctrl+Esc
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 250
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 250
   $shell.SendKeys('{ESC}')
 
   }
