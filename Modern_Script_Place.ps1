@@ -177,7 +177,7 @@ Function Set-Chrome-Taskbar {
   $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{UP}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ESC}')
+  $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 100
   }
 
     Function Remove-MicrosoftStore-Taskbar {
@@ -190,7 +190,7 @@ Function Set-Chrome-Taskbar {
   $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ESC}')
+  $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 100
   }
 
     Function Uninstall-Default-Apps {
@@ -269,7 +269,7 @@ Function Set-Chrome-Taskbar {
   $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ESC}')
+  $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 100
 
   # Delete Luminar
   $shell.SendKeys('^{ESC}') # Ctrl+Esc
@@ -285,7 +285,7 @@ Function Set-Chrome-Taskbar {
   $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{ESC}')
+  $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 100
 
     # Delete LinkedIn
   $shell.SendKeys('^{ESC}') # Ctrl+Esc
