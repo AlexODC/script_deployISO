@@ -258,7 +258,7 @@ Function Set-Chrome-Taskbar {
 
   # Delete Gramarly
   Start-Sleep -Seconds 1
-  $shell.SendKeys('^{ESC}');Start-Sleep -milliseconds 100 # Ctrl+Esc
+  $shell.SendKeys('^{ESC}'); Start-Sleep -milliseconds 100 # Ctrl+Esc
   $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
@@ -273,7 +273,7 @@ Function Set-Chrome-Taskbar {
   $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 100
 
   # Delete Luminar
-  $shell.SendKeys('^{ESC}') # Ctrl+Esc
+  $shell.SendKeys('^{ESC}');Start-Sleep -milliseconds 100 # Ctrl+Esc
   Start-Sleep -Seconds 1
   $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
@@ -289,7 +289,7 @@ Function Set-Chrome-Taskbar {
   $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 100
 
     # Delete LinkedIn
-  $shell.SendKeys('^{ESC}') # Ctrl+Esc
+  $shell.SendKeys('^{ESC}');Start-Sleep -milliseconds 100 # Ctrl+Esc
   Start-Sleep -Seconds 1
   $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
