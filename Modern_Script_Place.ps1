@@ -289,20 +289,16 @@ Function Set-Chrome-Taskbar {
   $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 100
 
     # Delete LinkedIn
-  $shell.SendKeys('^{ESC}');Start-Sleep -milliseconds 100 # Ctrl+Esc
-  Start-Sleep -Seconds 1
+  $shell.SendKeys('^{ESC}'); Start-Sleep -milliseconds 100 # Ctrl+Esc
   $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 100
   $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 100
