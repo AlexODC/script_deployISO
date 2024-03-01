@@ -583,18 +583,12 @@ $Window_Create_User.FindName("btn_quitter").add_click({
 
 $Window_Create_User.FindName("btn_create_user").add_click({
     $nomUtilisateur = $Window_Create_User.FindName("txt_name_user").Text
-    $motDePasseTexte = $Window_Create_User.FindName("txt_password").Text
     $params = @{
         Name        = $nomUtilisateur
+        Password    = ConvertTo-SecureString $Window_Create_User.FindName("txt_password").Text -AsPlainText -Force 
         FullName    = $Window_Create_User.FindName("txt_name_display").Text
         Description = $Window_Create_User.FindName("txt_description").Text
     }
-    # Ajouter le mot de passe seulement s'il est fourni
-    if (![string]::IsNullOrWhiteSpace($motDePasseTexte)) {
-        $motDePasseSecurise = ConvertTo-SecureString $motDePasseTexte -AsPlainText -Force
-        $params['Password'] = $motDePasseSecurise
-    }
-
     New-LocalUser @params
     Write-Host "L'utilisateur a bien été créé !" -ForegroundColor Green
     
