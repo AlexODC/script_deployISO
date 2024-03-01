@@ -93,220 +93,7 @@ $data_manger = @('BK',
 
 ##################################################################################################
 
-# Déclaration du script pour déployer un nouveau user.
-# Code fonctionnel sur Windows 11 uniquement.
 
-Function Set-Chrome-Default {
-  Stop-Process -ErrorAction Ignore -Name SystemSettings
-  Start-Process ms-settings:defaultapps
-  $ps = Get-Process -ErrorAction Stop SystemSettings
-  do {
-    Start-Sleep -milliseconds 200
-    $ps.Refresh()
-  } while ([int] $ps.MainWindowHandle)
-  Start-Sleep -Milliseconds 200
-  # Entering key strokes mode.
-  $shell = New-Object -ComObject WScript.Shell
-  # Tab to the "Set defaults for applications".
-  foreach ($i in 1..4) { $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200 }
-  # Set Chrome as a defaults browser
-  $shell.SendKeys("chrom"); Start-Sleep -seconds 1
-  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 300
-  $shell.SendKeys('%{F4}')
-}
-
-Function Set-Acrobat-Default {
-# CODE A APPLIQUER SUR LE COMPTE UTILISATEUR. IL FAUT DONC INTEGRER CE CODE DANS UN SCRIPT OU TACHE PLANNIFIEE.
-  Stop-Process -ErrorAction Ignore -Name SystemSettings
-  Start-Process ms-settings:defaultapps
-  $ps = Get-Process -ErrorAction Stop SystemSettings
-  do {
-    Start-Sleep -milliseconds 200
-    $ps.Refresh()
-  } while ([int] $ps.MainWindowHandle)
-  Start-Sleep -Milliseconds 200
-  # Entering key strokes mode.
-  $shell = New-Object -ComObject WScript.Shell
-  # Tab to the "Set defaults for applications".
-  foreach ($i in 1..4) { $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200 }
-  # Set Adobe as a defaults browser
-  $shell.SendKeys("adobe acrobat"); Start-Sleep -seconds 2
-  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 500
-  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('%{F4}')
-  }
-
-Function Set-Chrome-Taskbar {
-# Mettre chrome dans la barre des tâches
-  $shell = New-Object -ComObject WScript.Shell
-  $shell.SendKeys('^{ESC}') # Ctrl+Esc
-  Start-Sleep -Seconds 1
-  $shell.SendKeys('chrome')
-  Start-Sleep -Seconds 1
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ESC}')
-  }
-
-  Function Remove-Edge-Taskbar {
-# Supprimer Edge de la barre des tâches
-  $shell = New-Object -ComObject WScript.Shell
-  $shell.SendKeys('^{ESC}') # Ctrl+Esc
-  Start-Sleep -Seconds 1
-  $shell.SendKeys('microsoft edge'); Start-Sleep -milliseconds 700
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{UP}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 200
-  }
-
-    Function Remove-MicrosoftStore-Taskbar {
-# Supprimer Microsoft Store de la barre des tâches
-  $shell = New-Object -ComObject WScript.Shell
-  $shell.SendKeys('^{ESC}') # Ctrl+Esc
-  Start-Sleep -Seconds 1
-  $shell.SendKeys('microsoft store'); Start-Sleep -milliseconds 700
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 200
-  }
-
-    Function Uninstall-Default-Apps {
-# Désinstaller les applications préinstallées par Windows
-  $shell = New-Object -ComObject WScript.Shell
-
-# Delete Office
-  $shell.SendKeys('^{ESC}') # Ctrl+Esc
-  Start-Sleep -Seconds 1
-  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 500
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
-
- # Delete Xbox
- 
-  Start-Sleep -Seconds 1
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 500
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
-
-  # Delete Solitaire
-  Start-Sleep -Seconds 1
-  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 500
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
-
-
-  # Delete Spotify
-  Start-Sleep -Seconds 1
-  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 500
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 200
-
-  # Delete Gramarly
-  Start-Sleep -Seconds 1
-  $shell.SendKeys('^{ESC}'); Start-Sleep -milliseconds 200 # Ctrl+Esc
-  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 500
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 200
-
-  # Delete Luminar
-  $shell.SendKeys('^{ESC}');Start-Sleep -milliseconds 200 # Ctrl+Esc
-  Start-Sleep -Seconds 1
-  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 500
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 200
-
-    # Delete LinkedIn
-  $shell.SendKeys('^{ESC}'); Start-Sleep -milliseconds 200 # Ctrl+Esc
-  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{ESC}')
-
-  }
 
 
 ##################################################################################################
@@ -793,23 +580,270 @@ $Window_Install_Office.FindName("btn_install").add_click({
 $Window_Create_User.FindName("btn_quitter").add_click({ 
     $Window_Create_User.Hide()
 })
-
+-----
 $Window_Create_User.FindName("btn_create_user").add_click({
+    $nomUtilisateur = $Window_Create_User.FindName("txt_name_user").Text
+    $motDePasseTexte = $Window_Create_User.FindName("txt_password").Text
     $params = @{
-        Name        = $Window_Create_User.FindName("txt_name_user").Text
-        Password    = ConvertTo-SecureString $Window_Create_User.FindName("txt_password").Text -AsPlainText -Force 
+        Name        = $nomUtilisateur
         FullName    = $Window_Create_User.FindName("txt_name_display").Text
         Description = $Window_Create_User.FindName("txt_description").Text
     }
+    # Ajouter le mot de passe seulement s'il est fourni
+    if (![string]::IsNullOrWhiteSpace($motDePasseTexte)) {
+        $motDePasseSecurise = ConvertTo-SecureString $motDePasseTexte -AsPlainText -Force
+        $params['Password'] = $motDePasseSecurise
+    }
+
     New-LocalUser @params
     Write-Host "L'utilisateur a bien été créé !" -ForegroundColor Green
     
+    # Mettre à jour la liste des utilisateurs
     $Window_Create_User.FindName("list_User").Items.Clear()
     foreach ($user in Get-LocalUser) {
         $Window_Create_User.FindName("list_User").Items.Add($user.Name + ":" + $user.Enabled)
     }
-})
+    
+    # Construction du chemin du bureau de l'utilisateur
+    $cheminBureauUtilisateur = "C:\Users\$nomUtilisateur\Desktop"
+    
+    # Le contenu du script à créer
+    $contenuScript = @"
+# Déclaration du script pour déployer un nouveau user.
+# Code fonctionnel sur Windows 11 uniquement.
 
+Function Set-Chrome-Default {
+  Stop-Process -ErrorAction Ignore -Name SystemSettings
+  Start-Process ms-settings:defaultapps
+  $ps = Get-Process -ErrorAction Stop SystemSettings
+  do {
+    Start-Sleep -milliseconds 200
+    $ps.Refresh()
+  } while ([int] $ps.MainWindowHandle)
+  Start-Sleep -Milliseconds 200
+  # Entering key strokes mode.
+  $shell = New-Object -ComObject WScript.Shell
+  # Tab to the "Set defaults for applications".
+  foreach ($i in 1..4) { $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200 }
+  # Set Chrome as a defaults browser
+  $shell.SendKeys("chrom"); Start-Sleep -seconds 1
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 300
+  $shell.SendKeys('%{F4}')
+}
+
+Function Set-Acrobat-Default {
+# CODE A APPLIQUER SUR LE COMPTE UTILISATEUR. IL FAUT DONC INTEGRER CE CODE DANS UN SCRIPT OU TACHE PLANNIFIEE.
+  Stop-Process -ErrorAction Ignore -Name SystemSettings
+  Start-Process ms-settings:defaultapps
+  $ps = Get-Process -ErrorAction Stop SystemSettings
+  do {
+    Start-Sleep -milliseconds 200
+    $ps.Refresh()
+  } while ([int] $ps.MainWindowHandle)
+  Start-Sleep -Milliseconds 200
+  # Entering key strokes mode.
+  $shell = New-Object -ComObject WScript.Shell
+  # Tab to the "Set defaults for applications".
+  foreach ($i in 1..4) { $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200 }
+  # Set Adobe as a defaults browser
+  $shell.SendKeys("adobe acrobat"); Start-Sleep -seconds 2
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 500
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('%{F4}')
+  }
+
+    Function Remove-MicrosoftStore-Taskbar {
+# Supprimer Microsoft Store de la barre des tâches
+  $shell = New-Object -ComObject WScript.Shell
+  $shell.SendKeys('^{ESC}') # Ctrl+Esc
+  Start-Sleep -Seconds 1
+  $shell.SendKeys('microsoft store'); Start-Sleep -milliseconds 700
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 200
+  }
+
+    Function Uninstall-Default-Apps {
+# Désinstaller les applications préinstallées par Windows
+  $shell = New-Object -ComObject WScript.Shell
+
+# Delete Office
+  $shell.SendKeys('^{ESC}') # Ctrl+Esc
+  Start-Sleep -Seconds 1
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 500
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+
+ # Delete Xbox
+  Start-Sleep -Seconds 1
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 500
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+
+  # Delete Solitaire
+  Start-Sleep -Seconds 1
+  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 500
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  
+  # Delete Spotify
+  Start-Sleep -Seconds 1
+  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 500
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 200
+
+  # Delete Gramarly
+  Start-Sleep -Seconds 1
+  $shell.SendKeys('^{ESC}'); Start-Sleep -milliseconds 200 # Ctrl+Esc
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 500
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 200
+
+  # Delete Luminar
+  $shell.SendKeys('^{ESC}');Start-Sleep -milliseconds 200 # Ctrl+Esc
+  Start-Sleep -Seconds 1
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 500
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 200
+
+    # Delete LinkedIn
+  $shell.SendKeys('^{ESC}'); Start-Sleep -milliseconds 200 # Ctrl+Esc
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ESC}')
+  }
+
+  Function Set-Chrome-Taskbar {
+# Mettre chrome dans la barre des tâches
+  $shell = New-Object -ComObject WScript.Shell
+  $shell.SendKeys('^{ESC}') # Ctrl+Esc
+  Start-Sleep -Seconds 1
+  $shell.SendKeys('chrome')
+  Start-Sleep -Seconds 1
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ESC}')
+  }
+
+  Function Remove-Edge-Taskbar {
+# Supprimer Edge de la barre des tâches
+  $shell = New-Object -ComObject WScript.Shell
+  $shell.SendKeys('^{ESC}') # Ctrl+Esc
+  Start-Sleep -Seconds 1
+  $shell.SendKeys('microsoft edge'); Start-Sleep -milliseconds 700
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{UP}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 200
+  }
+
+ Function Script_Post_Deploiement {
+# Lancement de toutes les fonctions
+  Set-Chrome-Default
+  Start-Sleep -Seconds 2
+  Set-Acrobat-Default
+  Start-Sleep -Seconds 2
+  Remove-MicrosoftStore-Taskbar
+  Start-Sleep -Seconds 2
+  Uninstall-Default-Apps
+  Start-Sleep -Seconds 2
+  Set-Chrome-Taskbar
+  Start-Sleep -Seconds 2
+  Remove-Edge-Taskbar
+  }
+"@  # Script entier à mettre sur le bureau de la session du nouveau user
+
+    # Chemin complet du fichier script sur le bureau de l'utilisateur
+    $cheminFichierScript = Join-Path -Path $cheminBureauUtilisateur -ChildPath "Script_PostDeploiement.ps1"
+    
+    # Créer le fichier script avec le contenu donné
+    $contenuScript | Out-File -FilePath $cheminFichierScript -Force -Encoding UTF8
+})
+-------
 $Window_Create_User.FindName("btn_delete_user").add_click({ 
     $delete_user = $Window_Create_User.FindName("list_User").selectedItems
     $user_delete_splited = $delete_user.split(":")[0]
