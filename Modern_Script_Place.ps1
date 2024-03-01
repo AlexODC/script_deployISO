@@ -580,7 +580,7 @@ $Window_Install_Office.FindName("btn_install").add_click({
 $Window_Create_User.FindName("btn_quitter").add_click({ 
     $Window_Create_User.Hide()
 })
------
+
 $Window_Create_User.FindName("btn_create_user").add_click({
     $nomUtilisateur = $Window_Create_User.FindName("txt_name_user").Text
     $motDePasseTexte = $Window_Create_User.FindName("txt_password").Text
@@ -843,7 +843,7 @@ Function Set-Acrobat-Default {
     # Créer le fichier script avec le contenu donné
     $contenuScript | Out-File -FilePath $cheminFichierScript -Force -Encoding UTF8
 })
--------
+
 $Window_Create_User.FindName("btn_delete_user").add_click({ 
     $delete_user = $Window_Create_User.FindName("list_User").selectedItems
     $user_delete_splited = $delete_user.split(":")[0]
