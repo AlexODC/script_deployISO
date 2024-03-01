@@ -225,9 +225,6 @@ Function Set-Chrome-Taskbar {
   $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
   $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
   $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
-  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
   $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
   $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 200
   $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
