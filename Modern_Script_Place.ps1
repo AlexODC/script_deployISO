@@ -14,7 +14,7 @@ Pour ajouter une application à la liste de téléchargement
 $app_Dispo = @('1. Installer Office',
     '2. Installer OwnCloud (Attention REBOOT Automatique)',
     '3. Installer CyberReason',
-    '4. Installer Chrome'
+    '4. Installer Chrome (NON FONCTIONNEL)'
     '5. Installer Stormshield VPN SSL',
     '6. Installer OpenVPN Client'
 )
