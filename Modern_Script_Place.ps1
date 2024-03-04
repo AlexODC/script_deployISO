@@ -16,7 +16,9 @@ $app_Dispo = @('1. Installer Office',
     '3. Installer CyberReason',
     '4. Installer Chrome (NON FONCTIONNEL)'
     '5. Installer Stormshield VPN SSL',
-    '6. Installer OpenVPN Client'
+    '6. Installer OpenVPN Client',
+    '7. Installer Adobe Reader',
+    '8. Installer PDF Creator'
 )
 
 $app_URL_Downloader = @('',
@@ -24,7 +26,9 @@ $app_URL_Downloader = @('',
     'https://o360.odc.fr/s/k7OT8FI8UXYdeYG/download',
     'https://o360.odc.fr/s/oMpf1zOJdhO39Xe/download',
     'https://o360.odc.fr/s/gvvTioXseqSNdSp/download',
-    'https://openvpn.net/downloads/openvpn-connect-v3-windows.msi'
+    'https://openvpn.net/downloads/openvpn-connect-v3-windows.msi',
+    'https://o360.odc.fr/s/2wdRydaXNYormBm/download',
+    'https://o360.odc.fr/s/QxFTAhYgKtMFRMq/download'
 )
 
 $app_Package = @('',
@@ -32,7 +36,9 @@ $app_Package = @('',
     'CybereasonSensor.exe',
     'ChromeSetup.exe',
     'Stormshield_SSLVPN_Client_3.2.3_win10_fr_x64.msi',
-    'openvpn-connect-3.4.4.3412_signed.msi'
+    'openvpn-connect-3.4.4.3412_signed.msi',
+    'Reader_Install_Setup.exe',
+    'PDFCreator-5_2_0-Setup.exe'
 )
 
 ##################################################################################################
@@ -1133,7 +1139,7 @@ Function Download-And-Install-App {
     $localPath = Join-Path -Path $downloadsPath -ChildPath $appName
     $defaultPCName = "PC-NEW"
 
-   # Vérifie si l'application est Cybereason et si le nom du PC est le nom par défaut
+   # Vérifie si l'application est Cybereason et si le nom du PC est le nom par défaut, si = alors ne pas installer et afficher erreur
     if ($appName -eq "CybereasonSensor.exe" -and [System.Environment]::MachineName -eq $defaultPCName) {
         # Affiche une popup d'interdiction d'installation
          Add-Type -AssemblyName Microsoft.VisualBasic
