@@ -13,17 +13,26 @@ Pour ajouter une application à la liste de téléchargement
 #>
 $app_Dispo = @('1. Installer Office',
     '2. Installer OwnCloud (Attention REBOOT Automatique)',
-    '3. Installer CyberReason'
+    '3. Installer CyberReason',
+    '4. Installer Chrome'
+    '5. Installer Stormshield VPN SSL',
+    '6. Installer OpenVPN Client'
 )
 
 $app_URL_Downloader = @('',
     'https://o360.odc.fr/s/b2RDcDbQAOw2bMQ/download',
-    'https://o360.odc.fr/s/k7OT8FI8UXYdeYG/download'
+    'https://o360.odc.fr/s/k7OT8FI8UXYdeYG/download',
+    'https://www.google.com/intl/fr_fr/chrome/next-steps.html?statcb=0&installdataindex=empty&defaultbrowser=0#',
+    'https://o360.odc.fr/s/gvvTioXseqSNdSp/download',
+    'https://openvpn.net/downloads/openvpn-connect-v3-windows.msi'
 )
 
 $app_Package = @('',
     'ownCloud-5.2.1.13040.x64.msi',
-    'CybereasonSensor.exe'
+    'CybereasonSensor.exe',
+    'ChromeSetup.exe',
+    'Stormshield_SSLVPN_Client_3.2.3_win10_fr_x64',
+    'openvpn-connect-3.4.4.3412_signed'
 )
 
 ##################################################################################################
