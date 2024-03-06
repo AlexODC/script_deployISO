@@ -30,7 +30,7 @@ $app_URL_Downloader = @('',
     'https://openvpn.net/downloads/openvpn-connect-v3-windows.msi',
     'https://o360.odc.fr/s/2wdRydaXNYormBm/download',
     'https://o360.odc.fr/s/QxFTAhYgKtMFRMq/download',
-    'https://o360.odc.fr/s/Zw2wZlXvMNmttOf'
+    'https://o360.odc.fr/s/Zw2wZlXvMNmttOf/download'
 )
 
 $app_Package = @('',
@@ -41,7 +41,7 @@ $app_Package = @('',
     'openvpn-connect-3.4.4.3412_signed.msi',
     'Reader_Install_Setup.exe',
     'PDFCreator-5_2_0-Setup.exe',
-    '3CXPhoneforWindows16'
+    '3CXPhoneforWindows16.exe'
 )
 
 ##################################################################################################
