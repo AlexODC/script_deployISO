@@ -53,7 +53,7 @@ $office_dispo = @('1.Office 2019 Standard',
 '2.Office 2019 Pro Plus', 
 '3.Office 2021 Standard', 
 '4.Office 2021 Pro Plus', 
-'5.Office 365 Business', 
+'5.Office 365 Business Apps', 
 '6.Office SPLA'
 )
 
