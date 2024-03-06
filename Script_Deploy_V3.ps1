@@ -14,11 +14,12 @@ Pour ajouter une application à la liste de téléchargement
 $app_Dispo = @('1. Installer Office',
     '2. Installer OwnCloud (Attention REBOOT Automatique)',
     '3. Installer CyberReason',
-    '4. Installer Chrome (NON FONCTIONNEL)'
+    '4. Installer Chrome'
     '5. Installer Stormshield VPN SSL',
     '6. Installer OpenVPN Client',
     '7. Installer Adobe Reader',
-    '8. Installer PDF Creator'
+    '8. Installer PDF Creator',
+    '9. Installer 3CX Phone'
 )
 
 $app_URL_Downloader = @('',
@@ -28,7 +29,8 @@ $app_URL_Downloader = @('',
     'https://o360.odc.fr/s/gvvTioXseqSNdSp/download',
     'https://openvpn.net/downloads/openvpn-connect-v3-windows.msi',
     'https://o360.odc.fr/s/2wdRydaXNYormBm/download',
-    'https://o360.odc.fr/s/QxFTAhYgKtMFRMq/download'
+    'https://o360.odc.fr/s/QxFTAhYgKtMFRMq/download',
+    'https://o360.odc.fr/s/Zw2wZlXvMNmttOf/download'
 )
 
 $app_Package = @('',
@@ -38,7 +40,8 @@ $app_Package = @('',
     'Stormshield_SSLVPN_Client_3.2.3_win10_fr_x64.msi',
     'openvpn-connect-3.4.4.3412_signed.msi',
     'Reader_Install_Setup.exe',
-    'PDFCreator-5_2_0-Setup.exe'
+    'PDFCreator-5_2_0-Setup.exe',
+    '3CXPhoneforWindows16.msi'
 )
 
 ##################################################################################################
@@ -53,7 +56,7 @@ $office_dispo = @('1.Office 2019 Standard',
 '2.Office 2019 Pro Plus', 
 '3.Office 2021 Standard', 
 '4.Office 2021 Pro Plus', 
-'5.Office 365 Business', 
+'5.Office 365 Business Apps', 
 '6.Office SPLA'
 )
 
@@ -1139,10 +1142,10 @@ Function Download-And-Install-App {
     $localPath = Join-Path -Path $downloadsPath -ChildPath $appName
     $defaultPCName = "PC-NEW"
 
-   # Vérifie si l'application est Cybereason et si le nom du PC est le nom par défaut, si = alors ne pas installer et afficher erreur
+    # Vérifie si l'application est Cybereason et si le nom du PC est le nom par défaut, si oui alors ne pas installer et afficher erreur
     if ($appName -eq "CybereasonSensor.exe" -and [System.Environment]::MachineName -eq $defaultPCName) {
         # Affiche une popup d'interdiction d'installation
-         Add-Type -AssemblyName Microsoft.VisualBasic
+        Add-Type -AssemblyName Microsoft.VisualBasic
         [Microsoft.VisualBasic.Interaction]::MsgBox("Interdiction d'installer $appName car le PC n'est pas renommé.", 'OkOnly,SystemModal,Critical', "Erreur")
         Write-Host "Interdiction d'installer $appName car le PC n'est pas renommé." -ForegroundColor Red
         return # Interrompt l'exécution de la fonction pour Cybereason
@@ -1154,9 +1157,23 @@ Function Download-And-Install-App {
             if ($appName -like "*.msi") {
                 Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$localPath`" /qn" -Wait
                 Write-Host "$appName a été installée avec succès." -ForegroundColor Green
-            } else {
-                Start-Process -FilePath $localPath -Args "/S" -Wait
+            } elseif ($appName -eq "PDFCreator-5_2_0-Setup.exe") {
+                Start-Process -FilePath $localPath -Args "/VerySilent" -Wait
                 Write-Host "$appName a été installée avec succès." -ForegroundColor Green
+                # Suppression d'un fichier spécifique dans le dossier d'installation de PDFCreator
+                $fileToDelete = "C:\Program Files\PDFCreator\architect-launcher.exe" # Supprimer le exe PDFCreator causant le popup de pub
+                if (Test-Path $fileToDelete) {
+                    Remove-Item -Path $fileToDelete -Force
+                    Write-Host "Le fichier d'activation de publicités a été supprimé avec succès. La pop-up est désactivée pour PDFCreator." -ForegroundColor Green
+                }
+            } else {
+                if ($appName -eq "ChromeSetup.exe") {
+                    Start-Process -FilePath $localPath -Args "/silent /install" -Wait
+                    Write-Host "$appName a été installée avec succès." -ForegroundColor Green
+                } else {
+                    Start-Process -FilePath $localPath -Args "/S" -Wait
+                    Write-Host "$appName a été installée avec succès." -ForegroundColor Green
+                }
             }
         } else {
             Write-Host "Erreur : Impossible de trouver le fichier téléchargé." -ForegroundColor Red
