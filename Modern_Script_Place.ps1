@@ -19,7 +19,7 @@ $app_Dispo = @('1. Installer Office',
     '6. Installer OpenVPN Client',
     '7. Installer Adobe Reader',
     '8. Installer PDF Creator',
-    '9. Installer 3CX Phone'
+    '9. Installer 3CX Phone (NON FONCTIONNEL)'
 )
 
 $app_URL_Downloader = @('',
