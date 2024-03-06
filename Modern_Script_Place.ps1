@@ -1140,31 +1140,40 @@ Function Download-And-Install-App {
     $defaultPCName = "PC-NEW"
 
    # Vérifie si l'application est Cybereason et si le nom du PC est le nom par défaut, si = alors ne pas installer et afficher erreur
-    if ($appName -eq "CybereasonSensor.exe" -and [System.Environment]::MachineName -eq $defaultPCName) {
-        # Affiche une popup d'interdiction d'installation
-         Add-Type -AssemblyName Microsoft.VisualBasic
-        [Microsoft.VisualBasic.Interaction]::MsgBox("Interdiction d'installer $appName car le PC n'est pas renommé.", 'OkOnly,SystemModal,Critical', "Erreur")
-        Write-Host "Interdiction d'installer $appName car le PC n'est pas renommé." -ForegroundColor Red
-        return # Interrompt l'exécution de la fonction pour Cybereason
-    }
+if ($appName -eq "CybereasonSensor.exe" -and [System.Environment]::MachineName -eq $defaultPCName) {
+    # Affiche une popup d'interdiction d'installation
+     Add-Type -AssemblyName Microsoft.VisualBasic
+    [Microsoft.VisualBasic.Interaction]::MsgBox("Interdiction d'installer $appName car le PC n'est pas renommé.", 'OkOnly,SystemModal,Critical', "Erreur")
+    Write-Host "Interdiction d'installer $appName car le PC n'est pas renommé." -ForegroundColor Red
+    return # Interrompt l'exécution de la fonction pour Cybereason
+}
 
-    try {
-        Invoke-WebRequest -Uri $downloadLink -OutFile $localPath
-        if (Test-Path $localPath) {
-            if ($appName -like "*.msi") {
-                Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$localPath`" /qn" -Wait
-                Write-Host "$appName a été installée avec succès." -ForegroundColor Green
-            } else {
-                Start-Process -FilePath $localPath -Args "/S" -Wait
-                Write-Host "$appName a été installée avec succès." -ForegroundColor Green
+try {
+    Invoke-WebRequest -Uri $downloadLink -OutFile $localPath
+    if (Test-Path $localPath) {
+        if ($appName -like "*.msi") {
+            Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$localPath`" /qn" -Wait
+            Write-Host "$appName a été installée avec succès." -ForegroundColor Green
+        } elseif ($appName -eq "PDFCreator.exe") {
+            Start-Process -FilePath $localPath -Args "/S" -Wait
+            Write-Host "$appName a été installée avec succès." -ForegroundColor Green
+            # Suppression d'un fichier spécifique dans le dossier d'installation de PDFCreator
+            $fileToDelete = "C:\Program Files\architect-launcher.exe" # Supprimer le exe PDFCreator causant le popup de pub
+            if (Test-Path $fileToDelete) {
+                Remove-Item -Path $fileToDelete -Force
+                Write-Host "Le fichier d'activation de publicités a été supprimé avec succès. La pop-up est désactivé pour PDFCreator." -ForegroundColor Green
             }
         } else {
-            Write-Host "Erreur : Impossible de trouver le fichier téléchargé." -ForegroundColor Red
+            Start-Process -FilePath $localPath -Args "/S" -Wait
+            Write-Host "$appName a été installée avec succès." -ForegroundColor Green
         }
-    } catch {
-        Write-Host "Erreur lors du téléchargement ou de l'installation : $_" -ForegroundColor Red
+    } else {
+        Write-Host "Erreur : Impossible de trouver le fichier téléchargé." -ForegroundColor Red
     }
-    Remove-Item -Path $localPath -Force
+} catch {
+    Write-Host "Erreur lors du téléchargement ou de l'installation : $_" -ForegroundColor Red
+}
+Remove-Item -Path $localPath -Force
 }
 
 # Fonction pour détecter la version d'Office installée
