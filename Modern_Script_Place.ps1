@@ -1154,11 +1154,11 @@ try {
         if ($appName -like "*.msi") {
             Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$localPath`" /qn" -Wait
             Write-Host "$appName a été installée avec succès." -ForegroundColor Green
-        } elseif ($appName -eq "PDFCreator.exe") {
+        } elseif ($appName -eq "PDFCreator-5_2_0-Setup.exe") {
             Start-Process -FilePath $localPath -Args "/S" -Wait
             Write-Host "$appName a été installée avec succès." -ForegroundColor Green
             # Suppression d'un fichier spécifique dans le dossier d'installation de PDFCreator
-            $fileToDelete = "C:\Program Files\architect-launcher.exe" # Supprimer le exe PDFCreator causant le popup de pub
+            $fileToDelete = "C:\Program Files\PDFCreator\architect-launcher.exe" # Supprimer le exe PDFCreator causant le popup de pub
             if (Test-Path $fileToDelete) {
                 Remove-Item -Path $fileToDelete -Force
                 Write-Host "Le fichier d'activation de publicités a été supprimé avec succès. La pop-up est désactivé pour PDFCreator." -ForegroundColor Green
