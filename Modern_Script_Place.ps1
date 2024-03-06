@@ -19,7 +19,7 @@ $app_Dispo = @('1. Installer Office',
     '6. Installer OpenVPN Client',
     '7. Installer Adobe Reader',
     '8. Installer PDF Creator',
-    '9. Installer 3CX Phone (NON FONCTIONNEL)'
+    '9. Installer 3CX Phone'
 )
 
 $app_URL_Downloader = @('',
@@ -41,7 +41,7 @@ $app_Package = @('',
     'openvpn-connect-3.4.4.3412_signed.msi',
     'Reader_Install_Setup.exe',
     'PDFCreator-5_2_0-Setup.exe',
-    '3CXPhoneforWindows16.exe'
+    '3CXPhoneforWindows16.msi'
 )
 
 ##################################################################################################
