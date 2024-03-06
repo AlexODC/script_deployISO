@@ -13,17 +13,32 @@ Pour ajouter une application à la liste de téléchargement
 #>
 $app_Dispo = @('1. Installer Office',
     '2. Installer OwnCloud (Attention REBOOT Automatique)',
-    '3. Installer CyberReason'
+    '3. Installer CyberReason',
+    '4. Installer Chrome (NON FONCTIONNEL)'
+    '5. Installer Stormshield VPN SSL',
+    '6. Installer OpenVPN Client',
+    '7. Installer Adobe Reader',
+    '8. Installer PDF Creator'
 )
 
 $app_URL_Downloader = @('',
     'https://o360.odc.fr/s/b2RDcDbQAOw2bMQ/download',
-    'https://o360.odc.fr/s/k7OT8FI8UXYdeYG/download'
+    'https://o360.odc.fr/s/k7OT8FI8UXYdeYG/download',
+    'https://o360.odc.fr/s/oMpf1zOJdhO39Xe/download',
+    'https://o360.odc.fr/s/gvvTioXseqSNdSp/download',
+    'https://openvpn.net/downloads/openvpn-connect-v3-windows.msi',
+    'https://o360.odc.fr/s/2wdRydaXNYormBm/download',
+    'https://o360.odc.fr/s/QxFTAhYgKtMFRMq/download'
 )
 
 $app_Package = @('',
     'ownCloud-5.2.1.13040.x64.msi',
-    'CybereasonSensor.exe'
+    'CybereasonSensor.exe',
+    'ChromeSetup.exe',
+    'Stormshield_SSLVPN_Client_3.2.3_win10_fr_x64.msi',
+    'openvpn-connect-3.4.4.3412_signed.msi',
+    'Reader_Install_Setup.exe',
+    'PDFCreator-5_2_0-Setup.exe'
 )
 
 ##################################################################################################
@@ -90,6 +105,12 @@ $data_manger = @('BK',
 'Panda Wok',
 'Gourmet d Asie'
 )
+
+##################################################################################################
+
+
+
+
 ##################################################################################################
 
 # Définition des couleurs
@@ -103,7 +124,6 @@ If (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
     Exit
 }
 
-##################################################################################################
 ##################################################################################################
 
 #Déclaration de l'interface du menu principal
@@ -277,8 +297,8 @@ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         <Button Name="btn_compact_VHDX" Content="Compact VHDX" HorizontalAlignment="Center" Margin="10,91,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
         <Button Name="btn_Disable_UAC" Content="Désactiver les UAC" HorizontalAlignment="Center" Margin="10,172,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="true"/>
         <Button Name="btn_Clear_Log" Content="OK Cindy ! (Clear Log)" HorizontalAlignment="Center" Margin="10,253,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="true"/>
-        <Button Name="btn_4" Content="Coming soon" HorizontalAlignment="Center" Margin="10,334,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="False"/>
-        <Button Name="btn_autre_outil" Content="Autre Outil" HorizontalAlignment="Center" Margin="10,415,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="False"/>
+        <Button Name="btn_Disable_Cybereason" Content="Désactiver Cybereason (Nécessite un redémarrage du poste)" HorizontalAlignment="Center" Margin="10,334,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="true"/>
+        <Button Name="btn_autre_outil" Content="Autre Outil" HorizontalAlignment="Center" Margin="10,415,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="true"/>
         <Button Name="btn_quitter" Content="Quitter" HorizontalAlignment="Left" Margin="10,555,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
     </Grid>
 </Window>
@@ -343,6 +363,29 @@ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     </Grid>
 </Window>
 "@
+
+##################################################################################################
+##################################################################################################
+
+#Déclaration de l'interface du menu autre
+[xml]$XML_Menu_Autre_Autre = @"
+<Window
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Title="Modern Script Place (Suite)" Height="680" Width="430">
+    <Grid Margin="0,0,10,-6">
+        <Button Name="btn_uninstal_sophos" Content="Désinstallation Sophos" HorizontalAlignment="Center" Margin="10,10,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="true"/>
+        <Button Name="btn_2" Content="Coming Soon !" HorizontalAlignment="Center" Margin="10,91,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="false"/>
+        <Button Name="btn_3" Content="Coming Soon !" HorizontalAlignment="Center" Margin="10,172,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="false"/>
+        <Button Name="btn_4" Content="Coming Soon !" HorizontalAlignment="Center" Margin="10,253,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="false"/>
+        <Button Name="btn_5" Content="Coming Soon !" HorizontalAlignment="Center" Margin="10,334,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="false"/>
+        <Button Name="btn_autre_outil" Content="Autre Outil" HorizontalAlignment="Center" Margin="10,415,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="False"/>
+        <Button Name="btn_quitter" Content="Quitter" HorizontalAlignment="Left" Margin="10,555,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
+    </Grid>
+</Window>
+"@
+
 ##################################################################################################
 ##################################################################################################
 ##################################################################################################
@@ -389,6 +432,10 @@ $Window_Compact_VHDX = [Windows.Markup.XamlReader]::Load($FormXML_Compact_VHDX)
 #Setup de l'interface XML_Manger
 $FormXML_Manger = (New-Object System.Xml.XmlNodeReader $XML_Manger)
 $Window_Manger = [Windows.Markup.XamlReader]::Load($FormXML_Manger)
+
+#Setup de l'interface XML_Menu_Autre
+$FormXML_Menu_Autre_Autre = (New-Object System.Xml.XmlNodeReader $XML_Menu_Autre_Autre)
+$Window_Menu_Autre_Autre = [Windows.Markup.XamlReader]::Load($FormXML_Menu_Autre_Autre)
 
 ##################################################################################################
 ##################################################################################################
@@ -484,7 +531,7 @@ $Window_Install_App.FindName("btn_quitter").add_click({
 $Window_Install_App.FindName("btn_install").add_click({
     $app_to_install = $Window_Install_App.FindName("List_Application").selectedItems
     $app_splited = $app_to_install.split(".")[0]
-    if ($app_splited = 1 ){
+    if ($app_splited -eq 1 ){
         $Window_Install_Office.ShowDialog()
     } else {
         Download-And-Install-App -downloadLink $app_URL_Downloader[$app_splited-1] -appName $app_Package[$app_splited-1]
@@ -550,19 +597,260 @@ $Window_Create_User.FindName("btn_quitter").add_click({
 })
 
 $Window_Create_User.FindName("btn_create_user").add_click({
+    $nomUtilisateur = $Window_Create_User.FindName("txt_name_user").Text
     $params = @{
-        Name        = $Window_Create_User.FindName("txt_name_user").Text
+        Name        = $nomUtilisateur
         Password    = ConvertTo-SecureString $Window_Create_User.FindName("txt_password").Text -AsPlainText -Force 
         FullName    = $Window_Create_User.FindName("txt_name_display").Text
         Description = $Window_Create_User.FindName("txt_description").Text
     }
     New-LocalUser @params
-    Write-Host "L'utilisateur a bien été créé !" -ForegroundColor $GreenColor
+    Write-Host "L'utilisateur a bien été créé !" -ForegroundColor Green
     
+    # Mettre à jour la liste des utilisateurs
     $Window_Create_User.FindName("list_User").Items.Clear()
     foreach ($user in Get-LocalUser) {
         $Window_Create_User.FindName("list_User").Items.Add($user.Name + ":" + $user.Enabled)
     }
+    
+    # Construction du chemin du bureau de l'utilisateur
+    $cheminBureauUtilisateur = "C:\Users\$nomUtilisateur\Desktop"
+    
+    # Le contenu du script à créer
+    $contenuScript = @"
+# Déclaration du script pour déployer un nouveau user.
+# Code fonctionnel sur Windows 11 uniquement.
+
+Function Set-Chrome-Default {
+  Stop-Process -ErrorAction Ignore -Name SystemSettings
+  Start-Process ms-settings:defaultapps
+  $ps = Get-Process -ErrorAction Stop SystemSettings
+  do {
+    Start-Sleep -milliseconds 200
+    $ps.Refresh()
+  } while ([int] $ps.MainWindowHandle)
+  Start-Sleep -Milliseconds 200
+  # Entering key strokes mode.
+  $shell = New-Object -ComObject WScript.Shell
+  # Tab to the "Set defaults for applications".
+  foreach ($i in 1..4) { $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200 }
+  # Set Chrome as a defaults browser
+  $shell.SendKeys("chrom"); Start-Sleep -seconds 1
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 300
+  $shell.SendKeys('%{F4}')
+}
+
+Function Set-Acrobat-Default {
+# CODE A APPLIQUER SUR LE COMPTE UTILISATEUR. IL FAUT DONC INTEGRER CE CODE DANS UN SCRIPT OU TACHE PLANNIFIEE.
+  Stop-Process -ErrorAction Ignore -Name SystemSettings
+  Start-Process ms-settings:defaultapps
+  $ps = Get-Process -ErrorAction Stop SystemSettings
+  do {
+    Start-Sleep -milliseconds 200
+    $ps.Refresh()
+  } while ([int] $ps.MainWindowHandle)
+  Start-Sleep -Milliseconds 200
+  # Entering key strokes mode.
+  $shell = New-Object -ComObject WScript.Shell
+  # Tab to the "Set defaults for applications".
+  foreach ($i in 1..4) { $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200 }
+  # Set Adobe as a defaults browser
+  $shell.SendKeys("adobe acrobat"); Start-Sleep -seconds 2
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 500
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('%{F4}')
+  }
+
+    Function Remove-MicrosoftStore-Taskbar {
+# Supprimer Microsoft Store de la barre des tâches
+  $shell = New-Object -ComObject WScript.Shell
+  $shell.SendKeys('^{ESC}') # Ctrl+Esc
+  Start-Sleep -Seconds 1
+  $shell.SendKeys('microsoft store'); Start-Sleep -milliseconds 700
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 200
+  }
+
+    Function Uninstall-Default-Apps {
+# Désinstaller les applications préinstallées par Windows
+  $shell = New-Object -ComObject WScript.Shell
+
+# Delete Office
+  $shell.SendKeys('^{ESC}') # Ctrl+Esc
+  Start-Sleep -Seconds 1
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 500
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+
+ # Delete Xbox
+  Start-Sleep -Seconds 1
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 500
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+
+  # Delete Solitaire
+  Start-Sleep -Seconds 1
+  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 500
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  
+  # Delete Spotify
+  Start-Sleep -Seconds 1
+  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 500
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 200
+
+  # Delete Gramarly
+  Start-Sleep -Seconds 1
+  $shell.SendKeys('^{ESC}'); Start-Sleep -milliseconds 200 # Ctrl+Esc
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 500
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 200
+
+  # Delete Luminar
+  $shell.SendKeys('^{ESC}');Start-Sleep -milliseconds 200 # Ctrl+Esc
+  Start-Sleep -Seconds 1
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 500
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 200
+
+    # Delete LinkedIn
+  $shell.SendKeys('^{ESC}'); Start-Sleep -milliseconds 200 # Ctrl+Esc
+  $shell.SendKeys('{TAB}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('+{F10}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{LEFT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ESC}')
+  }
+
+  Function Set-Chrome-Taskbar {
+# Mettre chrome dans la barre des tâches
+  $shell = New-Object -ComObject WScript.Shell
+  $shell.SendKeys('^{ESC}') # Ctrl+Esc
+  Start-Sleep -Seconds 1
+  $shell.SendKeys('chrome')
+  Start-Sleep -Seconds 1
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ESC}')
+  }
+
+  Function Remove-Edge-Taskbar {
+# Supprimer Edge de la barre des tâches
+  $shell = New-Object -ComObject WScript.Shell
+  $shell.SendKeys('^{ESC}') # Ctrl+Esc
+  Start-Sleep -Seconds 1
+  $shell.SendKeys('microsoft edge'); Start-Sleep -milliseconds 700
+  $shell.SendKeys('{RIGHT}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{DOWN}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{UP}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ENTER}'); Start-Sleep -milliseconds 200
+  $shell.SendKeys('{ESC}'); Start-Sleep -milliseconds 200
+  }
+
+ Function Script_Post_Deploiement {
+# Lancement de toutes les fonctions
+  Set-Chrome-Default
+  Start-Sleep -Seconds 2
+  Set-Acrobat-Default
+  Start-Sleep -Seconds 2
+  Remove-MicrosoftStore-Taskbar
+  Start-Sleep -Seconds 2
+  Uninstall-Default-Apps
+  Start-Sleep -Seconds 2
+  Set-Chrome-Taskbar
+  Start-Sleep -Seconds 2
+  Remove-Edge-Taskbar
+  }
+"@  # Script entier à mettre sur le bureau de la session du nouveau user
+
+    # Chemin complet du fichier script sur le bureau de l'utilisateur
+    $cheminFichierScript = Join-Path -Path $cheminBureauUtilisateur -ChildPath "Script_PostDeploiement.ps1"
+    
+    # Créer le fichier script avec le contenu donné
+    $contenuScript | Out-File -FilePath $cheminFichierScript -Force -Encoding UTF8
 })
 
 $Window_Create_User.FindName("btn_delete_user").add_click({ 
@@ -570,7 +858,7 @@ $Window_Create_User.FindName("btn_delete_user").add_click({
     $user_delete_splited = $delete_user.split(":")[0]
     Remove-LocalUser -Name $user_delete_splited
 
-    Write-Host "L'utilisateur $user_splited a été supprimé !" -ForegroundColor $GreenColor
+    Write-Host "L'utilisateur $user_splited a été supprimé !" -ForegroundColor Green
     
     $Window_Create_User.FindName("list_User").Items.Clear()
     foreach ($user in Get-LocalUser) {
@@ -584,7 +872,7 @@ $Window_Create_User.FindName("btn_set_admin_user").add_click({
     $user_splited = $set_admin_user.split(":")[0]
 
     Add-LocalGroupMember -Group "Administrateurs" -Member $user_splited
-    Write-Host "L'utilisateur $user_splited est administrateur du poste !" -ForegroundColor $GreenColor
+    Write-Host "L'utilisateur $user_splited est administrateur du poste !" -ForegroundColor Green
 })
 
 
@@ -616,15 +904,56 @@ $Window_Menu_Autre.FindName("btn_compact_VHDX").add_click({
 
 $Window_Menu_Autre.FindName("btn_Disable_UAC").add_click({ 
     Set-ItemProperty -Path REGISTRY::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System -Name ConsentPromptBehaviorAdmin -Value 0
-    Write-Host "Les UAC sont a présent désactiver, merci de redémarrer le poste" -ForegroundColor $GreenColor
+    Write-Host "Les UAC sont a présent désactiver, merci de redémarrer le poste" -ForegroundColor Green
 })
 
 $Window_Menu_Autre.FindName("btn_Clear_Log").add_click({ 
     Ok-Cindy-Clear-Log
 })
 
+$Window_Menu_Autre.FindName("btn_Disable_Cybereason").add_click({ 
+    $path = 'HKLM:SOFTWARE\Microsoft\Shared Tools\MSConfig\services'
+    $keys = @('CybereasonActiveProbe',
+        'CybereasonAntiMalware',
+        'CybereasonBlocki',
+        'CybereasonCRS',
+        'CybereasonNnx',
+        'CybereasonProtectedSvc',
+        'CybereasonWscIf'
+    )
 
+    $dateHeure = Get-Date
 
+    $jour = $dateHeure.Day
+    $mois = $dateHeure.Month
+    $annee = $dateHeure.Year
+    $heure = $dateHeure.Hour
+    $minute = $dateHeure.Minute
+    $seconde = $dateHeure.Second
+
+    foreach ($key in $keys) {
+        New-Item -Path "$path\$key" -Force
+        New-ItemProperty -Path "$path\$key" -Name '$key' -PropertyType DWORD -Value 0x2
+        New-ItemProperty -Path "$path\$key" -Name 'DAY' -PropertyType DWORD -Value $jour
+        New-ItemProperty -Path "$path\$key" -Name 'HOUR' -PropertyType DWORD -Value $heure
+        New-ItemProperty -Path "$path\$key" -Name 'MINUTE' -PropertyType DWORD -Value $minute
+        New-ItemProperty -Path "$path\$key" -Name 'MONTH' -PropertyType DWORD -Value $mois
+        New-ItemProperty -Path "$path\$key" -Name 'SECOND' -PropertyType DWORD -Value $seconde
+        New-ItemProperty -Path "$path\$key" -Name 'YEAR' -PropertyType DWORD -Value $annee
+    }
+
+    Set-Service -Name CybereasonActiveProbe -StartupType Disabled
+    Set-Service -Name CybereasonAntiMalware -StartupType Disabled
+    Set-Service -Name CybereasonCRS -StartupType Disabled
+    Set-Service -Name CybereasonBlocki -StartupType Disabled
+    Set-Service -Name CybereasonNnx -StartupType Disabled
+    Set-Service -Name CybereasonProtectedSvc -StartupType Disabled
+    Set-Service -Name CybereasonWscIf -StartupType Disabled
+})
+
+$Window_Menu_Autre.FindName("btn_autre_outil").add_click({ 
+    $Window_Menu_Autre_Autre.ShowDialog()
+})
 
 $Window_Menu_Autre.FindName("btn_quitter").add_click({ 
     $Window_Menu_Autre.Hide()
@@ -646,7 +975,7 @@ $Window_Default_Printer.FindName("btn_explosion").add_click({
     $printer = Get-CimInstance -Class Win32_Printer -Filter "Name='$valeur'"
     Invoke-CimMethod -InputObject $printer -MethodName SetDefaultPrinter
     
-    Write-Host "L'imprimante $printer est a présent par défaut !" -ForegroundColor $GreenColor
+    Write-Host "L'imprimante $printer est a présent par défaut !" -ForegroundColor Green
 })
 
 $Window_Default_Printer.FindName("btn_quitter").add_click({ 
@@ -666,7 +995,7 @@ $Window_Compact_VHDX.FindName("btn_compact_vhdx").add_click({
     $go_to_VHDX = $Window_Compact_VHDX.FindName("txt_repertoire_VHDX").Text
 
     if (Test-Path -Path $go_to_VHDX) {
-        Write-Host "Dossier de VHDX trouvé ! " -ForegroundColor $GreenColor
+        Write-Host "Dossier de VHDX trouvé ! " -ForegroundColor Green
 
         $vhdxList = Get-ChildItem $PSScriptRoot *.vhdx
         foreach($vhdx in $vhdxList){
@@ -690,7 +1019,7 @@ $Window_Compact_VHDX.FindName("btn_compact_vhdx").add_click({
 
 ##################################################################################################
 
-#Déclaration des actions des boutons du menu Compact VHDX
+#Déclaration des actions des boutons du menu Manger
 
 $Window_Manger.FindName("btn_quitter").add_click({ 
     $Window_Manger.Hide()
@@ -699,6 +1028,26 @@ $Window_Manger.FindName("btn_quitter").add_click({
 $Window_Manger.FindName("btn_manger").add_click({ 
     $manger = $data_manger | Get-Random
     $Window_Manger.FindName("lbl_manger").Content = $manger
+})
+
+##################################################################################################
+
+#Déclaration des actions des boutons du menu Autre autre
+$Window_Menu_Autre_Autre.FindName("btn_quitter").add_click({ 
+    $Window_Menu_Autre_Autre.Hide() 
+}) 
+
+$Window_Menu_Autre_Autre.FindName("btn_uninstal_sophos").add_click({ 
+    $desktopPath = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::Desktop)
+    #"" >> "$desktopPath\Sophos_Uninstaller.bat"
+
+    $SophosUninstallerDownloadLink = "https://o360.odc.fr/s/QfjXvKHGUnUu2Xj/download"
+    $SophosUninstallerExePath = "$desktopPath\Install_Office_2021_SPLA.exe"
+
+    Invoke-WebRequest -Uri $SophosUninstallerDownloadLink -OutFile $SophosUninstallerExePath
+
+    Start-Process -FilePath "$desktopPath\Sophos_Uninstaller.bat" -Verb RunAs -Wait
+    Remove-Item "$desktopPath\Sophos_Uninstaller.bat"
 })
 
 ##################################################################################################
@@ -742,41 +1091,7 @@ $Window_Manger.FindName("btn_manger").add_click({
 ##################################################################################################
 
 Function Applicate-Default-Setup {
-    Param (
-        [String]$choice
-    )
-    Write-Host $choice
-    Switch ($choice)
-    {
-        "1" { 
-            Set-Chrome-Default
-        }
-        "2" { 
-            Set-Chrome-Task-Bar
-        }
-        "3" { 
-            "bloc de code (instructions)" 
-        }
-        "4" { 
-            "bloc de code (instructions)" 
-        }
-        "5" { 
-            "bloc de code (instructions)" 
-        }
-        "6" { 
-            "bloc de code (instructions)" 
-        }
-        "7" { 
-            "bloc de code (instructions)" 
-        }
-        "8" { 
-            "bloc de code (instructions)" 
-        }
-        "9" { 
-            "bloc de code (instructions)" 
-        }
-        Default { Write-Host "Aucun choix n'a était sélectionné" }
-    }
+   Write-Host "Rien pour l'instant"
 }
 
 Function Ok-Cindy-Clear-Log {
@@ -812,39 +1127,6 @@ Function Ok-Cindy-Clear-Log {
     CleanLogfiles($ETLLoggingPath2)
 }
 
-Function Set-Chrome-Default {
-    # Définir l'ID de l'application Chrome
-    $chromeAppId = "XXXXX"
-
-    # Créer la sous-clé et la valeur
-    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\App Paths\html" -Name "(Default)" -Value $chromeAppId -Type DWORD
-
-    # Redémarrer l'explorateur Windows
-    Restart-Process -Name "explorer"
-}
-
-Function Set-Chrome-Task-Bar {
-    # Créer un objet ShellLink
-    $shellLink = New-Object -ComObject Shell.Application
-
-    # Définir la propriété TargetPath vers le fichier exécutable de Chrome
-    $shellLink.TargetPath = "C:\Program Files\Google\Chrome\chrome.exe"
-
-    # Définir la propriété Arguments pour lancer Chrome en mode maximisé
-    $shellLink.Arguments = "-start-maximized"
-
-    # Définir la propriété WorkingDirectory vers le dossier de Chrome
-    $shellLink.WorkingDirectory = "C:\Program Files\Google\Chrome"
-
-    # Définir la propriété Description
-    $shellLink.Description = "Google Chrome"
-
-    # Enregistrer le raccourci dans le dossier de la barre des tâches
-    $shellLink.SaveLink($env:APPDATA + "\Microsoft\Windows\Start Menu\Programs\Start Menu\Google Chrome.lnk")
-
-    # Épingler le raccourci à la barre des tâches
-    Add-AppxPackage -Path $env:APPDATA + "\Microsoft\Windows\Start Menu\Programs\Start Menu\Google Chrome.lnk" -Register
-}
 
 # Fonction pour télécharger et installer une application depuis un lien public OwnCloud, Cybereason, etc.
 Function Download-And-Install-App {
@@ -852,24 +1134,35 @@ Function Download-And-Install-App {
         [string]$downloadLink,
         [string]$appName
     )
+
     $downloadsPath = [System.Environment]::GetFolderPath('UserProfile') + '\Downloads'
     $localPath = Join-Path -Path $downloadsPath -ChildPath $appName
+    $defaultPCName = "PC-NEW"
+
+   # Vérifie si l'application est Cybereason et si le nom du PC est le nom par défaut, si = alors ne pas installer et afficher erreur
+    if ($appName -eq "CybereasonSensor.exe" -and [System.Environment]::MachineName -eq $defaultPCName) {
+        # Affiche une popup d'interdiction d'installation
+         Add-Type -AssemblyName Microsoft.VisualBasic
+        [Microsoft.VisualBasic.Interaction]::MsgBox("Interdiction d'installer $appName car le PC n'est pas renommé.", 'OkOnly,SystemModal,Critical', "Erreur")
+        Write-Host "Interdiction d'installer $appName car le PC n'est pas renommé." -ForegroundColor Red
+        return # Interrompt l'exécution de la fonction pour Cybereason
+    }
 
     try {
         Invoke-WebRequest -Uri $downloadLink -OutFile $localPath
         if (Test-Path $localPath) {
             if ($appName -like "*.msi") {
                 Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$localPath`" /qn" -Wait
-                Write-Host "$appName a été installée avec succÃ¨s." -ForegroundColor $GreenColor
+                Write-Host "$appName a été installée avec succès." -ForegroundColor Green
             } else {
                 Start-Process -FilePath $localPath -Args "/S" -Wait
-                Write-Host "$appName a été installée avec succÃ¨s." -ForegroundColor $GreenColor
+                Write-Host "$appName a été installée avec succès." -ForegroundColor Green
             }
         } else {
-            Write-Host "Erreur : Impossible de trouver le fichier téléchargé." -ForegroundColor $RedColor
+            Write-Host "Erreur : Impossible de trouver le fichier téléchargé." -ForegroundColor Red
         }
     } catch {
-        Write-Host "Erreur lors du téléchargement ou de l'installation : $_" -ForegroundColor $RedColor
+        Write-Host "Erreur lors du téléchargement ou de l'installation : $_" -ForegroundColor Red
     }
     Remove-Item -Path $localPath -Force
 }
@@ -905,17 +1198,25 @@ Function Install-Office {
     }
 
     # Installation de la nouvelle version d'Office
-    Write-Host "Installation de $officeVersion en cours..." -ForegroundColor $GreenColor
+    Write-Host "Installation de $officeVersion en cours..." -ForegroundColor Green
     Start-Process -FilePath "$ODTPath\setup.exe" -ArgumentList "/configure `"$XMLPath`"" -NoNewWindow -Wait
+}
+
+# Vérifier et installer le fournisseur NuGet si nécessaire
+Function Check-And-Install-NuGet {
+    if (-not (Get-PackageProvider -ListAvailable -Name NuGet)) {
+        Install-PackageProvider -Name NuGet -Force
+        Import-PackageProvider -Name NuGet -Force
+    }
 }
 
 # Fonction pour installer toutes les mises à jour Windows, y compris les facultatives
 Function Install-WindowsUpdates {
-    Write-Host "Lancement des mises à jours Windows"
+    Write-Host "Lancement des mises à jours Windows. Merci d'ignorer le message d'avertisssment (jaune)."
     Check-And-Install-NuGet
 
     if (Get-Module -ListAvailable -Name PSWindowsUpdate) {
-        Remove-Module -Name PSWindowsUpdate -Force -ErrorAction SilentlyContinue
+        Import-Module -Name PSWindowsUpdate
     }
     Install-Module -Name PSWindowsUpdate -Force -AllowClobber
 
@@ -924,32 +1225,40 @@ Function Install-WindowsUpdates {
 
     if ($updates.Count -gt 0) {
         foreach ($update in $updates) {
-            Write-Host "Installation de la mise à jour : $($update.Title)" -ForegroundColor $GreenColor
+            Write-Host "Installation de la mise à jour : $($update.Title)" -ForegroundColor Green
             Install-WindowsUpdate -KBArticleID $update.KBArticleID -AutoReboot:$false -Confirm:$false -IgnoreRebootRequired
             if ($update.IsRebootRequired) {
                 $rebootRequired = $true
             }
         }
         if ($rebootRequired) {
-            Write-Host "Redémarrage nécessaire pour terminer l'installation des mises à jour. Veuillez redémarrer votre ordinateur." -ForegroundColor $OrangeText
+            Write-Host "Redémarrage nécessaire pour terminer l'installation des mises à jour. Veuillez redémarrer votre ordinateur." -ForegroundColor DarkYellow
         } else {
-            Write-Host "Toutes les mises à jour ont été installallées. Un redémarrage pourrait être nécessaire pour appliquer les mises à jour." -ForegroundColor $OrangeText
+            Write-Host "Toutes les mises à jour ont été installallées. Un redémarrage pourrait être nécessaire pour appliquer les mises à jour." -ForegroundColor DarkYellow
+            Start-Sleep -Seconds 30
         }
     } else {
-        Write-Host "Aucune mise à jour Windows disponible." -ForegroundColor $GreenColor
+        Write-Host "Aucune mise à jour Windows disponible. Windows Update est à jour." -ForegroundColor Green
     }
     return
 }
 
 # Fonction pour mettre à jour les applications du Windows Store
 Function Update-WindowsStoreApps {
-    Write-Host "Lancement des mises à jours des applications" -ForegroundColor $GreenColor
+    Start-Sleep -Seconds 60
+    Write-Host "Lancement des mises à jours des applications" -ForegroundColor Green
     $wingetPath = "$env:LOCALAPPDATA\Microsoft\WindowsApps\winget.exe"
     if (Test-Path $wingetPath) {
-        winget upgrade --all --force --accept-package-agreements --accept-source-agreements
-        Write-Host "Les mises à jour des applications Windows Store ont été effectuées." -ForegroundColor $GreenColor
+       # Initialiser winget en vérifiant sa version (pour bait l'erreur)
+        Write-Host "Initialisation de winget, veuillez ignorer l'erreur." -ForegroundColor DarkYellow
+        Start-Process -FilePath "winget.exe" -ArgumentList "--version" -NoNewWindow -Wait
+        # Pause pour s'assurer que winget a le temps de s'initialiser
+        Start-Sleep -Seconds 5
+        # Mise à jour des apps
+        Start-Process -FilePath "winget.exe" -ArgumentList "upgrade --all --force --accept-package-agreements --accept-source-agreements" -NoNewWindow -Wait
+        Write-Host "Les mises à jour des applications Windows Store ont été effectuées." -ForegroundColor Green
     } else {
-        Write-Host "Winget n'est pas installé." -ForegroundColor $RedColor
+        Write-Host "Winget n'est pas installé." -ForegroundColor Red
     }
     return 
 }
