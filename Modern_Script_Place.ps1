@@ -1163,7 +1163,10 @@ try {
                 Remove-Item -Path $fileToDelete -Force
                 Write-Host "Le fichier d'activation de publicités a été supprimé avec succès. La pop-up est désactivé pour PDFCreator." -ForegroundColor Green
             }
-        } else {
+            elseif ($appName -eq "ChromeSetup.exe") {
+            Start-Process -FilePath $localPath -Args "/silent /install" -Wait
+            Write-Host "$appName a été installée avec succès." -ForegroundColor Green
+            } else {
             Start-Process -FilePath $localPath -Args "/S" -Wait
             Write-Host "$appName a été installée avec succès." -ForegroundColor Green
         }
