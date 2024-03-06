@@ -18,7 +18,8 @@ $app_Dispo = @('1. Installer Office',
     '5. Installer Stormshield VPN SSL',
     '6. Installer OpenVPN Client',
     '7. Installer Adobe Reader',
-    '8. Installer PDF Creator'
+    '8. Installer PDF Creator',
+    '9. Installer 3CX Phone'
 )
 
 $app_URL_Downloader = @('',
@@ -28,7 +29,8 @@ $app_URL_Downloader = @('',
     'https://o360.odc.fr/s/gvvTioXseqSNdSp/download',
     'https://openvpn.net/downloads/openvpn-connect-v3-windows.msi',
     'https://o360.odc.fr/s/2wdRydaXNYormBm/download',
-    'https://o360.odc.fr/s/QxFTAhYgKtMFRMq/download'
+    'https://o360.odc.fr/s/QxFTAhYgKtMFRMq/download',
+    'https://o360.odc.fr/s/Zw2wZlXvMNmttOf'
 )
 
 $app_Package = @('',
@@ -38,7 +40,8 @@ $app_Package = @('',
     'Stormshield_SSLVPN_Client_3.2.3_win10_fr_x64.msi',
     'openvpn-connect-3.4.4.3412_signed.msi',
     'Reader_Install_Setup.exe',
-    'PDFCreator-5_2_0-Setup.exe'
+    'PDFCreator-5_2_0-Setup.exe',
+    '3CXPhoneforWindows16'
 )
 
 ##################################################################################################
