@@ -907,7 +907,7 @@ $Window_Menu_Autre.FindName("btn_compact_VHDX").add_click({
 
 $Window_Menu_Autre.FindName("btn_Disable_UAC").add_click({ 
     Set-ItemProperty -Path REGISTRY::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System -Name ConsentPromptBehaviorAdmin -Value 0
-    Write-Host "Les UAC sont a présent désactiver, merci de redémarrer le poste" -ForegroundColor Green
+    Write-Host "Les UAC sont a présent désactivées, merci de redémarrer le poste" -ForegroundColor Green
 })
 
 $Window_Menu_Autre.FindName("btn_Clear_Log").add_click({ 
