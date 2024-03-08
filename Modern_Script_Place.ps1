@@ -140,7 +140,7 @@ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         <Button Name="btn_maj_pc" Content="Mettre à jour le PC (Windows et applications Windows Store)" HorizontalAlignment="Center" Margin="10,10,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
         <Button Name="btn_rename_pc" Content="Renommer cet ordinateur et le mettre sur un domaine" HorizontalAlignment="Center" Margin="10,91,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
         <Button Name="btn_install_software" Content="Installer des applications supplémentaires" HorizontalAlignment="Center" Margin="10,172,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
-        <Button Name="btn_create_user" Content="Gérer les utilisateurs local" HorizontalAlignment="Center" Margin="10,253,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
+        <Button Name="btn_create_user" Content="Gérer les utilisateurs locaux" HorizontalAlignment="Center" Margin="10,253,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
         <Button Name="btn_default_setup" Content="Mise des applications par défaut et d'autre truc" HorizontalAlignment="Center" Margin="10,334,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="True"/>
         <Button Name="btn_quitter" Content="Quitter" HorizontalAlignment="Center" Margin="10,555,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
         <Button Name="btn_autre_outil" Content="Autre Outil" HorizontalAlignment="Center" Margin="10,415,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="True"/>
@@ -223,7 +223,7 @@ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     <Grid>
         <RadioButton GroupName="rb_Domaine" Name="rb_domaine_oui" Content="Oui" HorizontalAlignment="Left" Margin="10,33,0,0" VerticalAlignment="Top"/>
         <RadioButton GroupName="rb_Domaine" Name="rb_domaine_non" Content="Non" IsChecked="True" HorizontalAlignment="Left" Margin="10,53,0,0" VerticalAlignment="Top"/>
-        <Label Content="Voulez-vous intégrer le PC à un domaine ?" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <Label Content="Voulez-vous intégrer le PC à un domaine ? (NON FONCTIONNEL)" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
         <Label Content="Nom du PC" HorizontalAlignment="Left" Margin="10,95,0,0" VerticalAlignment="Top"/>
         <TextBox Name="txt_nom_pc" HorizontalAlignment="Left" Margin="10,121,0,0" TextWrapping="Wrap" Text="PC-" VerticalAlignment="Top" Width="234"/>
         <Button Name="btn_quitter" Content="Quitter" HorizontalAlignment="Left" Margin="10,348,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
