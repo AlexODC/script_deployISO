@@ -1263,23 +1263,28 @@ Function Install-WindowsUpdates {
 # Fonction pour mettre à jour les applications du Windows Store
 Function Update-WindowsStoreApps {
     Start-Sleep -Seconds 60
-    Write-Host "Lancement des mises à jours des applications" -ForegroundColor Green
+    Write-Host "Lancement des mises à jour des applications" -ForegroundColor Green
     $wingetPath = "$env:LOCALAPPDATA\Microsoft\WindowsApps\winget.exe"
     if (Test-Path $wingetPath) {
-       # Initialiser winget en vérifiant sa version (pour bait l'erreur)
         Write-Host "Initialisation de winget, veuillez ignorer l'erreur." -ForegroundColor DarkYellow
         Start-Process -FilePath "winget.exe" -ArgumentList "--version" -NoNewWindow -Wait
-        # Pause pour s'assurer que winget a le temps de s'initialiser
         Start-Sleep -Seconds 5
-        # Mise à jour des apps
         Start-Process -FilePath "winget.exe" -ArgumentList "upgrade --all --force --accept-package-agreements --accept-source-agreements" -NoNewWindow -Wait
         Write-Host "Les mises à jour des applications Windows Store ont été effectuées." -ForegroundColor Green
     } else {
-        Write-Host "Winget n'est pas installé." -ForegroundColor Red
+        Write-Host "Winget n'est pas installé. Tentative d'ouverture du Microsoft Store pour installation..." -ForegroundColor Red
+        Start-Process "ms-windows-store://pdp/?ProductId=9NBLGGH4NNS1" -Wait
+        Start-Sleep -Seconds 5
+        if (Test-Path $wingetPath) {
+            Write-Host "Winget a été installé avec succès." -ForegroundColor Green
+            Start-Process -FilePath "winget.exe" -ArgumentList "upgrade --all --force --accept-package-agreements --accept-source-agreements" -NoNewWindow -Wait
+            Write-Host "Les mises à jour des applications Windows Store ont été effectuées." -ForegroundColor Green
+        } else {
+            Write-Host "Veuillez installer Winget manuellement depuis le Microsoft Store et réessayer." -ForegroundColor Red
+        }
     }
     return 
 }
-
 # Fonction pour mettre à jour le PC (Windows et applications Windows Store)
 Function Update-PC {
     Install-WindowsUpdates
