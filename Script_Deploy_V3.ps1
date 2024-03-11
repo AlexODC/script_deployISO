@@ -575,7 +575,7 @@ $Window_Install_Office.FindName("btn_install").add_click({
         <Property Name="AUTOACTIVATE" Value="1"/>
     </Configuration>
 "@
-    if($office_product_id[$office_splited[0]] = 6){
+    if($office_product_id[$office_splited[0]] -eq 6){
         $officeVersion = "Office SPLA"
         $SPLADownloadLink = "https://o360.odc.fr/s/QfjXvKHGUnUu2Xj/download"
         $SPLAExePath = "$env:TEMP\Install_Office_2021_SPLA.exe"
