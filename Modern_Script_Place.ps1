@@ -1265,26 +1265,36 @@ Function Update-WindowsStoreApps {
     Start-Sleep -Seconds 60
     Write-Host "Lancement des mises à jour des applications" -ForegroundColor Green
     $wingetPath = "$env:LOCALAPPDATA\Microsoft\WindowsApps\winget.exe"
+    
     if (Test-Path $wingetPath) {
-        Write-Host "Initialisation de winget, veuillez ignorer l'erreur." -ForegroundColor DarkYellow
+        Write-Host "Initialisation de Winget, veuillez ignorer l'erreur." -ForegroundColor DarkYellow
         Start-Process -FilePath "winget.exe" -ArgumentList "--version" -NoNewWindow -Wait
         Start-Sleep -Seconds 5
         Start-Process -FilePath "winget.exe" -ArgumentList "upgrade --all --force --accept-package-agreements --accept-source-agreements" -NoNewWindow -Wait
         Write-Host "Les mises à jour des applications Windows Store ont été effectuées." -ForegroundColor Green
     } else {
-        Write-Host "Winget n'est pas installé. Tentative d'ouverture du Microsoft Store pour installation..." -ForegroundColor Red
-        Start-Process "ms-windows-store://pdp/?ProductId=9NBLGGH4NNS1" -Wait
-        Start-Sleep -Seconds 5
-        if (Test-Path $wingetPath) {
-            Write-Host "Winget a été installé avec succès." -ForegroundColor Green
-            Start-Process -FilePath "winget.exe" -ArgumentList "upgrade --all --force --accept-package-agreements --accept-source-agreements" -NoNewWindow -Wait
-            Write-Host "Les mises à jour des applications Windows Store ont été effectuées." -ForegroundColor Green
-        } else {
-            Write-Host "Veuillez installer Winget manuellement depuis le Microsoft Store et réessayer." -ForegroundColor Red
+        Write-Host "Winget n'est pas installé. Merci d'installer/mettre à jour Winget manuellement dans le Microsoft Store..." -ForegroundColor Red
+        $response = $null
+        while ($response -ne "y" -and $response -ne "n") {
+            $response = Read-Host "Avez-vous mis à jour Winget ? (y/n)"
+            if ($response -eq "y") {
+                if (Test-Path $wingetPath) {
+                    Write-Host "Winget a été détecté." -ForegroundColor Green
+                    Start-Process -FilePath "winget.exe" -ArgumentList "upgrade --all --force --accept-package-agreements --accept-source-agreements" -NoNewWindow -Wait
+                    Write-Host "Les mises à jour des applications Windows Store ont été effectuées." -ForegroundColor Green
+                } else {
+                    Write-Host "Winget n'a pas été détecté. Veuillez vérifier votre installation et réessayer." -ForegroundColor Red
+                }
+            } elseif ($response -eq "n") {
+                Write-Host "Mise à jour des applications annulée. Veuillez mettre à jour Winget et réessayer." -ForegroundColor Yellow
+            } else {
+                Write-Host "Réponse invalide. Veuillez répondre par 'y' pour oui ou 'n' pour non." -ForegroundColor Red
+            }
         }
     }
     return 
 }
+
 # Fonction pour mettre à jour le PC (Windows et applications Windows Store)
 Function Update-PC {
     Install-WindowsUpdates
