@@ -19,7 +19,8 @@ $app_Dispo = @('1. Installer Office',
     '6. Installer OpenVPN Client',
     '7. Installer Adobe Reader',
     '8. Installer PDF Creator',
-    '9. Installer 3CX Phone'
+    '9. Installer 3CX Phone',
+    '10. Installer Anydesk'
 )
 
 $app_URL_Downloader = @('',
@@ -30,7 +31,8 @@ $app_URL_Downloader = @('',
     'https://openvpn.net/downloads/openvpn-connect-v3-windows.msi',
     'https://o360.odc.fr/s/2wdRydaXNYormBm/download',
     'https://o360.odc.fr/s/QxFTAhYgKtMFRMq/download',
-    'https://o360.odc.fr/s/Zw2wZlXvMNmttOf/download'
+    'https://o360.odc.fr/s/Zw2wZlXvMNmttOf/download',
+    'https://download.anydesk.com/AnyDesk.msi'
 )
 
 $app_Package = @('',
@@ -41,7 +43,8 @@ $app_Package = @('',
     'openvpn-connect-3.4.4.3412_signed.msi',
     'Reader_Install_Setup.exe',
     'PDFCreator-5_2_0-Setup.exe',
-    '3CXPhoneforWindows16.msi'
+    '3CXPhoneforWindows16.msi',
+    'AnyDesk.msi'
 )
 
 ##################################################################################################
