@@ -561,13 +561,13 @@ $Window_Install_Office.FindName("rb_64bit").add_click({
 })
 
 $Window_Install_Office.FindName("btn_install").add_click({
-    Write-Host "Lancement de l'installation d'office"
+    Write-Host "Lancement de l'installation d'Office"
     $office_to_install = $Window_Install_Office.FindName("List_Office").SelectedItem
     $office_splited = $office_to_install.Split(".")
     $officeIndex = [int]$office_splited[0] - 1
 
-    if($office_product_id[$officeIndex] -eq ''){
-        $officeVersion = "Office SPLA"
+    if ($office_product_id[$officeIndex] -eq '') {
+         $officeVersion = "Office SPLA"
         $SPLADownloadLink = "https://o360.odc.fr/s/QfjXvKHGUnUu2Xj/download"
         $SPLAExePath = "$env:TEMP\Install_Office_SPLA.exe"
             
@@ -581,36 +581,40 @@ $Window_Install_Office.FindName("btn_install").add_click({
 
         Write-Host "Office SPLA installé avec succès."
     } else {
-        # Construction du contenu XML pour les autres versions d'Office
+        # Préparation du contenu XML pour les installations autres que SPLA
         $XMLContent = @"
-    <Configuration>
-        <Add OfficeClientEdition="$version_office" Channel="Monthly">
-            <Product ID="$($office_product_id[$officeIndex])">
-                <Language ID="fr-fr" />
-            </Product>
-        </Add>
-        <Display Level="None" AcceptEULA="TRUE" />
-        <Property Name="AUTOACTIVATE" Value="1"/>
-    </Configuration>
+<Configuration>
+    <Add OfficeClientEdition="$version_office" Channel="Monthly">
+        <Product ID="$($office_product_id[$officeIndex])">
+            <Language ID="fr-fr" />
+        </Product>
+    </Add>
+    <Display Level="None" AcceptEULA="TRUE" />
+    <Property Name="AUTOACTIVATE" Value="1"/>
+</Configuration>
 "@
-        # Chemin du fichier XML
         $XMLFilePath = "$env:TEMP\configuration.xml"
         [System.IO.File]::WriteAllText($XMLFilePath, $XMLContent)
-        
-        # Téléchargement et exécution de l'Office Deployment Tool
+
+        # Téléchargement de l'Office Deployment Tool
         $ODTDownloadLink = "https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_17126-20132.exe"
         $ODTFilePath = "$env:TEMP\odtsetup.exe"
         Invoke-WebRequest -Uri $ODTDownloadLink -OutFile $ODTFilePath
-        $ODTExtractPath = "$env:TEMP\ODT"
-        Start-Process -FilePath $ODTFilePath -ArgumentList "/extract:$ODTExtractPath /quiet" -NoNewWindow -Wait
-        
-        # Lancement de l'installation d'Office avec la configuration XML
-        $SetupExePath = Join-Path -Path $ODTExtractPath -ChildPath "setup.exe"
-        Start-Process -FilePath $SetupExePath -ArgumentList "/configure $XMLFilePath" -NoNewWindow -Wait
 
-        Write-Host "Installation d'Office réussie."
+        # Exécution de l'Office Deployment Tool avec extraction
+        $ODTExtractPath = "$env:TEMP\ODT"
+        Start-Process -FilePath $ODTFilePath -ArgumentList "/extract:`"$ODTExtractPath`" /quiet" -Wait -NoNewWindow
+
+        # Vérification de l'extraction et lancement de la configuration
+        if (Test-Path "$ODTExtractPath\setup.exe") {
+            Start-Process -FilePath "$ODTExtractPath\setup.exe" -ArgumentList "/configure `"$XMLFilePath`"" -NoNewWindow -Wait
+            Write-Host "Installation d'Office réussie."
+        } else {
+            Write-Host "Erreur : L'extraction de l'Office Deployment Tool a échoué." -ForegroundColor Red
+        }
     }
 })
+
 
 ##################################################################################################
 
