@@ -90,7 +90,7 @@ $default_setup_dispo = @('1.Mettre Chrome par défaut',
 ##################################################################################################
 
 $add_to_domain = "False"
-$version_office = 64
+$script:version_office = 64
 
 $data_manger = @('BK',
 'Mac DO',
@@ -553,11 +553,11 @@ $Window_Install_Office.FindName("btn_quitter").add_click({
 
 
 $Window_Install_Office.FindName("rb_32bit").add_click({ 
-    $version_office = 32
+    $script:version_office = 32
 })
 
 $Window_Install_Office.FindName("rb_64bit").add_click({ 
-    $version_office = 64
+    $script:version_office = 64
 })
 
 $Window_Install_Office.FindName("btn_install").add_click({
@@ -578,7 +578,7 @@ $Window_Install_Office.FindName("btn_install").add_click({
         # Préparation et installation des autres versions d'Office en respectant le choix de la version (32 bits ou 64 bits)
         $XMLContent = @"
 <Configuration>
-    <Add OfficeClientEdition="$version_office" Channel="Monthly">
+    <Add OfficeClientEdition="$script:version_office" Channel="Monthly">
         <Product ID="$($office_product_id[$officeIndex])">
             <Language ID="fr-fr" />
         </Product>
