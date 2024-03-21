@@ -566,12 +566,8 @@ $Window_Install_Office.FindName("btn_install").add_click({
     $office_splited = $office_to_install.Split(".")
     $officeIndex = [int]$office_splited[0] - 1
 
-    # Assurez-vous que cette partie capture correctement la sélection de l'utilisateur
-    # Supposons que `$version_office` soit définie correctement à partir de la sélection de l'utilisateur (32 ou 64)
-    $selectedOfficeBitVersion = if ($Window_Install_Office.FindName("rb_32bit").IsChecked) { "32" } else { "64" }
-
     if ($office_product_id[$officeIndex] -eq '') {
-        $officeVersion = "Office SPLA"
+         $officeVersion = "Office SPLA"
         $SPLADownloadLink = "https://o360.odc.fr/s/QfjXvKHGUnUu2Xj/download"
         $SPLAExePath = "$env:TEMP\Install_Office_SPLA.exe"
             
@@ -585,10 +581,10 @@ $Window_Install_Office.FindName("btn_install").add_click({
 
         Write-Host "Office SPLA installé avec succès."
     } else {
-        # Génération dynamique du fichier XML de configuration basée sur la sélection de l'utilisateur
+        # Préparation du contenu XML pour les installations autres que SPLA
         $XMLContent = @"
 <Configuration>
-    <Add OfficeClientEdition="$selectedOfficeBitVersion" Channel="Monthly">
+    <Add OfficeClientEdition="$version_office" Channel="Monthly">
         <Product ID="$($office_product_id[$officeIndex])">
             <Language ID="fr-fr" />
         </Product>
@@ -597,7 +593,7 @@ $Window_Install_Office.FindName("btn_install").add_click({
     <Property Name="AUTOACTIVATE" Value="1"/>
 </Configuration>
 "@
-       $XMLFilePath = "$env:TEMP\configuration.xml"
+        $XMLFilePath = "$env:TEMP\configuration.xml"
         [System.IO.File]::WriteAllText($XMLFilePath, $XMLContent)
 
         # Téléchargement de l'Office Deployment Tool
@@ -618,6 +614,7 @@ $Window_Install_Office.FindName("btn_install").add_click({
         }
     }
 })
+
 
 ##################################################################################################
 
