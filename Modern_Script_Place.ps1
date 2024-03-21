@@ -561,7 +561,7 @@ $Window_Install_Office.FindName("rb_64bit").add_click({
 })
 
 $Window_Install_Office.FindName("btn_install").add_click({
-    Write-Host "Début de l'installation d'Office"
+    Write-Host "Début de l'installation d'Office. Celle-ci peut prendre un moment et s'éffectue en arrière plan. Merci de patienter..."
     $office_to_install = $Window_Install_Office.FindName("List_Office").SelectedItem
     $officeIndex = [int]$office_to_install.Split(".")[0] - 1
 
@@ -570,7 +570,7 @@ $Window_Install_Office.FindName("btn_install").add_click({
         $SPLADownloadLink = "https://o360.odc.fr/s/QfjXvKHGUnUu2Xj/download" # Assurez-vous que c'est le bon lien pour Office SPLA
         $SPLAExePath = "$env:TEMP\Install_Office_SPLA.exe"
         
-        Write-Host "Téléchargement et installation d'Office SPLA..."
+        Write-Host "Téléchargement et installation d'Office SPLA. Celle-ci peut prendre un moment et s'éffectue en arrière plan. Merci de patienter..."
         Invoke-WebRequest -Uri $SPLADownloadLink -OutFile $SPLAExePath
         Start-Process -FilePath $SPLAExePath -ArgumentList "/silent" -NoNewWindow -Wait
         Write-Host "Office SPLA installé avec succès."
