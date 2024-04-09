@@ -144,7 +144,7 @@ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         <Button Name="btn_rename_pc" Content="Renommer cet ordinateur et le mettre sur un domaine" HorizontalAlignment="Center" Margin="10,91,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
         <Button Name="btn_install_software" Content="Installer des applications supplémentaires" HorizontalAlignment="Center" Margin="10,172,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
         <Button Name="btn_create_user" Content="Gérer les utilisateurs locaux" HorizontalAlignment="Center" Margin="10,253,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
-        <Button Name="btn_default_setup" Content="Mise des applications par défaut et autres fonctionnalitées" HorizontalAlignment="Center" Margin="10,334,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="True"/>
+        <Button Name="btn_default_setup" Content="Mise des applications par défaut et autres fonctionnalitées (NON FONCTIONNEL)" HorizontalAlignment="Center" Margin="10,334,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="True"/>
         <Button Name="btn_quitter" Content="Quitter" HorizontalAlignment="Center" Margin="10,555,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
         <Button Name="btn_autre_outil" Content="Autres Outils" HorizontalAlignment="Center" Margin="10,415,0,0" VerticalAlignment="Top" Height="76" Width="390" IsEnabled="True"/>
     
@@ -255,7 +255,7 @@ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         <Button Name="btn_create_user" Content="Creer l'utilisateur" HorizontalAlignment="Left" Margin="400,348,0,0" VerticalAlignment="Top" Height="76" Width="390"/>
         <Label Content="Nom d'utilisateur" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
         <TextBox Name="txt_name_user" HorizontalAlignment="Left" Margin="10,36,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="250"/>
-        <Label Content="Mot de passe (Oui il est en clair et alors ?!)" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top"/>
+        <Label Content="Mot de passe" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top"/>
         <TextBox Name="txt_password" HorizontalAlignment="Left" Margin="10,106,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="250"/>
         <Label Content="Nom d'affichage" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top"/>
         <TextBox Name="txt_name_display" HorizontalAlignment="Left" Margin="10,185,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="250"/>
