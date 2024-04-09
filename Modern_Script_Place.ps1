@@ -615,13 +615,18 @@ $Window_Create_User.FindName("btn_quitter").add_click({
 
 $Window_Create_User.FindName("btn_create_user").add_click({
     $nomUtilisateur = $Window_Create_User.FindName("txt_name_user").Text
-    $params = @{
-        Name        = $nomUtilisateur
-        Password    = ConvertTo-SecureString $Window_Create_User.FindName("txt_password").Text -AsPlainText -Force 
-        FullName    = $Window_Create_User.FindName("txt_name_display").Text
-        Description = $Window_Create_User.FindName("txt_description").Text
+    $motDePasseTexte = $Window_Create_User.FindName("txt_password").Text
+    $fullName = $Window_Create_User.FindName("txt_name_display").Text
+    $description = $Window_Create_User.FindName("txt_description").Text
+
+    # Vérifie si un mot de passe a été fourni
+    if (!([string]::IsNullOrWhiteSpace($motDePasseTexte))) {
+        $passwordSecure = ConvertTo-SecureString $motDePasseTexte -AsPlainText -Force
+        New-LocalUser -Name $nomUtilisateur -Password $passwordSecure -FullName $fullName -Description $description
+    } else {
+        New-LocalUser -Name $nomUtilisateur -FullName $fullName -Description $description -NoPassword
     }
-    New-LocalUser @params
+
     Write-Host "L'utilisateur a bien été créé !" -ForegroundColor Green
     
     # Mettre à jour la liste des utilisateurs
@@ -631,7 +636,7 @@ $Window_Create_User.FindName("btn_create_user").add_click({
     }
     
     # Construction du chemin du bureau de l'utilisateur
-    $cheminBureauUtilisateur = "C:\Users\$nomUtilisateur\Desktop"
+    # $cheminBureauUtilisateur = "C:\Users\$nomUtilisateur\Desktop"
     
     # Le contenu du script à créer
     $contenuScript = @"
