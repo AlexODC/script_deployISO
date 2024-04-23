@@ -30,7 +30,7 @@ $app_URL_Downloader = @('',
     'https://o360.odc.fr/s/gvvTioXseqSNdSp/download',
     'https://openvpn.net/downloads/openvpn-connect-v3-windows.msi',
     'https://o360.odc.fr/s/2wdRydaXNYormBm/download',
-    'https://o360.odc.fr/s/QxFTAhYgKtMFRMq/download',
+    'https://o360.odc.fr/s/yLmlIQpRmJYWY1A/download',
     'https://o360.odc.fr/s/Zw2wZlXvMNmttOf/download',
     'https://download.anydesk.com/AnyDesk.msi'
 )
@@ -42,7 +42,7 @@ $app_Package = @('',
     'Stormshield_SSLVPN_Client_3.2.3_win10_fr_x64.msi',
     'openvpn-connect-3.4.4.3412_signed.msi',
     'Reader_Install_Setup.exe',
-    'PDFCreator-5_2_0-Setup.exe',
+    'PDFCreator-Professional-5_2_1_59218-Setup_x64.msi',
     '3CXPhoneforWindows16.msi',
     'AnyDesk.msi'
 )
@@ -1176,13 +1176,9 @@ Function Download-And-Install-App {
             if ($appName -like "*.msi") {
                 Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$localPath`" /qn" -Wait
                 Write-Host "$appName a été installée avec succès." -ForegroundColor Green
-            } elseif ($appName -eq "PDFCreator-5_2_0-Setup.exe") {
-                Start-Process -FilePath $localPath -Args "ADDLOCAL=MAINPROGRAM,DESKTOP_SHORTCUT /QUIET" -Wait
+            } elseif ($appName -eq "PDFCreator-Professional-5_2_1_59218-Setup_x64.msi") {
+                Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$localPath` ADDLOCAL=MAINPROGRAM,DESKTOP_SHORTCUT /QUIET" -Wait
                 Write-Host "$appName a été installée avec succès." -ForegroundColor Green
-                if (Test-Path $fileToDelete) {
-                    Remove-Item -Path $fileToDelete -Force
-                    Write-Host "Le fichier d'activation de publicités a été supprimé avec succès. La pop-up est désactivée pour PDFCreator." -ForegroundColor Green
-                }
             } else {
                 if ($appName -eq "ChromeSetup.exe") {
                     Start-Process -FilePath $localPath -Args "/silent /install" -Wait
