@@ -30,7 +30,7 @@ $app_URL_Downloader = @('',
     'https://o360.odc.fr/s/gvvTioXseqSNdSp/download',
     'https://openvpn.net/downloads/openvpn-connect-v3-windows.msi',
     'https://o360.odc.fr/s/2wdRydaXNYormBm/download',
-    'https://o360.odc.fr/s/yLmlIQpRmJYWY1A/download',
+    'https://o360.odc.fr/s/KAnJ9dwGsjTmUNN/download',
     'https://o360.odc.fr/s/Zw2wZlXvMNmttOf/download',
     'https://download.anydesk.com/AnyDesk.msi'
 )
@@ -42,7 +42,7 @@ $app_Package = @('',
     'Stormshield_SSLVPN_Client_3.2.3_win10_fr_x64.msi',
     'openvpn-connect-3.4.4.3412_signed.msi',
     'Reader_Install_Setup.exe',
-    'PDFCreator-Professional-5_2_1_59218-Setup_x64.msi',
+    'PDFCreator-5_2_1_59217-Setup_x64.msi',
     '3CXPhoneforWindows16.msi',
     'AnyDesk.msi'
 )
@@ -1180,7 +1180,7 @@ Function Download-And-Install-App {
             # Installation générale pour les fichiers MSI non spécifiques
             Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$localPath`" /qn" -Wait
             Write-Host "$appName a été installée avec succès." -ForegroundColor Green
-        } elseif ($appName -eq "PDFCreator-Professional-5_2_1_59218-Setup_x64.msi") {
+        } elseif ($appName -eq "PDFCreator-5_2_1_59217-Setup_x64.msi") {
             # Installation spécifique pour PDF Creator avec des composants spécifiés
             Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$localPath`" ADDLOCAL=MAINPROGRAM,DESKTOP_SHORTCUT /QUIET" -Wait
             Write-Host "$appName a été installée avec succès." -ForegroundColor Green
@@ -1204,7 +1204,6 @@ Function Download-And-Install-App {
         Remove-Item -Path $localPath -Force
     }
 }
-return
 }
 
 # Fonction pour détecter la version d'Office installée
