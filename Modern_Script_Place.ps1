@@ -1171,30 +1171,38 @@ Function Download-And-Install-App {
     }
 
     try {
-        Invoke-WebRequest -Uri $downloadLink -OutFile $localPath
-        if (Test-Path $localPath) {
-            if ($appName -like "*.msi") {
-                Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$localPath`" /qn" -Wait
-                Write-Host "$appName a été installée avec succès." -ForegroundColor Green
-            } elseif ($appName -eq "PDFCreator-Professional-5_2_1_59218-Setup_x64.msi") {
-                Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$localPath` ADDLOCAL=MAINPROGRAM,DESKTOP_SHORTCUT /QUIET" -Wait
-                Write-Host "$appName a été installée avec succès." -ForegroundColor Green
-            } else {
-                if ($appName -eq "ChromeSetup.exe") {
-                    Start-Process -FilePath $localPath -Args "/silent /install" -Wait
-                    Write-Host "$appName a été installée avec succès." -ForegroundColor Green
-                } else {
-                    Start-Process -FilePath $localPath -Args "/S" -Wait
-                    Write-Host "$appName a été installée avec succès." -ForegroundColor Green
-                }
-            }
+    # Création de l'objet WebClient et téléchargement du fichier
+    $webClient = New-Object System.Net.WebClient
+    $webClient.DownloadFile($downloadLink, $localPath)
+
+    if (Test-Path $localPath) {
+        if ($appName -like "*.msi") {
+            # Installation générale pour les fichiers MSI non spécifiques
+            Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$localPath`" /qn" -Wait
+            Write-Host "$appName a été installée avec succès." -ForegroundColor Green
+        } elseif ($appName -eq "PDFCreator-Professional-5_2_1_59218-Setup_x64.msi") {
+            # Installation spécifique pour PDF Creator avec des composants spécifiés
+            Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$localPath`" ADDLOCAL=MAINPROGRAM,DESKTOP_SHORTCUT /QUIET" -Wait
+            Write-Host "$appName a été installée avec succès." -ForegroundColor Green
+        } elseif ($appName -eq "ChromeSetup.exe") {
+            # Installation spécifique pour Chrome
+            Start-Process -FilePath $localPath -Args "/silent /install" -Wait
+            Write-Host "$appName a été installée avec succès." -ForegroundColor Green
         } else {
-            Write-Host "Erreur : Impossible de trouver le fichier téléchargé." -ForegroundColor Red
+            # Installation générique pour les autres exécutables
+            Start-Process -FilePath $localPath -Args "/S" -Wait
+            Write-Host "$appName a été installée avec succès." -ForegroundColor Green
         }
-    } catch {
-        Write-Host "Erreur lors du téléchargement ou de l'installation : $_" -ForegroundColor Red
+    } else {
+        Write-Host "Erreur : Impossible de trouver le fichier téléchargé." -ForegroundColor Red
     }
-    Remove-Item -Path $localPath -Force
+} catch {
+    Write-Host "Erreur lors du téléchargement ou de l'installation : $_" -ForegroundColor Red
+} finally {
+    # Suppression du fichier téléchargé pour nettoyer
+    if (Test-Path $localPath) {
+        Remove-Item -Path $localPath -Force
+    }
 }
 
 # Fonction pour détecter la version d'Office installée
