@@ -1204,6 +1204,7 @@ Function Download-And-Install-App {
         Remove-Item -Path $localPath -Force
     }
 }
+}
 
 # Fonction pour détecter la version d'Office installée
 Function Detect-InstalledOffice {
